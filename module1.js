@@ -1,0 +1,1 @@
+function save(k,v){localStorage.setItem(k,v)}
