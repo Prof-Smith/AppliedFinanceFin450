@@ -1,118 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Forma Statement Builder | Module 2</title>
-<link rel="stylesheet" href="../../assets/css/main.css">
-<link rel="stylesheet" href="../../assets/css/navigation.css">
-<link rel="stylesheet" href="../../assets/css/dashboard.css">
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-<style>
-.muted{opacity:.55}.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.metric b{font-size:clamp(1.18rem,2.05vw,1.68rem);white-space:nowrap}.plotly-chart{width:100%;min-height:420px}.note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054}.formula-box{background:#0B3558;color:white;border-radius:16px;padding:18px;margin-top:14px;font-weight:800;line-height:1.65}.mini-table{width:100%;border-collapse:collapse;margin-top:12px}.mini-table th,.mini-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right}.mini-table th:first-child,.mini-table td:first-child{text-align:left}.mini-table th{font-size:.76rem;text-transform:uppercase;color:#667085}.warning{border-left-color:#F2C94C;background:#FFF8E1}@media(max-width:900px){.studio-grid,.metric-grid{grid-template-columns:1fr}.mini-table{font-size:.82rem}}
-</style>
-</head>
-<body>
-<nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 2 of 8</div></div></nav>
-<main class="container page-header"><span class="kicker">Module 2 Studio</span><h1 class="page-title">Pro Forma Statement Builder</h1><p class="lead">Forecast operating performance and convert projected statements into free cash flow.</p></main>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><style>.muted{opacity:.55}.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.metric b{font-size:clamp(1.12rem,2vw,1.6rem);white-space:nowrap}.plotly-chart{width:100%;min-height:420px}.note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054}.formula-box{background:#0B3558;color:white;border-radius:16px;padding:18px;margin-top:14px;font-weight:800;line-height:1.65}.mini-table{width:100%;border-collapse:collapse;margin-top:12px}.mini-table th,.mini-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right}.mini-table th:first-child,.mini-table td:first-child{text-align:left}.mini-table th{font-size:.76rem;text-transform:uppercase;color:#667085}.classification{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.classification div{border:1px solid #E5E7EB;border-radius:12px;background:#fff;padding:12px}.warning{border-left-color:#F2C94C;background:#FFF8E1}@media(max-width:900px){.studio-grid,.metric-grid,.classification{grid-template-columns:1fr}.mini-table{font-size:.82rem}}</style><title>Pro Forma Statement Builder | Module 2</title></head>
+<body><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 2 of 8</div></div></nav>
+<main class="container page-header"><span class="kicker">Module 2 Studio</span><h1 class="page-title">Pro Forma Statement Builder</h1><p class="lead">Forecast operating statements, operating invested capital, and free cash flow from explicit assumptions.</p></main>
 <section class="section"><div class="container sidebar-layout">
-<aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="wacc-overview.html">WACC & Capital Structure</a><a class="side-link" href="cost-capital.html">Cost of Debt & Equity</a><a class="side-link" href="wacc-build.html">WACC Build Studio</a><a class="side-link" href="operating-fcf.html">Operating FCF Studio</a><a class="side-link active" href="pro-forma-builder.html">Pro Forma Builder</a><a class="side-link muted" href="#">Mid-Year DCF</a><a class="side-link muted" href="#">Sensitivity & ROIC</a><a class="side-link muted" href="#">Case Challenge</a></div></aside>
+<aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="wacc-overview.html">WACC & Capital Structure</a><a class="side-link" href="cost-capital.html">Cost of Debt & Equity</a><a class="side-link" href="wacc-build.html">WACC Build Studio</a><a class="side-link" href="operating-fcf.html">Operating FCF Studio</a><a class="side-link active" href="pro-forma-builder.html">Pro Forma Builder</a><a class="side-link" href="mid-year-dcf.html">Mid-Year DCF</a><a class="side-link" href="sensitivity-roic.html">Sensitivity & ROIC</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside>
 <article class="content-panel">
-<div class="studio-grid">
-<section class="card"><span class="kicker">Inputs</span><h2>Forecast operating assumptions</h2><p class="lead">Use functional relationships to forecast revenue, operating profit, reinvestment, and free cash flow.</p><div class="form-row"><label>Base Revenue ($M)<input id="base-revenue" type="number" value="51000" step="500" data-proforma></label><label>Revenue Growth (%)<input id="growth" type="number" value="5.0" step=".25" data-proforma></label></div><div class="form-row"><label>EBIT Margin (%)<input id="ebit-margin" type="number" value="20.0" step=".25" data-proforma></label><label>Tax Rate (%)<input id="tax" type="number" value="22" step=".5" data-proforma></label></div><div class="form-row"><label>Depreciation / Revenue (%)<input id="dep-pct" type="number" value="4.0" step=".25" data-proforma></label><label>Capex / Revenue (%)<input id="capex-pct" type="number" value="5.0" step=".25" data-proforma></label></div><div class="form-row"><label>NWC / Revenue (%)<input id="nwc-pct" type="number" value="10.0" step=".25" data-proforma></label><label>Forecast Horizon<input id="horizon" type="number" value="5" min="3" max="7" step="1" data-proforma></label></div><div class="formula-box">FCF = NOPAT + Depreciation − Capex − Change in Net Working Capital</div><div class="note-box warning"><strong>Analyst mindset:</strong> Revenue growth and margins are assumptions, not facts. The pro forma model makes those assumptions explicit and testable.</div></section>
-<section class="card"><span class="kicker">Outputs</span><h2>Forecast summary</h2><p id="interpretation" class="lead">Outputs update as assumptions change.</p><div class="metric-grid"><div class="metric"><b id="year5-revenue">$0</b><span>Final-Year Revenue</span></div><div class="metric"><b id="year5-ebit">$0</b><span>Final-Year EBIT</span></div><div class="metric"><b id="year5-fcf">$0</b><span>Final-Year FCF</span></div><div class="metric"><b id="cum-fcf">$0</b><span>Cumulative FCF</span></div><div class="metric"><b id="avg-fcf-margin">0.00%</b><span>Average FCF Margin</span></div><div class="metric"><b id="final-nwc">$0</b><span>Final-Year NWC</span></div></div></section>
-</div>
-<section class="card" style="margin-top:22px"><span class="kicker">Visualization</span><h2>Revenue and free cash flow forecast</h2><div id="forecast-chart" class="plotly-chart"></div></section>
+<section class="card"><span class="kicker">Inputs</span><h2>Forecast operating assumptions</h2><div class="studio-grid"><div><div class="form-row"><label>Base Revenue ($M)<input id="base-revenue" type="number" value="245000" step="1000" data-proforma></label><label>Revenue Growth (%)<input id="growth" type="number" value="8.0" step=".25" data-proforma></label></div><div class="form-row"><label>EBIT Margin (%)<input id="ebit-margin" type="number" value="43.0" step=".25" data-proforma></label><label>Tax Rate (%)<input id="tax" type="number" value="19" step=".5" data-proforma></label></div><div class="form-row"><label>Depreciation / Revenue (%)<input id="dep-pct" type="number" value="6.0" step=".25" data-proforma></label><label>Capex / Revenue (%)<input id="capex-pct" type="number" value="10.0" step=".25" data-proforma></label></div><div class="form-row"><label>NWC / Revenue (%)<input id="nwc-pct" type="number" value="3.0" step=".25" data-proforma></label><label>Net Fixed Assets / Revenue (%)<input id="nfa-pct" type="number" value="38.0" step="1" data-proforma></label></div><div class="form-row"><label>Operating Intangibles / Revenue (%)<input id="intangibles-pct" type="number" value="12.0" step="1" data-proforma></label><label>Forecast Horizon<input id="horizon" type="number" value="5" min="3" max="7" step="1" data-proforma></label></div></div><div><div class="formula-box">FCF = NOPAT + Depreciation − Capex − Change in Net Working Capital</div><div class="note-box warning"><strong>Functional relationships vs policy choices:</strong> Revenue growth, working capital ratios, depreciation, capex, and operating asset ratios are modeled as functional relationships. Terminal growth, financing mix, and valuation interpretation remain judgment/policy assumptions.</div></div></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Assumption Classification</span><h2>Separate functional relationships from judgment assumptions</h2><div class="classification"><div><strong>Functional relationships</strong><br>Revenue growth, EBIT margin, depreciation/revenue, capex/revenue, NWC/revenue, NFA/revenue, and operating intangibles/revenue.</div><div><strong>Policy or judgment assumptions</strong><br>Forecast horizon, long-term growth, capital structure choices, WACC, terminal value method, and recommendation confidence.</div></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Outputs</span><h2>Forecast summary</h2><p id="interpretation" class="lead">Outputs update as assumptions change.</p><div class="metric-grid"><div class="metric"><b id="final-revenue">$0</b><span>Final-Year Revenue</span></div><div class="metric"><b id="final-nopat">$0</b><span>Final-Year NOPAT</span></div><div class="metric"><b id="final-fcf">$0</b><span>Final-Year FCF</span></div><div class="metric"><b id="avg-fcf-margin">0.00%</b><span>Average FCF Margin</span></div><div class="metric"><b id="final-invested-capital">$0</b><span>Final-Year Invested Capital</span></div><div class="metric"><b id="final-roic">0.00%</b><span>Final-Year ROIC</span></div></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Visualization</span><h2>Revenue, FCF, and invested capital forecast</h2><div id="forecast-chart" class="plotly-chart"></div></section>
 <div class="grid grid-2" style="margin-top:22px"><section class="card"><span class="kicker">Bridge</span><h2>Final-year FCF bridge</h2><div id="fcf-bridge" class="plotly-chart"></div></section><section class="card"><span class="kicker">Sensitivity</span><h2>Growth and margin sensitivity</h2><div id="sensitivity-heatmap" class="plotly-chart"></div></section></div>
-<section class="card" style="margin-top:22px"><span class="kicker">Forecast Table</span><h2>Pro forma free cash flow schedule</h2><div id="table-wrap"></div></section>
-<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">State the revenue growth, EBIT margin, and reinvestment assumptions used in the pro forma forecast. Identify which assumption has the greatest effect on free cash flow and explain why.</p><textarea placeholder="Example: The forecast assumes 5% revenue growth, a 20% EBIT margin, and capex slightly above depreciation. The most important assumption is EBIT margin because it drives NOPAT before reinvestment adjustments."></textarea></section>
-<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="operating-fcf.html">← Previous: Operating FCF Studio</a><a class="btn btn-primary" href="#">Next Build: Mid-Year DCF →</a></div>
-</article></div></section>
-<script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script>
+<section class="card" style="margin-top:22px"><span class="kicker">Projected Income Statement</span><h2>Operating income forecast</h2><div id="income-table"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Projected Operating Balance Sheet</span><h2>Operating invested capital forecast</h2><div id="balance-table"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Free Cash Flow Schedule</span><h2>Conversion from NOPAT to FCF</h2><div id="fcf-table"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">State the revenue growth, EBIT margin, reinvestment, working capital, and operating invested capital assumptions. Identify whether the forecast is driven more by operating margin or reinvestment needs.</p><textarea placeholder="Example: The forecast assumes Microsoft revenue growth of 8%, an EBIT margin of 43%, and capex greater than depreciation. The most important assumption is whether operating margins remain durable while reinvestment needs rise."></textarea></section>
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="operating-fcf.html">← Previous: Operating FCF Studio</a><a class="btn btn-primary" href="mid-year-dcf.html">Next: Mid-Year DCF →</a></div>
+</article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script>
 <script>
 (function(){
   function n(id){return Number(document.getElementById(id).value)||0;}
   function money(v){return '$'+Math.round(Number(v)||0).toLocaleString('en-US')+'M';}
   function pct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2});}
   function setText(id,text){const el=document.getElementById(id); if(el) el.textContent=text;}
-  function buildForecast(baseRevenue,growth,ebitMargin,tax,depPct,capexPct,nwcPct,horizon){
-    const years=[];
-    let prevRevenue=baseRevenue;
-    let prevNwc=baseRevenue*nwcPct;
-    for(let i=1;i<=horizon;i++){
-      const revenue=prevRevenue*(1+growth);
-      const ebit=revenue*ebitMargin;
-      const nopat=ebit*(1-tax);
-      const dep=revenue*depPct;
-      const capex=revenue*capexPct;
-      const nwc=revenue*nwcPct;
-      const changeNwc=nwc-prevNwc;
-      const fcf=nopat+dep-capex-changeNwc;
-      const fcfMargin=revenue?fcf/revenue:0;
-      years.push({year:i,revenue,ebit,nopat,dep,capex,nwc,changeNwc,fcf,fcfMargin});
-      prevRevenue=revenue; prevNwc=nwc;
-    }
-    return years;
-  }
-  function inputs(){return {baseRevenue:n('base-revenue'),growth:n('growth')/100,ebitMargin:n('ebit-margin')/100,tax:n('tax')/100,depPct:n('dep-pct')/100,capexPct:n('capex-pct')/100,nwcPct:n('nwc-pct')/100,horizon:Math.max(3,Math.min(7,Math.round(n('horizon')||5)))};}
+  function inputs(){return {baseRevenue:n('base-revenue'),growth:n('growth')/100,ebitMargin:n('ebit-margin')/100,tax:n('tax')/100,depPct:n('dep-pct')/100,capexPct:n('capex-pct')/100,nwcPct:n('nwc-pct')/100,nfaPct:n('nfa-pct')/100,intangiblesPct:n('intangibles-pct')/100,horizon:Math.max(3,Math.min(7,Math.round(n('horizon')||5)))};}
+  function build(raw){const years=[];let prevRev=raw.baseRevenue, prevNwc=raw.baseRevenue*raw.nwcPct;for(let i=1;i<=raw.horizon;i++){const revenue=prevRev*(1+raw.growth), ebit=revenue*raw.ebitMargin, nopat=ebit*(1-raw.tax), dep=revenue*raw.depPct, capex=revenue*raw.capexPct, nwc=revenue*raw.nwcPct, dNwc=nwc-prevNwc, nfa=revenue*raw.nfaPct, intangibles=revenue*raw.intangiblesPct, investedCapital=nfa+nwc+intangibles, fcf=nopat+dep-capex-dNwc, fcfMargin=revenue?fcf/revenue:0, roic=investedCapital?nopat/investedCapital:0;years.push({year:i,revenue,ebit,taxExpense:ebit*raw.tax,nopat,dep,capex,nwc,dNwc,nfa,intangibles,investedCapital,fcf,fcfMargin,roic});prevRev=revenue;prevNwc=nwc;}return years;}
   function layout(title,x,y){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:x,gridcolor:'#E5E7EB',automargin:true},yaxis:{title:y,gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI,Arial',color:'#17212B'}};}
-  function renderCharts(forecast,raw){
-    if(!window.Plotly) return;
-    const years=forecast.map(d=>'Y'+d.year);
-    Plotly.react('forecast-chart',[{x:years,y:forecast.map(d=>d.revenue),type:'scatter',mode:'lines+markers',name:'Revenue',line:{width:4,color:'#2F80ED'},hovertemplate:'%{x}<br>Revenue %{y:$,.0f}M<extra></extra>'},{x:years,y:forecast.map(d=>d.fcf),type:'scatter',mode:'lines+markers',name:'Free Cash Flow',line:{width:4,color:'#0B3558'},hovertemplate:'%{x}<br>FCF %{y:$,.0f}M<extra></extra>'}],layout('Revenue and Free Cash Flow Forecast','Forecast Year','USD Millions'),{responsive:true,displayModeBar:false});
-    const last=forecast[forecast.length-1];
-    Plotly.react('fcf-bridge',[{type:'waterfall',orientation:'v',x:['NOPAT','Add Depreciation','Subtract Capex','Subtract ΔNWC','Free Cash Flow'],y:[last.nopat,last.dep,-last.capex,-last.changeNwc,last.fcf],measure:['relative','relative','relative','relative','total'],increasing:{marker:{color:'#27AE60'}},decreasing:{marker:{color:'#EB5757'}},totals:{marker:{color:'#0B3558'}},connector:{line:{color:'#CBD5E1'}},hovertemplate:'%{x}<br>%{y:$,.0f}M<extra></extra>'}],layout('Final-Year Free Cash Flow Bridge','Component','USD Millions'),{responsive:true,displayModeBar:false});
-    let x=[],y=[],z=[];
-    for(let margin=Math.max(0,(raw.ebitMargin*100)-5); margin<=raw.ebitMargin*100+5.001; margin+=1.25){
-      let row=[]; y.push(margin.toFixed(1)+'%');
-      for(let growth=Math.max(-5,(raw.growth*100)-4); growth<=raw.growth*100+4.001; growth+=1){
-        if(y.length===1) x.push(growth.toFixed(1)+'%');
-        const f=buildForecast(raw.baseRevenue,growth/100,margin/100,raw.tax,raw.depPct,raw.capexPct,raw.nwcPct,raw.horizon);
-        row.push(f[f.length-1].fcf);
-      }
-      z.push(row);
-    }
-    Plotly.react('sensitivity-heatmap',[{x:x,y:y,z:z,type:'heatmap',colorscale:'Blues',hovertemplate:'Revenue Growth %{x}<br>EBIT Margin %{y}<br>Final-Year FCF %{z:$,.0f}M<extra></extra>'}],{title:{text:'Final-Year FCF Sensitivity',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:'Revenue Growth'},yaxis:{title:'EBIT Margin'},font:{family:'Segoe UI,Arial',color:'#17212B'}},{responsive:true,displayModeBar:false});
-  }
-  function renderTable(forecast){
-    const header='<tr><th>Line Item</th>'+forecast.map(d=>'<th>Y'+d.year+'</th>').join('')+'</tr>';
-    const line=(label,key,format)=>'<tr><td>'+label+'</td>'+forecast.map(d=>'<td>'+format(d[key])+'</td>').join('')+'</tr>';
-    const rows=header+
-      line('Revenue','revenue',money)+
-      line('EBIT','ebit',money)+
-      line('NOPAT','nopat',money)+
-      line('Depreciation','dep',money)+
-      line('Capex','capex',money)+
-      line('Net Working Capital','nwc',money)+
-      line('Change in NWC','changeNwc',money)+
-      line('Free Cash Flow','fcf',money)+
-      line('FCF Margin','fcfMargin',pct);
-    document.getElementById('table-wrap').innerHTML='<table class="mini-table">'+rows+'</table>';
-  }
-  function render(){
-    const raw=inputs();
-    document.getElementById('horizon').value=raw.horizon;
-    const forecast=buildForecast(raw.baseRevenue,raw.growth,raw.ebitMargin,raw.tax,raw.depPct,raw.capexPct,raw.nwcPct,raw.horizon);
-    const last=forecast[forecast.length-1];
-    const cum=forecast.reduce((a,b)=>a+b.fcf,0);
-    const avgMargin=forecast.reduce((a,b)=>a+b.fcfMargin,0)/forecast.length;
-    setText('year5-revenue',money(last.revenue));
-    setText('year5-ebit',money(last.ebit));
-    setText('year5-fcf',money(last.fcf));
-    setText('cum-fcf',money(cum));
-    setText('avg-fcf-margin',pct(avgMargin));
-    setText('final-nwc',money(last.nwc));
-    document.getElementById('interpretation').innerHTML='Final-year FCF is <strong>'+money(last.fcf)+'</strong>, with an average forecast FCF margin of <strong>'+pct(avgMargin)+'</strong>. The forecast translates revenue growth and operating margin assumptions into cash flow available for valuation.';
-    renderCharts(forecast,raw);
-    renderTable(forecast);
-    if(typeof AFL !== 'undefined') AFL.write({module2:Math.max(AFL.read().module2||0,60),currentSection:'pro-forma-builder'});
-  }
-  document.addEventListener('DOMContentLoaded',function(){
-    document.querySelectorAll('[data-proforma]').forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});
-    render();
-  });
-  window.addEventListener('resize',function(){ if(window.Plotly) ['forecast-chart','fcf-bridge','sensitivity-heatmap'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);}); });
+  function table(rows,years){return '<table class="mini-table"><tr><th>Line Item</th>'+years.map(d=>'<th>Y'+d.year+'</th>').join('')+'</tr>'+rows.map(r=>'<tr><td>'+r[0]+'</td>'+years.map(d=>'<td>'+r[2](d[r[1]])+'</td>').join('')+'</tr>').join('')+'</table>';}
+  function render(){const raw=inputs();document.getElementById('horizon').value=raw.horizon;const f=build(raw), last=f[f.length-1], avg=f.reduce((a,b)=>a+b.fcfMargin,0)/f.length;setText('final-revenue',money(last.revenue));setText('final-nopat',money(last.nopat));setText('final-fcf',money(last.fcf));setText('avg-fcf-margin',pct(avg));setText('final-invested-capital',money(last.investedCapital));setText('final-roic',pct(last.roic));document.getElementById('interpretation').innerHTML='Final-year FCF is <strong>'+money(last.fcf)+'</strong>. Final-year invested capital is <strong>'+money(last.investedCapital)+'</strong>, producing an implied operating ROIC of <strong>'+pct(last.roic)+'</strong>.';if(window.Plotly){const years=f.map(d=>'Y'+d.year);Plotly.react('forecast-chart',[{x:years,y:f.map(d=>d.revenue),type:'scatter',mode:'lines+markers',name:'Revenue',line:{width:4,color:'#2F80ED'}},{x:years,y:f.map(d=>d.fcf),type:'scatter',mode:'lines+markers',name:'FCF',line:{width:4,color:'#0B3558'}},{x:years,y:f.map(d=>d.investedCapital),type:'scatter',mode:'lines+markers',name:'Invested Capital',line:{width:4,color:'#27AE60'}}],layout('Revenue, FCF, and Invested Capital','Forecast Year','USD Millions'),{responsive:true,displayModeBar:false});Plotly.react('fcf-bridge',[{type:'waterfall',orientation:'v',x:['NOPAT','Depreciation','Capex','ΔNWC','FCF'],y:[last.nopat,last.dep,-last.capex,-last.dNwc,last.fcf],measure:['relative','relative','relative','relative','total'],increasing:{marker:{color:'#27AE60'}},decreasing:{marker:{color:'#EB5757'}},totals:{marker:{color:'#0B3558'}},connector:{line:{color:'#CBD5E1'}}}],layout('Final-Year FCF Bridge','Component','USD Millions'),{responsive:true,displayModeBar:false});let x=[],y=[],z=[];for(let m=Math.max(0,raw.ebitMargin*100-5);m<=raw.ebitMargin*100+5.001;m+=1.25){let row=[];y.push(m.toFixed(1)+'%');for(let g=Math.max(-5,raw.growth*100-4);g<=raw.growth*100+4.001;g+=1){if(y.length===1)x.push(g.toFixed(1)+'%');const test=build({...raw,growth:g/100,ebitMargin:m/100});row.push(test[test.length-1].fcf);}z.push(row);}Plotly.react('sensitivity-heatmap',[{x:x,y:y,z:z,type:'heatmap',colorscale:'Blues',hovertemplate:'Revenue Growth %{x}<br>EBIT Margin %{y}<br>Final-Year FCF %{z:$,.0f}M<extra></extra>'}],{title:{text:'Final-Year FCF Sensitivity',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:'Revenue Growth'},yaxis:{title:'EBIT Margin'},font:{family:'Segoe UI,Arial',color:'#17212B'}},{responsive:true,displayModeBar:false});}document.getElementById('income-table').innerHTML=table([['Revenue','revenue',money],['EBIT','ebit',money],['Taxes on EBIT','taxExpense',money],['NOPAT','nopat',money]],f);document.getElementById('balance-table').innerHTML=table([['Net Fixed Assets','nfa',money],['Net Working Capital','nwc',money],['Operating Intangibles','intangibles',money],['Invested Capital','investedCapital',money],['ROIC','roic',pct]],f);document.getElementById('fcf-table').innerHTML=table([['NOPAT','nopat',money],['Depreciation','dep',money],['Capex','capex',money],['Change in NWC','dNwc',money],['Free Cash Flow','fcf',money],['FCF Margin','fcfMargin',pct]],f);if(typeof AFL!=='undefined')AFL.write({module2:Math.max(AFL.read().module2||0,60),currentSection:'pro-forma-builder'});}
+  document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-proforma]').forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});render();});window.addEventListener('resize',function(){if(window.Plotly)['forecast-chart','fcf-bridge','sensitivity-heatmap'].forEach(id=>{const el=document.getElementById(id);if(el)Plotly.Plots.resize(el);});});
 })();
-</script>
-</body>
-</html>
+</script></body></html>
