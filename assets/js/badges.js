@@ -1,1 +1,0 @@
-const badges=["Module1"];
