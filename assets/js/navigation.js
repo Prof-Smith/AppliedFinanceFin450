@@ -31,7 +31,8 @@
     const map={
       'wacc build studio':'wacc-build.html',
       'operating fcf studio':'operating-fcf.html',
-      'pro forma builder':'pro-forma-builder.html'
+      'pro forma builder':'pro-forma-builder.html',
+      'mid-year dcf':'mid-year-dcf.html'
     };
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
       const label=norm(a.textContent);
@@ -40,6 +41,8 @@
       if(page==='wacc-build.html' && label==='wacc build studio') a.classList.add('active');
       if(page==='operating-fcf.html' && label==='operating fcf studio') a.classList.add('active');
       if(page==='pro-forma-builder.html' && label==='pro forma builder') a.classList.add('active');
+      if(page==='mid-year-dcf.html' && label==='mid-year dcf') a.classList.add('active');
+      if(page==='mid-year-dcf.html' && label!=='mid-year dcf') a.classList.remove('active');
       if(page==='pro-forma-builder.html' && label!=='pro forma builder') a.classList.remove('active');
       if(page==='operating-fcf.html' && label!=='operating fcf studio') a.classList.remove('active');
       if(page==='wacc-build.html' && label!=='wacc build studio') a.classList.remove('active');
@@ -49,7 +52,8 @@
       if(page==='cost-capital.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='wacc-build.html'; a.textContent='Next: WACC Build Studio →'; }
       if(page==='wacc-build.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='operating-fcf.html'; a.textContent='Next: Operating FCF Studio →'; }
       if(page==='operating-fcf.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='pro-forma-builder.html'; a.textContent='Next: Pro Forma Builder →'; }
-      if(page==='pro-forma-builder.html' && text.includes('previous')){ a.href='operating-fcf.html'; a.textContent='← Previous: Operating FCF Studio'; }
+      if(page==='pro-forma-builder.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='mid-year-dcf.html'; a.textContent='Next: Mid-Year DCF →'; }
+      if(page==='mid-year-dcf.html' && text.includes('previous')){ a.href='pro-forma-builder.html'; a.textContent='← Previous: Pro Forma Builder'; }
     });
   }
   function mobile(){

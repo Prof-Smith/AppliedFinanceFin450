@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mid-Year DCF and Terminal Value Studio | Module 2</title>
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/navigation.css">
+<link rel="stylesheet" href="../../assets/css/dashboard.css">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+.muted{opacity:.55}.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.metric b{font-size:clamp(1.14rem,2vw,1.6rem);white-space:nowrap}.plotly-chart{width:100%;min-height:420px}.note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054}.formula-box{background:#0B3558;color:white;border-radius:16px;padding:18px;margin-top:14px;font-weight:800;line-height:1.65}.mini-table{width:100%;border-collapse:collapse;margin-top:12px}.mini-table th,.mini-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right}.mini-table th:first-child,.mini-table td:first-child{text-align:left}.mini-table th{font-size:.76rem;text-transform:uppercase;color:#667085}.warning{border-left-color:#F2C94C;background:#FFF8E1}.toggle-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.toggle-btn{border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--primary);font-weight:900;padding:10px 14px;cursor:pointer}.toggle-btn.active{background:#EAF3FF;border-color:#BBD7FF;color:#155CA8}@media(max-width:900px){.studio-grid,.metric-grid{grid-template-columns:1fr}.mini-table{font-size:.82rem}}
+</style>
+</head>
+<body>
+<nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 2 of 8</div></div></nav>
+<main class="container page-header"><span class="kicker">Module 2 Studio</span><h1 class="page-title">Mid-Year DCF and Terminal Value Studio</h1><p class="lead">Discount forecast free cash flows, estimate terminal value, and compare end-year versus mid-year valuation conventions.</p></main>
+<section class="section"><div class="container sidebar-layout">
+<aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="wacc-overview.html">WACC & Capital Structure</a><a class="side-link" href="cost-capital.html">Cost of Debt & Equity</a><a class="side-link" href="wacc-build.html">WACC Build Studio</a><a class="side-link" href="operating-fcf.html">Operating FCF Studio</a><a class="side-link" href="pro-forma-builder.html">Pro Forma Builder</a><a class="side-link active" href="mid-year-dcf.html">Mid-Year DCF</a><a class="side-link muted" href="#">Sensitivity & ROIC</a><a class="side-link muted" href="#">Case Challenge</a></div></aside>
+<article class="content-panel">
+<div class="studio-grid">
+<section class="card"><span class="kicker">Inputs</span><h2>DCF valuation assumptions</h2><p class="lead">Use forecast free cash flows from the pro forma builder, then apply WACC, terminal growth, and timing convention.</p><div class="form-row"><label>Year 1 FCF ($M)<input id="fcf1" type="number" value="7600" step="100" data-dcf></label><label>FCF Growth Y1-Y5 (%)<input id="growth" type="number" value="5" step=".25" data-dcf></label></div><div class="form-row"><label>WACC (%)<input id="wacc" type="number" value="8.5" step=".25" data-dcf></label><label>Terminal Growth (%)<input id="terminal-growth" type="number" value="3" step=".25" data-dcf></label></div><div class="form-row"><label>Net Debt / (Net Cash) ($M)<input id="net-debt" type="number" value="51800" step="500" data-dcf></label><label>Shares Outstanding (M)<input id="shares" type="number" value="285" step="5" data-dcf></label></div><label>Current Share Price ($)<input id="current-price" type="number" value="390" step="1" data-dcf></label><div class="toggle-row"><button class="toggle-btn active" data-mode="mid">Mid-Year Discounting</button><button class="toggle-btn" data-mode="end">End-Year Discounting</button></div><div class="formula-box">Terminal Value = FCF<sub>5</sub> × (1 + g) / (WACC − g)</div><div id="warning" class="note-box warning"><strong>Model check:</strong> WACC must be greater than terminal growth for a stable-growth terminal value.</div></section>
+<section class="card"><span class="kicker">Outputs</span><h2>DCF valuation output</h2><p id="interpretation" class="lead">Outputs update as assumptions change.</p><div class="metric-grid"><div class="metric"><b id="enterprise-value">$0</b><span>DCF Enterprise Value</span></div><div class="metric"><b id="equity-value">$0</b><span>Implied Equity Value</span></div><div class="metric"><b id="implied-price">$0</b><span>Implied Price / Share</span></div><div class="metric"><b id="upside">0.00%</b><span>Upside / Downside</span></div><div class="metric"><b id="pv-terminal">$0</b><span>PV of Terminal Value</span></div><div class="metric"><b id="terminal-share">0.00%</b><span>Terminal Value Share of EV</span></div></div></section>
+</div>
+<section class="card" style="margin-top:22px"><span class="kicker">Visualization</span><h2>DCF enterprise value build</h2><div id="ev-build" class="plotly-chart"></div></section>
+<div class="grid grid-2" style="margin-top:22px"><section class="card"><span class="kicker">Sensitivity</span><h2>WACC and terminal growth sensitivity</h2><div id="sensitivity-heatmap" class="plotly-chart"></div></section><section class="card"><span class="kicker">Timing Convention</span><h2>Mid-year versus end-year discounting</h2><div id="timing-chart" class="plotly-chart"></div></section></div>
+<section class="card" style="margin-top:22px"><span class="kicker">DCF Table</span><h2>Projected FCF and present value schedule</h2><div id="table-wrap"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">State the DCF enterprise value, implied share price, timing convention, and the sensitivity risk created by WACC and terminal growth.</p><textarea placeholder="Example: The DCF is highly sensitive to terminal value assumptions. Mid-year discounting increases the value of forecast free cash flows because cash is assumed to arrive throughout the year rather than at year-end."></textarea></section>
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="pro-forma-builder.html">← Previous: Pro Forma Builder</a><a class="btn btn-primary" href="#">Next Build: Sensitivity & ROIC →</a></div>
+</article></div></section>
+<script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script>
+<script>
+(function(){
+  let discountMode='mid';
+  function n(id){return Number(document.getElementById(id).value)||0;}
+  function money(v){return '$'+Math.round(Number(v)||0).toLocaleString('en-US')+'M';}
+  function moneyB(v){return '$'+((Number(v)||0)/1000).toLocaleString('en-US',{maximumFractionDigits:1})+'B';}
+  function moneyShare(v){return '$'+(Number(v)||0).toFixed(2);}
+  function pct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2});}
+  function setText(id,text){const el=document.getElementById(id); if(el) el.textContent=text;}
+  function inputs(){return {fcf1:n('fcf1'),growth:n('growth')/100,wacc:n('wacc')/100,tg:n('terminal-growth')/100,netDebt:n('net-debt'),shares:n('shares'),price:n('current-price')};}
+  function forecastFCF(raw){let arr=[];for(let i=1;i<=5;i++){arr.push({year:i,fcf:raw.fcf1*Math.pow(1+raw.growth,i-1)});}return arr;}
+  function calcWith(raw,mode){
+    const valid=raw.wacc>raw.tg;
+    const f=forecastFCF(raw);
+    const terminal=valid ? f[4].fcf*(1+raw.tg)/(raw.wacc-raw.tg) : 0;
+    const pv=f.map(d=>{const exp=mode==='mid'?d.year-0.5:d.year;return {...d,pv:d.fcf/Math.pow(1+raw.wacc,exp)};});
+    const terminalExp=mode==='mid'?4.5:5;
+    const pvTerminal=valid ? terminal/Math.pow(1+raw.wacc,terminalExp) : 0;
+    const pvForecast=pv.reduce((a,b)=>a+b.pv,0);
+    const ev=pvForecast+pvTerminal;
+    const equity=ev-raw.netDebt;
+    const implied=raw.shares?equity/raw.shares:0;
+    const upside=raw.price?implied/raw.price-1:0;
+    const terminalShare=ev?pvTerminal/ev:0;
+    return {valid,pv,terminal,pvTerminal,pvForecast,ev,equity,implied,upside,terminalShare,terminalExp};
+  }
+  function layout(title,x,y){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:x,gridcolor:'#E5E7EB',automargin:true},yaxis:{title:y,gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI,Arial',color:'#17212B'}};}
+  function renderCharts(raw,r){
+    if(!window.Plotly) return;
+    const pieces=r.pv.map(d=>d.pv).concat([r.pvTerminal,r.ev]);
+    const labels=r.pv.map(d=>'PV FCF Y'+d.year).concat(['PV Terminal','Enterprise Value']);
+    Plotly.react('ev-build',[{type:'waterfall',orientation:'v',x:labels,y:pieces,measure:['relative','relative','relative','relative','relative','relative','total'],increasing:{marker:{color:'#27AE60'}},decreasing:{marker:{color:'#EB5757'}},totals:{marker:{color:'#0B3558'}},connector:{line:{color:'#CBD5E1'}},hovertemplate:'%{x}<br>%{y:$,.0f}M<extra></extra>'}],layout('DCF Enterprise Value Build','Component','USD Millions'),{responsive:true,displayModeBar:false});
+    let x=[],y=[],z=[];
+    for(let tgPct=Math.max(0,(raw.tg*100)-1.5);tgPct<=raw.tg*100+1.501;tgPct+=0.5){
+      let row=[]; y.push(tgPct.toFixed(1)+'%');
+      for(let wPct=Math.max(tgPct+0.5,(raw.wacc*100)-2);wPct<=raw.wacc*100+2.001;wPct+=0.5){
+        if(y.length===1) x.push(wPct.toFixed(1)+'%');
+        const test={...raw,wacc:wPct/100,tg:tgPct/100};
+        row.push(calcWith(test,discountMode).implied);
+      }
+      z.push(row);
+    }
+    Plotly.react('sensitivity-heatmap',[{x:x,y:y,z:z,type:'heatmap',colorscale:'Blues',hovertemplate:'WACC %{x}<br>Terminal Growth %{y}<br>Implied Price %{z:$,.2f}<extra></extra>'}],{title:{text:'Implied Price Sensitivity',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:'WACC'},yaxis:{title:'Terminal Growth'},font:{family:'Segoe UI,Arial',color:'#17212B'}},{responsive:true,displayModeBar:false});
+    const mid=calcWith(raw,'mid');
+    const end=calcWith(raw,'end');
+    Plotly.react('timing-chart',[{x:['PV Forecast FCF','PV Terminal Value','Enterprise Value'],y:[mid.pvForecast,mid.pvTerminal,mid.ev],type:'bar',name:'Mid-Year',marker:{color:'#2F80ED'},hovertemplate:'%{x}<br>%{y:$,.0f}M<extra></extra>'},{x:['PV Forecast FCF','PV Terminal Value','Enterprise Value'],y:[end.pvForecast,end.pvTerminal,end.ev],type:'bar',name:'End-Year',marker:{color:'#0B3558'},hovertemplate:'%{x}<br>%{y:$,.0f}M<extra></extra>'}],{title:{text:'Timing Convention Comparison',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',barmode:'group',margin:{t:70,r:32,b:70,l:82},xaxis:{title:'Value Component'},yaxis:{title:'USD Millions',tickprefix:'$'},font:{family:'Segoe UI,Arial',color:'#17212B'},legend:{orientation:'h',y:-0.18}},{responsive:true,displayModeBar:false});
+  }
+  function renderTable(raw,r){
+    const header='<tr><th>Line Item</th>'+r.pv.map(d=>'<th>Y'+d.year+'</th>').join('')+'<th>Terminal</th></tr>';
+    const fcf='<tr><td>Forecast FCF</td>'+r.pv.map(d=>'<td>'+money(d.fcf)+'</td>').join('')+'<td>'+money(r.terminal)+'</td></tr>';
+    const pv='<tr><td>Present Value</td>'+r.pv.map(d=>'<td>'+money(d.pv)+'</td>').join('')+'<td>'+money(r.pvTerminal)+'</td></tr>';
+    const summary='<tr><td>DCF Enterprise Value</td><td colspan="6">'+money(r.ev)+'</td></tr><tr><td>Less Net Debt / Add Net Cash</td><td colspan="6">'+money(raw.netDebt)+'</td></tr><tr><td>Implied Equity Value</td><td colspan="6">'+money(r.equity)+'</td></tr><tr><td>Implied Price / Share</td><td colspan="6">'+moneyShare(r.implied)+'</td></tr>';
+    document.getElementById('table-wrap').innerHTML='<table class="mini-table">'+header+fcf+pv+summary+'</table>';
+  }
+  function render(){
+    const raw=inputs();
+    const r=calcWith(raw,discountMode);
+    const warning=document.getElementById('warning');
+    if(!r.valid){warning.innerHTML='<strong>Model check:</strong> WACC must be greater than terminal growth. Increase WACC or reduce terminal growth.';}
+    else{warning.innerHTML='<strong>Model check:</strong> WACC exceeds terminal growth, so the stable-growth terminal value is valid.';}
+    setText('enterprise-value',moneyB(r.ev));
+    setText('equity-value',moneyB(r.equity));
+    setText('implied-price',moneyShare(r.implied));
+    setText('upside',pct(r.upside));
+    setText('pv-terminal',moneyB(r.pvTerminal));
+    setText('terminal-share',pct(r.terminalShare));
+    document.getElementById('interpretation').innerHTML='Using <strong>'+(discountMode==='mid'?'mid-year':'end-year')+' discounting</strong>, the model implies an enterprise value of <strong>'+moneyB(r.ev)+'</strong> and an implied price of <strong>'+moneyShare(r.implied)+'</strong> per share.';
+    renderCharts(raw,r);
+    renderTable(raw,r);
+    if(typeof AFL !== 'undefined') AFL.write({module2:Math.max(AFL.read().module2||0,72),currentSection:'mid-year-dcf'});
+  }
+  function selectMode(btn){
+    discountMode=btn.dataset.mode;
+    document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('[data-dcf]').forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});
+    document.querySelectorAll('.toggle-btn').forEach(btn=>btn.addEventListener('click',()=>selectMode(btn)));
+    render();
+  });
+  window.addEventListener('resize',function(){ if(window.Plotly) ['ev-build','sensitivity-heatmap','timing-chart'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);}); });
+})();
+</script>
+</body>
+</html>
