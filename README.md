@@ -1,1 +1,0 @@
-Production-ready starter for FIN450 Module 1.
