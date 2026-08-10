@@ -1,10 +1,35 @@
-/* Applied Finance Lab navigation repair. Keeps DCF visible without injecting overview workflow cards. */
+/* Applied Finance Lab navigation repair. Scoped to Module 1 only for DCF injection. */
 (function(){
   function norm(s){return (s||'').replace(/\s+/g,' ').trim().toLowerCase();}
   function dcfLink(active){const a=document.createElement('a');a.className='side-link'+(active?' active':'');a.href='dcf-valuation.html';a.textContent='DCF Valuation';a.setAttribute('onclick',"markPageVisited('dcf-valuation')");return a;}
-  function patchSidebar(){const isDcf=location.pathname.includes('dcf-valuation.html');document.querySelectorAll('.sidebar .card').forEach(card=>{const links=[...card.querySelectorAll('a.side-link')];if(!links.length)return;const existing=links.find(a=>norm(a.textContent)==='dcf valuation'||a.getAttribute('href')==='dcf-valuation.html');if(existing){existing.href='dcf-valuation.html';if(isDcf)existing.classList.add('active');return;}const ratio=links.find(a=>norm(a.textContent)==='ratio analysis');const enterprise=links.find(a=>norm(a.textContent)==='enterprise value');const link=dcfLink(isDcf);if(ratio)ratio.insertAdjacentElement('afterend',link);else if(enterprise)enterprise.insertAdjacentElement('beforebegin',link);else card.appendChild(link);});}
-  function patchButtons(){const page=location.pathname.split('/').pop();document.querySelectorAll('a.btn').forEach(a=>{const text=norm(a.textContent);if(page==='ratio-analysis.html'&&a.getAttribute('href')==='enterprise-value.html'){a.href='dcf-valuation.html';a.textContent='Next: DCF Valuation →';}if(page==='enterprise-value.html'&&a.getAttribute('href')==='ratio-analysis.html'){a.href='dcf-valuation.html';a.textContent='← Previous: DCF Valuation';}if(page==='dcf-valuation.html'&&text.includes('previous')){a.href='ratio-analysis.html';a.textContent='← Previous: Ratio Analysis';}if(page==='dcf-valuation.html'&&text.includes('next')){a.href='enterprise-value.html';a.textContent='Next: Enterprise Value →';}});}
+  function patchModule1Sidebar(){
+    if(!location.pathname.includes('/module1/')) return;
+    const isDcf=location.pathname.includes('dcf-valuation.html');
+    document.querySelectorAll('.sidebar .card').forEach(card=>{
+      const links=[...card.querySelectorAll('a.side-link')];
+      if(!links.length)return;
+      const existing=links.find(a=>norm(a.textContent)==='dcf valuation'||a.getAttribute('href')==='dcf-valuation.html');
+      if(existing){existing.href='dcf-valuation.html';if(isDcf)existing.classList.add('active');return;}
+      const ratio=links.find(a=>norm(a.textContent)==='ratio analysis');
+      const enterprise=links.find(a=>norm(a.textContent)==='enterprise value');
+      const link=dcfLink(isDcf);
+      if(ratio)ratio.insertAdjacentElement('afterend',link);
+      else if(enterprise)enterprise.insertAdjacentElement('beforebegin',link);
+      else card.appendChild(link);
+    });
+  }
+  function patchButtons(){
+    if(!location.pathname.includes('/module1/')) return;
+    const page=location.pathname.split('/').pop();
+    document.querySelectorAll('a.btn').forEach(a=>{
+      const text=norm(a.textContent);
+      if(page==='ratio-analysis.html'&&a.getAttribute('href')==='enterprise-value.html'){a.href='dcf-valuation.html';a.textContent='Next: DCF Valuation →';}
+      if(page==='enterprise-value.html'&&a.getAttribute('href')==='ratio-analysis.html'){a.href='dcf-valuation.html';a.textContent='← Previous: DCF Valuation';}
+      if(page==='dcf-valuation.html'&&text.includes('previous')){a.href='ratio-analysis.html';a.textContent='← Previous: Ratio Analysis';}
+      if(page==='dcf-valuation.html'&&text.includes('next')){a.href='enterprise-value.html';a.textContent='Next: Enterprise Value →';}
+    });
+  }
   function mobile(){const t=document.querySelector('[data-mobile-toggle]'),l=document.querySelector('.nav-links');if(t&&l&&!t.dataset.bound){t.dataset.bound='true';t.addEventListener('click',()=>l.classList.toggle('open'));}}
-  function run(){patchSidebar();patchButtons();mobile();}
+  function run(){patchModule1Sidebar();patchButtons();mobile();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
 })();
