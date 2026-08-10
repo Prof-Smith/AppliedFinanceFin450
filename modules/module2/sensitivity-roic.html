@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensitivity and ROIC Studio | Module 2</title>
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/navigation.css">
+<link rel="stylesheet" href="../../assets/css/dashboard.css">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+.muted{opacity:.55}.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.metric b{font-size:clamp(1.1rem,1.9vw,1.55rem);white-space:nowrap}.plotly-chart{width:100%;min-height:420px}.note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054}.formula-box{background:#0B3558;color:white;border-radius:16px;padding:18px;margin-top:14px;font-weight:800;line-height:1.65}.mini-table{width:100%;border-collapse:collapse;margin-top:12px}.mini-table th,.mini-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right}.mini-table th:first-child,.mini-table td:first-child{text-align:left}.mini-table th{font-size:.76rem;text-transform:uppercase;color:#667085}.warning{border-left-color:#F2C94C;background:#FFF8E1}.positive{border-left-color:#27AE60;background:#F0FFF7}.negative{border-left-color:#EB5757;background:#FFF4F4}@media(max-width:900px){.studio-grid,.metric-grid{grid-template-columns:1fr}.mini-table{font-size:.82rem}}
+</style>
+</head>
+<body>
+<nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 2 of 8</div></div></nav>
+<main class="container page-header"><span class="kicker">Module 2 Studio</span><h1 class="page-title">Sensitivity and ROIC Studio</h1><p class="lead">Stress-test valuation assumptions and compare return on invested capital with WACC.</p></main>
+<section class="section"><div class="container sidebar-layout">
+<aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="wacc-overview.html">WACC & Capital Structure</a><a class="side-link" href="cost-capital.html">Cost of Debt & Equity</a><a class="side-link" href="wacc-build.html">WACC Build Studio</a><a class="side-link" href="operating-fcf.html">Operating FCF Studio</a><a class="side-link" href="pro-forma-builder.html">Pro Forma Builder</a><a class="side-link" href="mid-year-dcf.html">Mid-Year DCF</a><a class="side-link active" href="sensitivity-roic.html">Sensitivity & ROIC</a><a class="side-link muted" href="#">Case Challenge</a></div></aside>
+<article class="content-panel">
+<div class="studio-grid">
+<section class="card"><span class="kicker">Inputs</span><h2>Stress-test the valuation</h2><p class="lead">Use core valuation assumptions to explore whether the case depends on reasonable assumptions or only on optimistic assumptions.</p><div class="form-row"><label>Base FCF Year 1 ($M)<input id="fcf1" type="number" value="7600" step="100" data-sens></label><label>FCF Growth Y1-Y5 (%)<input id="growth" type="number" value="5" step=".25" data-sens></label></div><div class="form-row"><label>Base WACC (%)<input id="wacc" type="number" value="8.5" step=".25" data-sens></label><label>Terminal Growth (%)<input id="terminal-growth" type="number" value="3" step=".25" data-sens></label></div><div class="form-row"><label>Net Debt / (Net Cash) ($M)<input id="net-debt" type="number" value="51800" step="500" data-sens></label><label>Shares Outstanding (M)<input id="shares" type="number" value="285" step="5" data-sens></label></div><div class="form-row"><label>Current Share Price ($)<input id="current-price" type="number" value="390" step="1" data-sens></label><label>NOPAT ($M)<input id="nopat" type="number" value="7956" step="100" data-sens></label></div><div class="form-row"><label>Net Fixed Assets ($M)<input id="nfa" type="number" value="48000" step="500" data-sens></label><label>Net Working Capital ($M)<input id="nwc" type="number" value="5100" step="100" data-sens></label></div><label>Intangible Assets Used in Operations ($M)<input id="intangibles" type="number" value="12000" step="500" data-sens></label><div class="formula-box">ROIC = NOPAT / Invested Capital<br>Invested Capital = NFA + NWC + Operating Intangibles</div><div id="spread-note" class="note-box warning"><strong>Value creation check:</strong> ROIC spread will update as assumptions change.</div></section>
+<section class="card"><span class="kicker">Outputs</span><h2>Valuation and ROIC summary</h2><p id="interpretation" class="lead">Outputs update as assumptions change.</p><div class="metric-grid"><div class="metric"><b id="base-price">$0</b><span>Base Implied Price</span></div><div class="metric"><b id="upside">0.00%</b><span>Upside / Downside</span></div><div class="metric"><b id="roic">0.00%</b><span>ROIC</span></div><div class="metric"><b id="roic-spread">0.00%</b><span>ROIC − WACC</span></div><div class="metric"><b id="invested-capital">$0</b><span>Invested Capital</span></div><div class="metric"><b id="terminal-share">0.00%</b><span>Terminal Value Share of EV</span></div></div></section>
+</div>
+<section class="card" style="margin-top:22px"><span class="kicker">Sensitivity</span><h2>Implied price sensitivity: WACC and terminal growth</h2><div id="price-heatmap" class="plotly-chart"></div></section>
+<div class="grid grid-2" style="margin-top:22px"><section class="card"><span class="kicker">Value Creation</span><h2>ROIC vs WACC spread</h2><div id="roic-chart" class="plotly-chart"></div></section><section class="card"><span class="kicker">Scenario Analysis</span><h2>Bear, base, and bull valuation cases</h2><div id="scenario-chart" class="plotly-chart"></div></section></div>
+<section class="card" style="margin-top:22px"><span class="kicker">Scenario Table</span><h2>Valuation and return summary</h2><div id="table-wrap"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">State whether the valuation is robust or fragile. Explain whether the company appears to earn a return above WACC, and identify the assumption that most threatens the recommendation.</p><textarea placeholder="Example: The base case shows a positive ROIC spread, but the implied price is highly sensitive to WACC and terminal growth. I would treat the recommendation as fragile if the valuation only works under aggressive terminal-growth assumptions."></textarea></section>
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="mid-year-dcf.html">← Previous: Mid-Year DCF</a><a class="btn btn-primary" href="#">Next Build: Case Challenge →</a></div>
+</article></div></section>
+<script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script>
+<script>
+(function(){
+  function n(id){return Number(document.getElementById(id).value)||0;}
+  function money(v){return '$'+Math.round(Number(v)||0).toLocaleString('en-US')+'M';}
+  function moneyB(v){return '$'+((Number(v)||0)/1000).toLocaleString('en-US',{maximumFractionDigits:1})+'B';}
+  function moneyShare(v){return '$'+(Number(v)||0).toFixed(2);}
+  function pct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2});}
+  function setText(id,text){const el=document.getElementById(id); if(el) el.textContent=text;}
+  function inputs(){return {fcf1:n('fcf1'),growth:n('growth')/100,wacc:n('wacc')/100,tg:n('terminal-growth')/100,netDebt:n('net-debt'),shares:n('shares'),price:n('current-price'),nopat:n('nopat'),nfa:n('nfa'),nwc:n('nwc'),intangibles:n('intangibles')};}
+  function calcDCF(raw,growthAdj,waccAdj,tgAdj){
+    const f=[]; const growth=raw.growth+growthAdj; const wacc=Math.max(0.001,raw.wacc+waccAdj); const tg=Math.max(0,raw.tg+tgAdj);
+    for(let i=1;i<=5;i++){f.push(raw.fcf1*Math.pow(1+growth,i-1));}
+    const valid=wacc>tg;
+    const terminal=valid?f[4]*(1+tg)/(wacc-tg):0;
+    const pvForecast=f.reduce((a,c,i)=>a+c/Math.pow(1+wacc,i+0.5),0);
+    const pvTerminal=valid?terminal/Math.pow(1+wacc,4.5):0;
+    const ev=pvForecast+pvTerminal;
+    const equity=ev-raw.netDebt;
+    const implied=raw.shares?equity/raw.shares:0;
+    const upside=raw.price?implied/raw.price-1:0;
+    const terminalShare=ev?pvTerminal/ev:0;
+    return {growth,wacc,tg,valid,ev,equity,implied,upside,pvTerminal,pvForecast,terminalShare};
+  }
+  function roicCalc(raw){const invested=raw.nfa+raw.nwc+raw.intangibles; const roic=invested?raw.nopat/invested:0; const spread=roic-raw.wacc; return {invested,roic,spread};}
+  function layout(title,x,y){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:x,gridcolor:'#E5E7EB',automargin:true},yaxis:{title:y,gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI,Arial',color:'#17212B'}};}
+  function renderCharts(raw,base,roi){
+    if(!window.Plotly) return;
+    let x=[],y=[],z=[];
+    for(let tgPct=Math.max(0,(raw.tg*100)-1.5);tgPct<=raw.tg*100+1.501;tgPct+=0.5){
+      let row=[]; y.push(tgPct.toFixed(1)+'%');
+      for(let wPct=Math.max(tgPct+0.5,(raw.wacc*100)-2);wPct<=raw.wacc*100+2.001;wPct+=0.5){
+        if(y.length===1) x.push(wPct.toFixed(1)+'%');
+        row.push(calcDCF({...raw,wacc:wPct/100,tg:tgPct/100},0,0,0).implied);
+      }
+      z.push(row);
+    }
+    Plotly.react('price-heatmap',[{x:x,y:y,z:z,type:'heatmap',colorscale:'Blues',hovertemplate:'WACC %{x}<br>Terminal Growth %{y}<br>Implied Price %{z:$,.2f}<extra></extra>'}],{title:{text:'Implied Price Sensitivity',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:'WACC'},yaxis:{title:'Terminal Growth'},font:{family:'Segoe UI,Arial',color:'#17212B'}},{responsive:true,displayModeBar:false});
+    Plotly.react('roic-chart',[{x:['ROIC','WACC','ROIC Spread'],y:[roi.roic,raw.wacc,roi.spread],type:'bar',marker:{color:['#27AE60','#2F80ED',roi.spread>=0?'#0B3558':'#EB5757']},hovertemplate:'%{x}<br>%{y:.2%}<extra></extra>'}],layout('Return on Invested Capital vs Cost of Capital','Metric','Rate'),{responsive:true,displayModeBar:false});
+    const bear=calcDCF(raw,-0.02,0.01,-0.005), bull=calcDCF(raw,0.02,-0.01,0.005);
+    Plotly.react('scenario-chart',[{x:['Bear','Base','Bull'],y:[bear.implied,base.implied,bull.implied],type:'bar',marker:{color:['#EB5757','#0B3558','#27AE60']},hovertemplate:'%{x}<br>Implied Price %{y:$,.2f}<extra></extra>'}],layout('Scenario Implied Price','Scenario','Implied Price'),{responsive:true,displayModeBar:false});
+  }
+  function renderTable(raw,base,roi){
+    const cases=[['Bear',calcDCF(raw,-0.02,0.01,-0.005)],['Base',base],['Bull',calcDCF(raw,0.02,-0.01,0.005)]];
+    const scenarioRows=cases.map(c=>'<tr><td>'+c[0]+'</td><td>'+pct(c[1].growth)+'</td><td>'+pct(c[1].wacc)+'</td><td>'+pct(c[1].tg)+'</td><td>'+moneyB(c[1].ev)+'</td><td>'+moneyShare(c[1].implied)+'</td><td>'+pct(c[1].upside)+'</td></tr>').join('');
+    const summary='<table class="mini-table"><tr><th>Scenario</th><th>Growth</th><th>WACC</th><th>Terminal g</th><th>EV</th><th>Price</th><th>Upside</th></tr>'+scenarioRows+'</table>';
+    const roiTable='<table class="mini-table"><tr><th>ROIC Component</th><th>Value</th></tr><tr><td>NOPAT</td><td>'+money(raw.nopat)+'</td></tr><tr><td>Invested Capital</td><td>'+money(roi.invested)+'</td></tr><tr><td>ROIC</td><td>'+pct(roi.roic)+'</td></tr><tr><td>WACC</td><td>'+pct(raw.wacc)+'</td></tr><tr><td>ROIC - WACC</td><td>'+pct(roi.spread)+'</td></tr></table>';
+    document.getElementById('table-wrap').innerHTML=summary+roiTable;
+  }
+  function render(){
+    const raw=inputs();
+    const base=calcDCF(raw,0,0,0);
+    const roi=roicCalc(raw);
+    setText('base-price',moneyShare(base.implied));
+    setText('upside',pct(base.upside));
+    setText('roic',pct(roi.roic));
+    setText('roic-spread',pct(roi.spread));
+    setText('invested-capital',money(roi.invested));
+    setText('terminal-share',pct(base.terminalShare));
+    const note=document.getElementById('spread-note');
+    if(roi.spread>=0){note.className='note-box positive';note.innerHTML='<strong>Value creation check:</strong> ROIC is above WACC, which suggests operating returns exceed the estimated cost of capital.';}
+    else{note.className='note-box negative';note.innerHTML='<strong>Value creation check:</strong> ROIC is below WACC, which suggests operating returns do not cover the estimated cost of capital.';}
+    document.getElementById('interpretation').innerHTML='The base implied price is <strong>'+moneyShare(base.implied)+'</strong>. ROIC is <strong>'+pct(roi.roic)+'</strong>, compared with WACC of <strong>'+pct(raw.wacc)+'</strong>, producing a spread of <strong>'+pct(roi.spread)+'</strong>.';
+    renderCharts(raw,base,roi);
+    renderTable(raw,base,roi);
+    if(typeof AFL !== 'undefined') AFL.write({module2:Math.max(AFL.read().module2||0,84),currentSection:'sensitivity-roic'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-sens]').forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});render();});
+  window.addEventListener('resize',function(){ if(window.Plotly) ['price-heatmap','roic-chart','scenario-chart'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);}); });
+})();
+</script>
+</body>
+</html>

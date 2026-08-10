@@ -32,7 +32,8 @@
       'wacc build studio':'wacc-build.html',
       'operating fcf studio':'operating-fcf.html',
       'pro forma builder':'pro-forma-builder.html',
-      'mid-year dcf':'mid-year-dcf.html'
+      'mid-year dcf':'mid-year-dcf.html',
+      'sensitivity & roic':'sensitivity-roic.html'
     };
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
       const label=norm(a.textContent);
@@ -42,6 +43,8 @@
       if(page==='operating-fcf.html' && label==='operating fcf studio') a.classList.add('active');
       if(page==='pro-forma-builder.html' && label==='pro forma builder') a.classList.add('active');
       if(page==='mid-year-dcf.html' && label==='mid-year dcf') a.classList.add('active');
+      if(page==='sensitivity-roic.html' && label==='sensitivity & roic') a.classList.add('active');
+      if(page==='sensitivity-roic.html' && label!=='sensitivity & roic') a.classList.remove('active');
       if(page==='mid-year-dcf.html' && label!=='mid-year dcf') a.classList.remove('active');
       if(page==='pro-forma-builder.html' && label!=='pro forma builder') a.classList.remove('active');
       if(page==='operating-fcf.html' && label!=='operating fcf studio') a.classList.remove('active');
@@ -53,7 +56,8 @@
       if(page==='wacc-build.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='operating-fcf.html'; a.textContent='Next: Operating FCF Studio →'; }
       if(page==='operating-fcf.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='pro-forma-builder.html'; a.textContent='Next: Pro Forma Builder →'; }
       if(page==='pro-forma-builder.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='mid-year-dcf.html'; a.textContent='Next: Mid-Year DCF →'; }
-      if(page==='mid-year-dcf.html' && text.includes('previous')){ a.href='pro-forma-builder.html'; a.textContent='← Previous: Pro Forma Builder'; }
+      if(page==='mid-year-dcf.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='sensitivity-roic.html'; a.textContent='Next: Sensitivity & ROIC →'; }
+      if(page==='sensitivity-roic.html' && text.includes('previous')){ a.href='mid-year-dcf.html'; a.textContent='← Previous: Mid-Year DCF'; }
     });
   }
   function mobile(){
