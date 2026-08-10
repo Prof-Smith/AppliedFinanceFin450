@@ -1,0 +1,26 @@
+/* Applied Finance Lab: Plotly-safe loader with SVG fallback support. */
+const PlotlySafe = {
+  url: 'https://cdn.plot.ly/plotly-2.35.2.min.js',
+  loadingPromise: null,
+  ready() {
+    if (window.Plotly) return Promise.resolve(window.Plotly);
+    if (this.loadingPromise) return this.loadingPromise;
+    this.loadingPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[data-plotly-safe="true"]');
+      if (existing) {
+        existing.addEventListener('load', () => window.Plotly ? resolve(window.Plotly) : reject(new Error('Plotly loaded but unavailable')));
+        existing.addEventListener('error', () => reject(new Error('Plotly failed to load')));
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = this.url;
+      s.async = true;
+      s.dataset.plotlySafe = 'true';
+      s.onload = () => window.Plotly ? resolve(window.Plotly) : reject(new Error('Plotly loaded but unavailable'));
+      s.onerror = () => reject(new Error('Plotly failed to load'));
+      document.head.appendChild(s);
+    });
+    return this.loadingPromise;
+  }
+};
+window.PlotlySafe = PlotlySafe;
