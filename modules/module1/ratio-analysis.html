@@ -18,9 +18,13 @@
     .score-watch{background:#FFF6DB;color:#7A5A00;}
     .score-risk{background:#FDECEC;color:#9B1C1C;}
     .ratio-category{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054;}
-    .mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;}
-    @media(max-width:1100px){.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-    @media(max-width:760px){.mini-grid{grid-template-columns:1fr;}}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px;}
+    .mini-grid .metric{padding:15px 14px;min-width:0;overflow:hidden;}
+    .mini-grid .metric b{font-size:clamp(1.35rem,2.3vw,1.85rem);line-height:1.05;white-space:nowrap;}
+    .mini-grid .metric span{font-size:.72rem;line-height:1.15;white-space:normal;overflow-wrap:break-word;word-break:normal;}
+    .plotly-card-chart{width:100%;min-height:430px;}
+    #dupont-chart{min-height:430px;}
+    @media(max-width:760px){.mini-grid{grid-template-columns:1fr;}.mini-grid .metric span{font-size:.78rem;}}
   </style>
 </head>
 <body>
@@ -97,19 +101,19 @@
       <section class="card" style="margin-top:22px;">
         <span class="kicker">Visualization</span>
         <h2>Ratio dashboard</h2>
-        <div id="ratio-radar-chart" style="width:100%;min-height:470px;"></div>
+        <div id="ratio-radar-chart" class="plotly-card-chart" style="min-height:470px;"></div>
       </section>
 
       <div class="grid grid-2" style="margin-top:22px;">
         <section class="card">
           <span class="kicker">Trend Analysis</span>
           <h2>Profitability trends</h2>
-          <div id="profitability-chart" style="width:100%;min-height:400px;"></div>
+          <div id="profitability-chart" class="plotly-card-chart"></div>
         </section>
         <section class="card">
           <span class="kicker">DuPont Preview</span>
           <h2>Return on equity decomposition</h2>
-          <div id="dupont-chart" style="width:100%;min-height:400px;"></div>
+          <div id="dupont-chart" class="plotly-card-chart"></div>
         </section>
       </div>
 
@@ -149,120 +153,19 @@
   const fmtPct=v=>(Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:1,maximumFractionDigits:1});
   const fmtNum=v=>(Number(v)||0).toFixed(2)+'x';
   function getCompany(){return DATA[document.querySelector('#company-select').value] || DATA.msft;}
-  function avg(arr){return arr.reduce((a,b)=>a+b,0)/arr.length;}
-  function ratios(c){
-    const years=c.years;
-    const out=years.map((y,i)=>{
-      const prevAssets=i>0?c.balance.assets[i-1]:c.balance.assets[i];
-      const prevEquity=i>0?c.balance.equity[i-1]:c.balance.equity[i];
-      const avgAssets=(prevAssets+c.balance.assets[i])/2;
-      const avgEquity=(prevEquity+c.balance.equity[i])/2;
-      return {
-        year:y,
-        netMargin:c.income.netIncome[i]/c.income.revenue[i],
-        operatingMargin:c.income.operatingIncome[i]/c.income.revenue[i],
-        roa:c.income.netIncome[i]/avgAssets,
-        roe:c.income.netIncome[i]/avgEquity,
-        currentRatio:c.balance.currentAssets[i]/c.balance.currentLiabilities[i],
-        cashRatio:c.balance.cash[i]/c.balance.currentLiabilities[i],
-        debtAssets:c.balance.debt[i]/c.balance.assets[i],
-        debtEquity:c.balance.debt[i]/c.balance.equity[i],
-        assetTurnover:c.income.revenue[i]/avgAssets,
-        ocfToNetIncome:c.cashflow.ocf[i]/c.income.netIncome[i],
-        equityMultiplier:avgAssets/avgEquity
-      };
-    });
-    return out;
-  }
-  function scoreLatest(r){
-    const p=Math.min(100,Math.max(0,(r.netMargin/0.30)*40+(r.roe/0.45)*40+(r.operatingMargin/0.40)*20));
-    const l=Math.min(100,Math.max(0,(r.currentRatio/2.0)*55+(r.cashRatio/1.0)*45));
-    const lev=Math.min(100,Math.max(0,100-(r.debtAssets/0.55)*55-(r.debtEquity/2.0)*45));
-    const e=Math.min(100,Math.max(0,(r.assetTurnover/1.2)*50+(Math.min(r.ocfToNetIncome,2)/1.5)*50));
-    return {profitability:p,liquidity:l,leverage:lev,efficiency:e};
-  }
-  function chip(score){
-    if(score>=70)return '<span class="score-chip score-strong">Strong</span>';
-    if(score>=40)return '<span class="score-chip score-watch">Watch</span>';
-    return '<span class="score-chip score-risk">Risk</span>';
-  }
-  function layout(title,xTitle,yTitle){return{title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:60,r:24,b:58,l:78},xaxis:{title:xTitle,gridcolor:'#E5E7EB'},yaxis:{title:yTitle,gridcolor:'#E5E7EB'},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},legend:{orientation:'h',y:-0.2}};}
-  function renderCharts(c,rs,scores){
-    const latest=rs[rs.length-1];
-    Plotly.react('ratio-radar-chart',[{
-      type:'scatterpolar',
-      r:[scores.profitability,scores.liquidity,scores.leverage,scores.efficiency,scores.profitability],
-      theta:['Profitability','Liquidity','Leverage','Efficiency','Profitability'],
-      fill:'toself',
-      name:'Financial Health Score',
-      line:{color:'#2F80ED',width:4},
-      hovertemplate:'%{theta}<br>Score %{r:.0f}/100<extra></extra>'
-    }],{
-      title:{text:'Financial Health Radar',font:{size:18,color:'#0B3558'}},
-      paper_bgcolor:'rgba(0,0,0,0)',
-      polar:{radialaxis:{visible:true,range:[0,100],gridcolor:'#E5E7EB'},angularaxis:{gridcolor:'#E5E7EB'}},
-      font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},
-      margin:{t:70,r:40,b:40,l:40}
-    },{responsive:true,displayModeBar:true});
-    Plotly.react('profitability-chart',[
-      {x:c.years,y:rs.map(r=>r.netMargin),type:'scatter',mode:'lines+markers',name:'Net Margin',line:{width:4,color:'#27AE60'},hovertemplate:'%{x}<br>Net Margin %{y:.1%}<extra></extra>'},
-      {x:c.years,y:rs.map(r=>r.operatingMargin),type:'scatter',mode:'lines+markers',name:'Operating Margin',line:{width:4,color:'#2F80ED'},hovertemplate:'%{x}<br>Operating Margin %{y:.1%}<extra></extra>'},
-      {x:c.years,y:rs.map(r=>r.roe),type:'scatter',mode:'lines+markers',name:'ROE',line:{width:4,color:'#0B3558'},hovertemplate:'%{x}<br>ROE %{y:.1%}<extra></extra>'}
-    ],layout('Profitability Trend','Fiscal Year','Percent'),{responsive:true,displayModeBar:true});
-    Plotly.react('dupont-chart',[{
-      x:['Net Margin','Asset Turnover','Equity Multiplier','ROE'],
-      y:[latest.netMargin,latest.assetTurnover,latest.equityMultiplier,latest.roe],
-      type:'bar',
-      marker:{color:['#27AE60','#2F80ED','#F2C94C','#0B3558']},
-      hovertemplate:'%{x}<br>%{y:.2f}<extra></extra>'
-    }],layout('Latest-Year DuPont Components','Component','Value'),{responsive:true,displayModeBar:true});
-  }
-  function renderScores(scores){
-    document.querySelector('#score-profitability').textContent=Math.round(scores.profitability);
-    document.querySelector('#score-liquidity').textContent=Math.round(scores.liquidity);
-    document.querySelector('#score-leverage').textContent=Math.round(scores.leverage);
-    document.querySelector('#score-efficiency').textContent=Math.round(scores.efficiency);
-  }
-  function renderTable(rs,scores){
-    const r=rs[rs.length-1];
-    const rows=[
-      ['Net Margin',fmtPct(r.netMargin),'Profitability',scores.profitability],
-      ['Operating Margin',fmtPct(r.operatingMargin),'Profitability',scores.profitability],
-      ['ROA',fmtPct(r.roa),'Profitability',scores.profitability],
-      ['ROE',fmtPct(r.roe),'Profitability',scores.profitability],
-      ['Current Ratio',fmtNum(r.currentRatio),'Liquidity',scores.liquidity],
-      ['Cash Ratio',fmtNum(r.cashRatio),'Liquidity',scores.liquidity],
-      ['Debt / Assets',fmtPct(r.debtAssets),'Leverage',scores.leverage],
-      ['Debt / Equity',fmtNum(r.debtEquity),'Leverage',scores.leverage],
-      ['Asset Turnover',fmtNum(r.assetTurnover),'Efficiency',scores.efficiency],
-      ['OCF / Net Income',fmtNum(r.ocfToNetIncome),'Efficiency',scores.efficiency]
-    ];
-    const header='<tr><th>Ratio</th><th>Latest Value</th><th>Category</th><th>Signal</th></tr>';
-    const body=rows.map(([name,val,cat,score])=>`<tr><td>${name}</td><td>${val}</td><td>${cat}</td><td>${chip(score)}</td></tr>`).join('');
-    document.querySelector('#ratio-table-wrap').innerHTML=`<table class="ratio-table">${header}${body}</table>`;
-  }
-  function renderInterpretation(c,scores){
-    const strong=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
-    const weak=Object.entries(scores).sort((a,b)=>a[1]-b[1])[0];
-    const label=s=>s.charAt(0).toUpperCase()+s.slice(1);
-    document.querySelector('#company-name').textContent=c.name;
-    document.querySelector('#health-interpretation').innerHTML=`The strongest dashboard signal is <strong>${label(strong[0])}</strong> with a score of <strong>${Math.round(strong[1])}/100</strong>. The weakest signal is <strong>${label(weak[0])}</strong> with a score of <strong>${Math.round(weak[1])}/100</strong>. Use this as a starting point, not a final recommendation.`;
-  }
-  function render(){
-    const c=getCompany();
-    const rs=ratios(c);
-    const scores=scoreLatest(rs[rs.length-1]);
-    renderScores(scores);
-    renderInterpretation(c,scores);
-    renderCharts(c,rs,scores);
-    renderTable(rs,scores);
-    if(typeof AFL!=='undefined') AFL.write({module1:Math.max(AFL.read().module1,86),currentSection:'ratio-analysis'});
-  }
-  document.addEventListener('DOMContentLoaded',function(){
-    document.querySelector('#company-select').addEventListener('change',render);
-    render();
-    if(typeof markPageVisited==='function') markPageVisited('ratio-analysis');
-  });
+  function ratios(c){return c.years.map((y,i)=>{const prevAssets=i>0?c.balance.assets[i-1]:c.balance.assets[i];const prevEquity=i>0?c.balance.equity[i-1]:c.balance.equity[i];const avgAssets=(prevAssets+c.balance.assets[i])/2;const avgEquity=(prevEquity+c.balance.equity[i])/2;return{year:y,netMargin:c.income.netIncome[i]/c.income.revenue[i],operatingMargin:c.income.operatingIncome[i]/c.income.revenue[i],roa:c.income.netIncome[i]/avgAssets,roe:c.income.netIncome[i]/avgEquity,currentRatio:c.balance.currentAssets[i]/c.balance.currentLiabilities[i],cashRatio:c.balance.cash[i]/c.balance.currentLiabilities[i],debtAssets:c.balance.debt[i]/c.balance.assets[i],debtEquity:c.balance.debt[i]/c.balance.equity[i],assetTurnover:c.income.revenue[i]/avgAssets,ocfToNetIncome:c.cashflow.ocf[i]/c.income.netIncome[i],equityMultiplier:avgAssets/avgEquity};});}
+  function scoreLatest(r){const p=Math.min(100,Math.max(0,(r.netMargin/0.30)*40+(r.roe/0.45)*40+(r.operatingMargin/0.40)*20));const l=Math.min(100,Math.max(0,(r.currentRatio/2.0)*55+(r.cashRatio/1.0)*45));const lev=Math.min(100,Math.max(0,100-(r.debtAssets/0.55)*55-(r.debtEquity/2.0)*45));const e=Math.min(100,Math.max(0,(r.assetTurnover/1.2)*50+(Math.min(r.ocfToNetIncome,2)/1.5)*50));return{profitability:p,liquidity:l,leverage:lev,efficiency:e};}
+  function chip(score){if(score>=70)return '<span class="score-chip score-strong">Strong</span>';if(score>=40)return '<span class="score-chip score-watch">Watch</span>';return '<span class="score-chip score-risk">Risk</span>';}
+  function layout(title,xTitle,yTitle){return{title:{text:title,font:{size:18,color:'#0B3558'},y:0.96},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:76,r:32,b:100,l:82},xaxis:{title:{text:xTitle,standoff:18},gridcolor:'#E5E7EB',automargin:true,tickfont:{size:11}},yaxis:{title:{text:yTitle,standoff:12},gridcolor:'#E5E7EB',automargin:true,tickfont:{size:11}},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},legend:{orientation:'h',y:-0.24}};}
+  function renderCharts(c,rs,scores){const latest=rs[rs.length-1];Plotly.react('ratio-radar-chart',[{type:'scatterpolar',r:[scores.profitability,scores.liquidity,scores.leverage,scores.efficiency,scores.profitability],theta:['Profitability','Liquidity','Leverage','Efficiency','Profitability'],fill:'toself',name:'Financial Health Score',line:{color:'#2F80ED',width:4},hovertemplate:'%{theta}<br>Score %{r:.0f}/100<extra></extra>'}],{title:{text:'Financial Health Radar',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',polar:{radialaxis:{visible:true,range:[0,100],gridcolor:'#E5E7EB'},angularaxis:{gridcolor:'#E5E7EB'}},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},margin:{t:78,r:50,b:50,l:50}},{responsive:true,displayModeBar:false});
+    Plotly.react('profitability-chart',[{x:c.years,y:rs.map(r=>r.netMargin),type:'scatter',mode:'lines+markers',name:'Net Margin',line:{width:4,color:'#27AE60'},hovertemplate:'%{x}<br>Net Margin %{y:.1%}<extra></extra>'},{x:c.years,y:rs.map(r=>r.operatingMargin),type:'scatter',mode:'lines+markers',name:'Operating Margin',line:{width:4,color:'#2F80ED'},hovertemplate:'%{x}<br>Operating Margin %{y:.1%}<extra></extra>'},{x:c.years,y:rs.map(r=>r.roe),type:'scatter',mode:'lines+markers',name:'ROE',line:{width:4,color:'#0B3558'},hovertemplate:'%{x}<br>ROE %{y:.1%}<extra></extra>'}],layout('Profitability Trend','Fiscal Year','Percent'),{responsive:true,displayModeBar:false});
+    const dupontLayout=layout('Latest-Year DuPont Components','Component','Value');dupontLayout.margin.b=118;dupontLayout.xaxis.tickangle=-30;dupontLayout.xaxis.tickfont={size:10};dupontLayout.xaxis.automargin=true;dupontLayout.yaxis.automargin=true;
+    Plotly.react('dupont-chart',[{x:['Net Margin','Asset Turnover','Equity Multiplier','ROE'],y:[latest.netMargin,latest.assetTurnover,latest.equityMultiplier,latest.roe],type:'bar',marker:{color:['#27AE60','#2F80ED','#F2C94C','#0B3558']},hovertemplate:'%{x}<br>%{y:.2f}<extra></extra>'}],dupontLayout,{responsive:true,displayModeBar:false});}
+  function renderScores(scores){document.querySelector('#score-profitability').textContent=Math.round(scores.profitability);document.querySelector('#score-liquidity').textContent=Math.round(scores.liquidity);document.querySelector('#score-leverage').textContent=Math.round(scores.leverage);document.querySelector('#score-efficiency').textContent=Math.round(scores.efficiency);}
+  function renderTable(rs,scores){const r=rs[rs.length-1];const rows=[['Net Margin',fmtPct(r.netMargin),'Profitability',scores.profitability],['Operating Margin',fmtPct(r.operatingMargin),'Profitability',scores.profitability],['ROA',fmtPct(r.roa),'Profitability',scores.profitability],['ROE',fmtPct(r.roe),'Profitability',scores.profitability],['Current Ratio',fmtNum(r.currentRatio),'Liquidity',scores.liquidity],['Cash Ratio',fmtNum(r.cashRatio),'Liquidity',scores.liquidity],['Debt / Assets',fmtPct(r.debtAssets),'Leverage',scores.leverage],['Debt / Equity',fmtNum(r.debtEquity),'Leverage',scores.leverage],['Asset Turnover',fmtNum(r.assetTurnover),'Efficiency',scores.efficiency],['OCF / Net Income',fmtNum(r.ocfToNetIncome),'Efficiency',scores.efficiency]];const header='<tr><th>Ratio</th><th>Latest Value</th><th>Category</th><th>Signal</th></tr>';const body=rows.map(([name,val,cat,score])=>`<tr><td>${name}</td><td>${val}</td><td>${cat}</td><td>${chip(score)}</td></tr>`).join('');document.querySelector('#ratio-table-wrap').innerHTML=`<table class="ratio-table">${header}${body}</table>`;}
+  function renderInterpretation(c,scores){const strong=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];const weak=Object.entries(scores).sort((a,b)=>a[1]-b[1])[0];const label=s=>s.charAt(0).toUpperCase()+s.slice(1);document.querySelector('#company-name').textContent=c.name;document.querySelector('#health-interpretation').innerHTML=`The strongest dashboard signal is <strong>${label(strong[0])}</strong> with a score of <strong>${Math.round(strong[1])}/100</strong>. The weakest signal is <strong>${label(weak[0])}</strong> with a score of <strong>${Math.round(weak[1])}/100</strong>. Use this as a starting point, not a final recommendation.`;}
+  function render(){const c=getCompany();const rs=ratios(c);const scores=scoreLatest(rs[rs.length-1]);renderScores(scores);renderInterpretation(c,scores);renderCharts(c,rs,scores);renderTable(rs,scores);if(typeof AFL!=='undefined') AFL.write({module1:Math.max(AFL.read().module1,86),currentSection:'ratio-analysis'});}
+  document.addEventListener('DOMContentLoaded',function(){document.querySelector('#company-select').addEventListener('change',render);render();if(typeof markPageVisited==='function') markPageVisited('ratio-analysis');});
   window.addEventListener('resize',function(){if(window.Plotly){['ratio-radar-chart','profitability-chart','dupont-chart'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);});}});
 })();
 </script>
