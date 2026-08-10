@@ -1,4 +1,15 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Internal Rate of Return | Module 1</title><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IRR Studio | Module 1</title>
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/navigation.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+</head>
+<body>
+
 <nav class="navbar">
   <div class="container nav-inner">
     <a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
@@ -11,4 +22,91 @@
     </ul>
     <div class="nav-meta">Module 1 of 8</div>
   </div>
-</nav><main class="container page-header"><span class="kicker">Module 1</span><h1 class="page-title">Internal Rate of Return</h1><p class="lead">Financial Modeling Foundations: a professional workflow for turning financial information into decisions.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link active" href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside><article class="card content-panel"><h2>Return implied by cash flows</h2><p>IRR identifies the discount rate that sets NPV equal to zero. Students will eventually compare IRR to NPV and learn when IRR can mislead.</p></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script>markPageVisited('irr');</script></body></html>
+</nav>
+
+<main class="container page-header">
+  <span class="kicker">Module 1 Studio</span>
+  <h1 class="page-title">Internal Rate of Return Studio</h1>
+  <p class="lead">Use IRR to locate the discount rate where NPV equals zero, then compare the result to the required return and the NPV rule.</p>
+</main>
+<section class="section">
+  <div class="container sidebar-layout">
+    <aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link active" href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside>
+    <article class="content-panel">
+      <div class="grid grid-2">
+        <section class="card">
+          <span class="kicker">Interactive Inputs</span>
+          <h2>Build the IRR case</h2>
+          <p class="lead">Enter the investment, required return, and projected annual cash flows.</p>
+          <div class="form-row">
+            <label>Initial Investment <input data-irr-input id="irr-initial" type="number" value="10000" step="500" /></label>
+            <label>Required Return / Hurdle Rate (%) <input data-irr-input id="irr-hurdle" type="number" value="9" step="0.25" /></label>
+          </div>
+          <div class="form-row">
+            <label>Year 1 Cash Flow <input data-irr-input id="irr-cf-1" type="number" value="3000" step="250" /></label>
+            <label>Year 2 Cash Flow <input data-irr-input id="irr-cf-2" type="number" value="4000" step="250" /></label>
+          </div>
+          <div class="form-row">
+            <label>Year 3 Cash Flow <input data-irr-input id="irr-cf-3" type="number" value="5000" step="250" /></label>
+            <label>Year 4 Cash Flow <input data-irr-input id="irr-cf-4" type="number" value="2500" step="250" /></label>
+          </div>
+          <label>Year 5 Cash Flow <input data-irr-input id="irr-cf-5" type="number" value="1500" step="250" /></label>
+          <br><br><button class="btn btn-light" id="reset-irr" type="button">Reset Example</button>
+        </section>
+        <section class="card">
+          <span class="kicker">Decision Insight</span>
+          <h2>What the model says <span id="irr-recommendation-badge" class="badge active" style="margin-left:8px;">Accept</span></h2>
+          <p id="irr-interpretation" class="lead">Adjust inputs to generate an IRR interpretation.</p>
+          <div class="grid grid-2">
+            <div class="metric"><b id="irr-result">0.00%</b><span>Internal Rate of Return</span></div>
+            <div class="metric"><b id="irr-hurdle-result">0.00%</b><span>Required Return</span></div>
+            <div class="metric"><b id="irr-spread">0.00 pts</b><span>IRR Spread</span></div>
+            <div class="metric"><b id="irr-npv-at-hurdle">$0</b><span>NPV at Hurdle Rate</span></div>
+          </div>
+        </section>
+      </div>
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Visualization</span>
+        <h2>IRR profile</h2>
+        <div id="irr-profile-chart" class="plotly-chart"></div>
+      </section>
+      <div class="grid grid-2" style="margin-top:22px;">
+        <section class="card">
+          <span class="kicker">Comparison</span>
+          <h2>IRR vs. required return</h2>
+          <div id="irr-comparison-chart" class="plotly-chart"></div>
+        </section>
+        <section class="card">
+          <span class="kicker">Cash-flow Pattern</span>
+          <h2>Project cash flows</h2>
+          <div id="irr-cashflow-chart" class="plotly-chart"></div>
+        </section>
+      </div>
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Analyst Warning</span>
+        <h2>When IRR can mislead</h2>
+        <p id="irr-warning" class="lead">The warning will update after the model runs.</p>
+        <p>IRR is useful because it converts a cash-flow stream into a percentage return. However, NPV is still the primary value-creation rule because it measures expected wealth created in dollars.</p>
+      </section>
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Analyst Prompt</span>
+        <h2>Translate return into judgment</h2>
+        <textarea placeholder="Example: The IRR exceeds the required return, but the NPV profile shows the recommendation is sensitive to the discount rate. I would accept only if the cash-flow assumptions are credible."></textarea>
+      </section>
+      <div class="grid grid-2" style="margin-top:22px;">
+        <a class="btn btn-light" href="npv.html">← Previous: NPV</a>
+        <a class="btn btn-primary" href="financial-statements.html">Next: Financial Statements →</a>
+      </div>
+    </article>
+  </div>
+</section>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/navigation.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script src="../../assets/js/finance-core.js"></script>
+<script src="../../assets/js/plotly-safe-loader.js"></script>
+<script src="../../assets/js/charts-finance.js"></script>
+<script src="../../assets/js/irr-engine.js"></script>
+<script>if (typeof markPageVisited === 'function') markPageVisited('irr');</script>
+</body>
+</html>
