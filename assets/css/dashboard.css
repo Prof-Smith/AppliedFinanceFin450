@@ -1,4 +1,4 @@
-/* Applied Finance Lab dashboard and metric card styles. Metric card hotfix included. */
+/* Applied Finance Lab dashboard and metric card styles. Display hotfix included. */
 .dashboard-feature {
   display:grid;
   grid-template-columns:1.25fr .75fr;
@@ -25,31 +25,29 @@
 .metric b {
   display:block;
   color:var(--primary);
-  line-height:1.08;
+  line-height:1.05;
   font-weight:950;
-  letter-spacing:-0.035em;
-  font-size:clamp(1.45rem, 2.45vw, 2.05rem);
+  letter-spacing:-0.055em;
+  font-size:clamp(1.35rem, 1.55vw, 1.72rem);
   max-width:100%;
-  overflow-wrap:anywhere;
-  word-break:break-word;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:clip;
 }
 .metric span {
   display:block;
   color:var(--muted);
   font-weight:800;
-  font-size:.78rem;
-  line-height:1.35;
-  margin-top:4px;
+  font-size:.76rem;
+  line-height:1.3;
+  margin-top:6px;
   max-width:100%;
-  overflow-wrap:break-word;
 }
-.grid .metric b,
-.metric-row .metric b {
-  font-size:clamp(1.35rem, 2.2vw, 1.95rem);
+.content-panel .metric b {
+  font-size:clamp(1.28rem, 1.45vw, 1.62rem);
 }
-.grid-2 > .metric,
-.metric-row > .metric {
-  min-width:0;
+.content-panel .grid-2 > .metric {
+  padding:16px;
 }
 .module-table {
   width:100%;
@@ -82,13 +80,6 @@
   border-radius:14px;
   background:white;
 }
-
-/* Decision insight panels often contain four metrics in two columns. This keeps large dollar values contained. */
-.content-panel .card .grid.grid-2:has(.metric) {
-  grid-template-columns:repeat(2, minmax(0, 1fr));
-}
-
-/* Input cards: prevent controls from forcing width expansion. */
 .form-row,
 .grid,
 .card,
@@ -101,37 +92,41 @@ textarea {
   min-width:0;
   max-width:100%;
 }
-
-/* Medium screens: keep metric cards readable without overflow. */
+/* Prevent tiny chart containers from collapsing before Plotly renders. */
+[id$="-chart"] {
+  width:100%;
+  min-height:340px;
+}
+#pv-decline-chart,
+#fv-growth-chart,
+#tvm-timeline-chart {
+  min-height:420px;
+}
+#pv-rate-chart,
+#fv-rate-chart,
+#discount-factor-chart {
+  min-height:360px;
+}
 @media (max-width: 1100px) {
-  .metric b {
-    font-size:clamp(1.25rem, 2vw, 1.7rem);
-  }
   .metric {
-    padding:14px;
+    padding:14px 12px;
+  }
+  .metric b,
+  .content-panel .metric b {
+    font-size:clamp(1.18rem, 1.35vw, 1.45rem);
+    letter-spacing:-0.06em;
+  }
+  .metric span {
+    font-size:.72rem;
   }
 }
-
-/* Narrow screens: stack risk areas and metric grids. */
 @media (max-width: 860px) {
   .dashboard-feature,
   .metric-row {
     grid-template-columns:1fr;
   }
-  .content-panel .card .grid.grid-2:has(.metric) {
-    grid-template-columns:1fr;
-  }
-  .metric b {
-    font-size:clamp(1.5rem, 8vw, 2.1rem);
-  }
-}
-
-/* Small cards in two-column decision panels need extra protection. */
-@media (min-width: 861px) and (max-width: 1250px) {
-  .content-panel .grid-2 .metric b {
-    font-size:clamp(1.25rem, 1.9vw, 1.7rem);
-  }
-  .content-panel .grid-2 .metric {
-    padding:14px 12px;
+  .metric b,
+  .content-panel .metric b {
+    font-size:clamp(1.55rem, 7vw, 2.05rem);
   }
 }
