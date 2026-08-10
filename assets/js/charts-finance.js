@@ -1,101 +1,156 @@
-/* Applied Finance Lab: Plotly chart helpers for Sprint 2B. */
+/* Applied Finance Lab: robust Plotly chart helpers for Sprint 2B hotfix. */
 const FinanceCharts = {
+  hasPlotly(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return false;
+    if (!window.Plotly) {
+      target.innerHTML = '<div class="card"><h3>Visualization unavailable</h3><p>Plotly did not load. Check internet access or the Plotly CDN script on this page.</p></div>';
+      return false;
+    }
+    return true;
+  },
+
+  safePlot(targetId, traces, layout) {
+    const target = document.getElementById(targetId);
+    if (!this.hasPlotly(targetId)) return;
+    try {
+      Plotly.newPlot(targetId, traces, layout, { responsive: true, displayModeBar: false });
+    } catch (error) {
+      console.error('Plotly chart error:', error);
+      target.innerHTML = '<div class="card"><h3>Chart error</h3><p>The calculations are working, but the visualization could not render. Open the browser console for details.</p></div>';
+    }
+  },
+
+  baseLayout(title, xTitle, yTitle, yExtras = {}) {
+    return {
+      title: { text: title, font: { size: 18, color: '#0B3558' } },
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { t: 60, r: 24, b: 58, l: 78 },
+      xaxis: { title: xTitle, gridcolor: '#E5E7EB', zerolinecolor: '#CBD5E1' },
+      yaxis: { title: yTitle, gridcolor: '#E5E7EB', zerolinecolor: '#CBD5E1', ...yExtras },
+      font: { family: 'Segoe UI, Arial, sans-serif', color: '#17212B' },
+      showlegend: false
+    };
+  },
+
   plotTVMTimeline(targetId, data) {
-    if (!window.Plotly) return;
     const years = [];
     const compounded = [];
     const discounted = [];
-    const rate = data.rate;
-    const m = data.compounds;
-    for (let y = 0; y <= data.years; y++) {
+    const maxYears = Math.max(1, Math.round(data.years));
+
+    for (let y = 0; y <= maxYears; y++) {
       years.push(y);
-      compounded.push(FinanceCore.futureValue(data.presentValue, rate, y, m));
-      discounted.push(FinanceCore.presentValue(data.futureValue, rate, data.years - y, m));
+      compounded.push(FinanceCore.futureValue(data.presentValue, data.rate, y, data.compounds));
+      discounted.push(FinanceCore.presentValue(data.futureValue, data.rate, maxYears - y, data.compounds));
     }
-    Plotly.react(targetId, [
-      { x: years, y: compounded, type: 'scatter', mode: 'lines+markers', name: 'Growth from PV', line: { width: 4 } },
-      { x: years, y: discounted, type: 'scatter', mode: 'lines+markers', name: 'Discount path to FV', line: { width: 4, dash: 'dot' } }
-    ], this.baseLayout('Time Value of Money Timeline', 'Year', 'Value', { tickprefix: '$', separatethousands: true }), { responsive: true, displayModeBar: false });
+
+    this.safePlot(targetId, [
+      { x: years, y: compounded, type: 'scatter', mode: 'lines+markers', name: 'Growth from PV', line: { width: 4, color: '#27AE60' }, marker: { size: 7 } },
+      { x: years, y: discounted, type: 'scatter', mode: 'lines+markers', name: 'Discount path to FV', line: { width: 4, color: '#2F80ED', dash: 'dot' }, marker: { size: 7 } }
+    ], {
+      ...this.baseLayout('Time Value of Money Timeline', 'Year', 'Value', { tickprefix: '$' }),
+      showlegend: true,
+      legend: { orientation: 'h', y: -0.22 }
+    });
   },
+
   plotDiscountFactors(targetId, data) {
-    if (!window.Plotly) return;
     const years = [];
     const factors = [];
-    for (let y = 0; y <= data.years; y++) {
+    const maxYears = Math.max(1, Math.round(data.years));
+
+    for (let y = 0; y <= maxYears; y++) {
       years.push(y);
       factors.push(FinanceCore.discountFactor(data.rate, y, data.compounds));
     }
+
     const layout = this.baseLayout('Discount Factor by Year', 'Year', 'Discount Factor');
     layout.yaxis.range = [0, 1.05];
-    Plotly.react(targetId, [{ x: years, y: factors, type: 'bar', name: 'Discount Factor', marker: { color: '#2F80ED' } }], layout, { responsive: true, displayModeBar: false });
+
+    this.safePlot(targetId, [
+      { x: years, y: factors, type: 'bar', marker: { color: '#2F80ED' } }
+    ], layout);
   },
+
   plotPVDecline(targetId, data) {
-    if (!window.Plotly) return;
     const years = [];
     const values = [];
-    for (let y = 0; y <= data.years; y++) {
+    const maxYears = Math.max(1, Math.round(data.years));
+
+    for (let y = 0; y <= maxYears; y++) {
       years.push(y);
       values.push(FinanceCore.presentValue(data.futureValue, data.rate, y, data.compounds));
     }
-    Plotly.react(targetId, [{
-      x: years,
-      y: values,
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Present Value',
-      fill: 'tozeroy',
-      line: { width: 4, color: '#2F80ED' }
-    }], this.baseLayout('Present Value Declines as Time Increases', 'Years Until Cash Flow', 'Present Value', { tickprefix: '$', separatethousands: true }), { responsive: true, displayModeBar: false });
+
+    this.safePlot(targetId, [
+      {
+        x: years,
+        y: values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        fill: 'tozeroy',
+        line: { width: 4, color: '#2F80ED' },
+        marker: { size: 7, color: '#0B3558' },
+        name: 'Present Value'
+      }
+    ], this.baseLayout('Present Value Declines as Time Increases', 'Years Until Cash Flow', 'Present Value', { tickprefix: '$' }));
   },
-  plotFVGrowth(targetId, data) {
-    if (!window.Plotly) return;
-    const years = [];
-    const values = [];
-    for (let y = 0; y <= data.years; y++) {
-      years.push(y);
-      values.push(FinanceCore.futureValue(data.presentValue, data.rate, y, data.compounds));
-    }
-    Plotly.react(targetId, [{
-      x: years,
-      y: values,
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Future Value',
-      fill: 'tozeroy',
-      line: { width: 4, color: '#27AE60' }
-    }], this.baseLayout('Future Value Growth Through Compounding', 'Years Invested', 'Future Value', { tickprefix: '$', separatethousands: true }), { responsive: true, displayModeBar: false });
-  },
+
   plotPVRateSensitivity(targetId, data) {
-    if (!window.Plotly) return;
     const rates = [];
     const values = [];
-    const maxRate = Math.max(20, Math.ceil((data.rate * 100) + 10));
+    const currentRate = Math.max(0, data.rate * 100);
+    const maxRate = Math.max(20, Math.ceil(currentRate + 10));
+
     for (let r = 0; r <= maxRate; r += 1) {
       rates.push(r);
       values.push(FinanceCore.presentValue(data.futureValue, r / 100, data.years, data.compounds));
     }
-    Plotly.react(targetId, [{ x: rates, y: values, type: 'scatter', mode: 'lines', line: { width: 4, color: '#0B3558' }, name: 'PV' }], this.baseLayout('Rate Sensitivity', 'Discount Rate (%)', 'Present Value', { tickprefix: '$', separatethousands: true }), { responsive: true, displayModeBar: false });
+
+    this.safePlot(targetId, [
+      { x: rates, y: values, type: 'scatter', mode: 'lines', line: { width: 4, color: '#0B3558' }, name: 'PV' }
+    ], this.baseLayout('Discount Rate Sensitivity', 'Discount Rate (%)', 'Present Value', { tickprefix: '$' }));
   },
+
+  plotFVGrowth(targetId, data) {
+    const years = [];
+    const values = [];
+    const maxYears = Math.max(1, Math.round(data.years));
+
+    for (let y = 0; y <= maxYears; y++) {
+      years.push(y);
+      values.push(FinanceCore.futureValue(data.presentValue, data.rate, y, data.compounds));
+    }
+
+    this.safePlot(targetId, [
+      {
+        x: years,
+        y: values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        fill: 'tozeroy',
+        line: { width: 4, color: '#27AE60' },
+        marker: { size: 7, color: '#0B3558' },
+        name: 'Future Value'
+      }
+    ], this.baseLayout('Future Value Growth Through Compounding', 'Years Invested', 'Future Value', { tickprefix: '$' }));
+  },
+
   plotFVRateSensitivity(targetId, data) {
-    if (!window.Plotly) return;
     const rates = [];
     const values = [];
-    const maxRate = Math.max(20, Math.ceil((data.rate * 100) + 10));
+    const currentRate = Math.max(0, data.rate * 100);
+    const maxRate = Math.max(20, Math.ceil(currentRate + 10));
+
     for (let r = 0; r <= maxRate; r += 1) {
       rates.push(r);
       values.push(FinanceCore.futureValue(data.presentValue, r / 100, data.years, data.compounds));
     }
-    Plotly.react(targetId, [{ x: rates, y: values, type: 'scatter', mode: 'lines', line: { width: 4, color: '#0B3558' }, name: 'FV' }], this.baseLayout('Rate Sensitivity', 'Growth Rate (%)', 'Future Value', { tickprefix: '$', separatethousands: true }), { responsive: true, displayModeBar: false });
-  },
-  baseLayout(title, xTitle, yTitle, yExtras = {}) {
-    return {
-      title,
-      paper_bgcolor: 'rgba(0,0,0,0)',
-      plot_bgcolor: 'rgba(0,0,0,0)',
-      margin: { t: 58, r: 18, b: 54, l: 72 },
-      xaxis: { title: xTitle, gridcolor: '#E5E7EB' },
-      yaxis: { title: yTitle, gridcolor: '#E5E7EB', ...yExtras },
-      font: { family: 'Inter, Segoe UI, Arial, sans-serif', color: '#17212B' }
-    };
+
+    this.safePlot(targetId, [
+      { x: rates, y: values, type: 'scatter', mode: 'lines', line: { width: 4, color: '#0B3558' }, name: 'FV' }
+    ], this.baseLayout('Growth Rate Sensitivity', 'Growth Rate (%)', 'Future Value', { tickprefix: '$' }));
   }
 };
