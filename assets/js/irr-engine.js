@@ -1,136 +1,16 @@
-/* Applied Finance Lab: IRR Studio visual hotfix. Plotly-first, direct rendering. */
+/* Applied Finance Lab: IRR Studio visual failsafe patch.
+   This renders SVG immediately, then upgrades to Plotly if available. */
 function compactMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(v)||0);} 
 function fullMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0);} 
-function getIRRInputs(){
-  const initial=-Math.abs(FinanceCore.toNumber(document.querySelector('#irr-initial')?.value,10000));
-  const hurdleRate=FinanceCore.rateDecimal(document.querySelector('#irr-hurdle')?.value||9);
-  const cashflows=[];
-  for(let i=1;i<=5;i++){cashflows.push(FinanceCore.toNumber(document.querySelector(`#irr-cf-${i}`)?.value,0));}
-  return{initial,hurdleRate,cashflows};
-}
+function getIRRInputs(){const initial=-Math.abs(FinanceCore.toNumber(document.querySelector('#irr-initial')?.value,10000));const hurdleRate=FinanceCore.rateDecimal(document.querySelector('#irr-hurdle')?.value||9);const cashflows=[];for(let i=1;i<=5;i++){cashflows.push(FinanceCore.toNumber(document.querySelector(`#irr-cf-${i}`)?.value,0));}return{initial,hurdleRate,cashflows};}
 function npvAtRate(initial,cashflows,rate){return initial+cashflows.reduce((sum,cf,i)=>sum+cf/Math.pow(1+rate,i+1),0);}
-function calcIRR(initial,cashflows){
-  let low=-0.9999, high=10;
-  let fLow=npvAtRate(initial,cashflows,low), fHigh=npvAtRate(initial,cashflows,high);
-  let expansions=0;
-  while(fLow*fHigh>0 && expansions<10){high*=2;fHigh=npvAtRate(initial,cashflows,high);expansions++;}
-  if(fLow*fHigh>0)return NaN;
-  for(let i=0;i<160;i++){
-    const mid=(low+high)/2;
-    const fMid=npvAtRate(initial,cashflows,mid);
-    if(Math.abs(fMid)<1e-8)return mid;
-    if(fLow*fMid<0){high=mid;fHigh=fMid;}else{low=mid;fLow=fMid;}
-  }
-  return (low+high)/2;
-}
-function hasNonNormalCashflows(data){
-  const signs=[data.initial,...data.cashflows].filter(v=>v!==0).map(v=>v>0?1:-1);
-  let changes=0;
-  for(let i=1;i<signs.length;i++){if(signs[i]!==signs[i-1])changes++;}
-  return changes>1;
-}
-function baseLayout(title,xTitle,yTitle,yExtras={}){
-  return {
-    title:{text:title,font:{size:18,color:'#0B3558'}},
-    paper_bgcolor:'rgba(0,0,0,0)',
-    plot_bgcolor:'rgba(0,0,0,0)',
-    margin:{t:60,r:24,b:58,l:78},
-    xaxis:{title:xTitle,gridcolor:'#E5E7EB',zerolinecolor:'#CBD5E1'},
-    yaxis:{title:yTitle,gridcolor:'#E5E7EB',zerolinecolor:'#CBD5E1',...yExtras},
-    font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},
-    showlegend:false
-  };
-}
-function renderFallbackMessage(targetId, message){
-  const target=document.getElementById(targetId);
-  if(!target)return;
-  target.innerHTML=`<div class="chart-fallback"><strong>Visualization fallback</strong><br>${message}</div>`;
-}
-async function plotIRRProfileDirect(data){
-  const targetId='irr-profile-chart';
-  const target=document.getElementById(targetId); if(!target)return;
-  target.style.minHeight='430px';
-  const xs=[], ys=[];
-  const maxRate=Math.max(50,Math.ceil((Number.isFinite(data.irr)?data.irr:.2)*100+25));
-  for(let r=0;r<=maxRate;r++){
-    xs.push(r);
-    ys.push(npvAtRate(data.initial,data.cashflows,r/100));
-  }
-  const traces=[{x:xs,y:ys,type:'scatter',mode:'lines',name:'NPV Profile',line:{width:4,color:'#0B3558'},hovertemplate:'Discount rate %{x}%<br>NPV %{y:$,.2f}<extra></extra>'}];
-  const layout=baseLayout('IRR: Where NPV Crosses Zero','Discount Rate (%)','NPV',{tickprefix:'$'});
-  layout.shapes=[{type:'line',x0:0,x1:maxRate,y0:0,y1:0,line:{color:'#EB5757',width:2,dash:'dash'}}];
-  if(Number.isFinite(data.irr)){
-    layout.shapes.push({type:'line',x0:data.irr*100,x1:data.irr*100,y0:Math.min(...ys),y1:Math.max(...ys),line:{color:'#27AE60',width:2,dash:'dot'}});
-    layout.annotations=[{x:data.irr*100,y:0,text:`IRR ${(data.irr*100).toFixed(2)}%`,showarrow:true,arrowhead:2,ax:50,ay:-40,bgcolor:'#E9F8EF',bordercolor:'#27AE60'}];
-  }
-  try{await PlotlySafe.ready(); Plotly.react(targetId,traces,layout,{responsive:true,displayModeBar:true});}
-  catch(e){console.error('IRR profile Plotly error:',e); renderFallbackMessage(targetId,'Plotly could not load for the IRR profile. Calculations are still available above.');}
-}
-async function plotIRRComparisonDirect(data){
-  const targetId='irr-comparison-chart';
-  const target=document.getElementById(targetId); if(!target)return;
-  target.style.minHeight='360px';
-  const irr=Number.isFinite(data.irr)?data.irr*100:0;
-  const hurdle=data.hurdleRate*100;
-  const labels=['IRR','Required Return'];
-  const values=[irr,hurdle];
-  const colors=[irr>=hurdle?'#27AE60':'#EB5757','#2F80ED'];
-  const traces=[{x:labels,y:values,type:'bar',marker:{color:colors},hovertemplate:'%{x}<br>%{y:.2f}%<extra></extra>'}];
-  const layout=baseLayout('IRR vs. Required Return','Metric','Percent',{ticksuffix:'%'});
-  try{await PlotlySafe.ready(); Plotly.react(targetId,traces,layout,{responsive:true,displayModeBar:true});}
-  catch(e){console.error('IRR comparison Plotly error:',e); renderFallbackMessage(targetId,'Plotly could not load for the IRR comparison chart.');}
-}
-async function plotIRRCashFlowsDirect(data){
-  const targetId='irr-cashflow-chart';
-  const target=document.getElementById(targetId); if(!target)return;
-  target.style.minHeight='360px';
-  const labels=['Initial',...data.cashflows.map((_,i)=>`Year ${i+1}`)];
-  const values=[data.initial,...data.cashflows];
-  const colors=values.map(v=>v<0?'#EB5757':'#27AE60');
-  const traces=[{x:labels,y:values,type:'bar',marker:{color:colors},hovertemplate:'%{x}<br>Cash flow %{y:$,.2f}<extra></extra>'}];
-  const layout=baseLayout('Project Cash Flows','Period','Cash Flow',{tickprefix:'$'});
-  try{await PlotlySafe.ready(); Plotly.react(targetId,traces,layout,{responsive:true,displayModeBar:true});}
-  catch(e){console.error('IRR cash flow Plotly error:',e); renderFallbackMessage(targetId,'Plotly could not load for the cash-flow chart.');}
-}
-function renderIRRStudio(){
-  try{
-    const data=getIRRInputs();
-    const irr=calcIRR(data.initial,data.cashflows);
-    data.irr=irr;
-    const npv=npvAtRate(data.initial,data.cashflows,data.hurdleRate);
-    const accept=Number.isFinite(irr)&&irr>data.hurdleRate;
-    const nonNormal=hasNonNormalCashflows(data);
-    const set=(id,val)=>{const el=document.querySelector(id);if(el)el.textContent=val;};
-    set('#irr-result',Number.isFinite(irr)?(irr*100).toFixed(2)+'%':'No IRR');
-    set('#irr-hurdle-result',(data.hurdleRate*100).toFixed(2)+'%');
-    set('#irr-spread',Number.isFinite(irr)?((irr-data.hurdleRate)*100).toFixed(2)+' pts':'N/A');
-    set('#irr-npv-at-hurdle',compactMoney(npv));
-    const badge=document.querySelector('#irr-recommendation-badge');
-    if(badge){badge.textContent=accept?'Accept':'Review';badge.style.background=accept?'#E9F8EF':'#FFF6DB';badge.style.color=accept?'#176B3A':'#7A5A00';}
-    const warning=document.querySelector('#irr-warning');
-    if(warning){warning.innerHTML=nonNormal?'<strong>Analyst warning:</strong> This cash-flow pattern has more than one sign change. IRR may be misleading or multiple IRRs may exist. Use NPV as the primary decision rule.':'<strong>Cash-flow pattern:</strong> This appears to be a conventional investment pattern. IRR is easier to interpret, but NPV remains the primary value-creation rule.';}
-    const interp=document.querySelector('#irr-interpretation');
-    if(interp){interp.innerHTML=Number.isFinite(irr)?`The project IRR is <strong>${(irr*100).toFixed(2)}%</strong>. The required return is <strong>${(data.hurdleRate*100).toFixed(2)}%</strong>. At the required return, the project NPV is <strong>${fullMoney(npv)}</strong>.`:`The model did not find a reliable IRR for this cash-flow pattern. Review the timing and signs of the cash flows, and rely on NPV for the decision.`;}
-    plotIRRProfileDirect(data);
-    plotIRRComparisonDirect(data);
-    plotIRRCashFlowsDirect(data);
-    if(typeof AFL!=='undefined')AFL.write({module1:Math.max(AFL.read().module1,68),currentSection:'irr'});
-  }catch(e){console.error('IRR Studio error:',e);}
-}
-function wireIRRStudio(){
-  document.querySelectorAll('[data-irr-input]').forEach(i=>{i.addEventListener('input',renderIRRStudio);i.addEventListener('change',renderIRRStudio);});
-  const reset=document.querySelector('#reset-irr');
-  if(reset)reset.addEventListener('click',()=>{
-    document.querySelector('#irr-initial').value=10000;
-    document.querySelector('#irr-hurdle').value=9;
-    document.querySelector('#irr-cf-1').value=3000;
-    document.querySelector('#irr-cf-2').value=4000;
-    document.querySelector('#irr-cf-3').value=5000;
-    document.querySelector('#irr-cf-4').value=2500;
-    document.querySelector('#irr-cf-5').value=1500;
-    renderIRRStudio();
-  });
-  setTimeout(renderIRRStudio,150);
-}
-document.addEventListener('DOMContentLoaded',wireIRRStudio);
-window.addEventListener('load',renderIRRStudio);
+function calcIRR(initial,cashflows){let low=-0.9999,high=10;let fLow=npvAtRate(initial,cashflows,low),fHigh=npvAtRate(initial,cashflows,high);let expansions=0;while(fLow*fHigh>0&&expansions<10){high*=2;fHigh=npvAtRate(initial,cashflows,high);expansions++;}if(fLow*fHigh>0)return NaN;for(let i=0;i<160;i++){const mid=(low+high)/2;const fMid=npvAtRate(initial,cashflows,mid);if(Math.abs(fMid)<1e-8)return mid;if(fLow*fMid<0){high=mid;fHigh=fMid;}else{low=mid;fLow=fMid;}}return(low+high)/2;}
+function hasNonNormalCashflows(data){const signs=[data.initial,...data.cashflows].filter(v=>v!==0).map(v=>v>0?1:-1);let changes=0;for(let i=1;i<signs.length;i++){if(signs[i]!==signs[i-1])changes++;}return changes>1;}
+function baseLayout(title,xTitle,yTitle,yExtras={}){return{title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:60,r:24,b:58,l:78},xaxis:{title:xTitle,gridcolor:'#E5E7EB',zerolinecolor:'#CBD5E1'},yaxis:{title:yTitle,gridcolor:'#E5E7EB',zerolinecolor:'#CBD5E1',...yExtras},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},showlegend:false};}
+function money0(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(v)||0);}
+function drawSvgLine(targetId,title,xLabel,yLabel,xs,ys,color='#0B3558',irrX=null){const target=document.getElementById(targetId);if(!target)return;const w=900,h=390,ml=84,mr=30,mt=54,mb=64;const minX=Math.min(...xs),maxX=Math.max(...xs);let minY=Math.min(...ys,0),maxY=Math.max(...ys,0);if(minY===maxY){minY-=1;maxY+=1;}const sx=x=>ml+(x-minX)/(maxX-minX||1)*(w-ml-mr);const sy=y=>h-mb-(y-minY)/(maxY-minY||1)*(h-mt-mb);const pts=xs.map((x,i)=>`${sx(x)},${sy(ys[i])}`).join(' ');const yTicks=[0,.25,.5,.75,1].map(t=>minY+t*(maxY-minY));const xTicks=xs.filter((_,i)=>i===0||i===xs.length-1||i%Math.ceil(xs.length/6)===0);const zeroY=sy(0);target.innerHTML=`<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:390px;display:block" role="img" aria-label="${title}"><rect width="${w}" height="${h}" fill="transparent"/><text x="${ml}" y="32" font-family="Segoe UI,Arial" font-size="18" font-weight="800" fill="#0B3558">${title}</text>${yTicks.map(v=>`<line x1="${ml}" x2="${w-mr}" y1="${sy(v)}" y2="${sy(v)}" stroke="#E5E7EB"/><text x="${ml-10}" y="${sy(v)+4}" text-anchor="end" font-size="11" fill="#667085">${money0(v)}</text>`).join('')}${xTicks.map(v=>`<text x="${sx(v)}" y="${h-mb+24}" text-anchor="middle" font-size="11" fill="#667085">${v}</text>`).join('')}<line x1="${ml}" x2="${w-mr}" y1="${zeroY}" y2="${zeroY}" stroke="#EB5757" stroke-width="2" stroke-dasharray="6 5"/><line x1="${ml}" x2="${ml}" y1="${mt}" y2="${h-mb}" stroke="#CBD5E1"/><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${irrX!==null?`<line x1="${sx(irrX)}" x2="${sx(irrX)}" y1="${mt}" y2="${h-mb}" stroke="#27AE60" stroke-width="2" stroke-dasharray="5 5"/><text x="${sx(irrX)+8}" y="${Math.max(mt+20,zeroY-10)}" font-size="12" font-weight="800" fill="#176B3A">IRR ${irrX.toFixed(2)}%</text>`:''}<text x="${w/2}" y="${h-16}" text-anchor="middle" font-size="12" font-weight="700" fill="#667085">${xLabel}</text><text x="20" y="${h/2}" transform="rotate(-90,20,${h/2})" text-anchor="middle" font-size="12" font-weight="700" fill="#667085">${yLabel}</text></svg>`;}
+function drawSvgBars(targetId,title,xs,ys,colors,ySuffix=''){const target=document.getElementById(targetId);if(!target)return;const w=900,h=360,ml=78,mr=28,mt=52,mb=58;let minY=Math.min(...ys,0),maxY=Math.max(...ys,0);if(minY===maxY){maxY+=1;}const sx=i=>ml+(i+.5)*(w-ml-mr)/xs.length;const bw=(w-ml-mr)/xs.length*.6;const sy=y=>h-mb-(y-minY)/(maxY-minY)*(h-mt-mb);const zero=sy(0);const yTicks=[0,.25,.5,.75,1].map(t=>minY+t*(maxY-minY));target.innerHTML=`<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:360px;display:block" role="img" aria-label="${title}"><text x="${ml}" y="30" font-family="Segoe UI,Arial" font-size="18" font-weight="800" fill="#0B3558">${title}</text>${yTicks.map(v=>`<line x1="${ml}" x2="${w-mr}" y1="${sy(v)}" y2="${sy(v)}" stroke="#E5E7EB"/><text x="${ml-10}" y="${sy(v)+4}" text-anchor="end" font-size="11" fill="#667085">${ySuffix==='%'?v.toFixed(0)+'%':money0(v)}</text>`).join('')}<line x1="${ml}" x2="${w-mr}" y1="${zero}" y2="${zero}" stroke="#CBD5E1"/>${ys.map((y,i)=>{const top=Math.min(sy(y),zero);const height=Math.max(1,Math.abs(zero-sy(y)));return`<rect x="${sx(i)-bw/2}" y="${top}" width="${bw}" height="${height}" rx="5" fill="${colors[i]||'#2F80ED'}"/><text x="${sx(i)}" y="${h-mb+24}" text-anchor="middle" font-size="11" fill="#667085">${xs[i]}</text>`}).join('')}</svg>`;}
+function renderSvgCharts(data){const xs=[],ys=[];const maxRate=Math.max(50,Math.ceil((Number.isFinite(data.irr)?data.irr:.2)*100+25));for(let r=0;r<=maxRate;r++){xs.push(r);ys.push(npvAtRate(data.initial,data.cashflows,r/100));}drawSvgLine('irr-profile-chart','IRR: Where NPV Crosses Zero','Discount Rate (%)','NPV',xs,ys,'#0B3558',Number.isFinite(data.irr)?data.irr*100:null);const irr=Number.isFinite(data.irr)?data.irr*100:0;drawSvgBars('irr-comparison-chart','IRR vs. Required Return',['IRR','Required'],[irr,data.hurdleRate*100],[irr>=data.hurdleRate*100?'#27AE60':'#EB5757','#2F80ED'],'%');drawSvgBars('irr-cashflow-chart','Project Cash Flows',['Initial',...data.cashflows.map((_,i)=>`Y${i+1}`)],[data.initial,...data.cashflows],[data.initial<0?'#EB5757':'#27AE60',...data.cashflows.map(v=>v<0?'#EB5757':'#27AE60')]);}
+async function upgradeToPlotly(data){try{await PlotlySafe.ready();const xs=[],ys=[];const maxRate=Math.max(50,Math.ceil((Number.isFinite(data.irr)?data.irr:.2)*100+25));for(let r=0;r<=maxRate;r++){xs.push(r);ys.push(npvAtRate(data.initial,data.cashflows,r/100));}const layout=baseLayout('IRR: Where NPV Crosses Zero','Discount Rate (%)','NPV',{tickprefix:'$'});layout.shapes=[{type:'line',x0:0,x1:maxRate,y0:0,y1:0,line:{color:'#EB5757',width:2,dash:'dash'}}];if(Number.isFinite(data.irr)){layout.shapes.push({type:'line',x0:data.irr*100,x1:data.irr*100,y0:Math.min(...ys),y1:Math.max(...ys),line:{color:'#27AE60',width:2,dash:'dot'}});layout.annotations=[{x:data.irr*100,y:0,text:`IRR ${(data.irr*100).toFixed(2)}%`,showarrow:true,arrowhead:2,ax:50,ay:-40,bgcolor:'#E9F8EF',bordercolor:'#27AE60'}];}Plotly.react('irr-profile-chart',[{x:xs,y:ys,type:'scatter',mode:'lines',line:{width:4,color:'#0B3558'},hovertemplate:'Rate %{x}%<br>NPV %{y:$,.2f}<extra></extra>'}],layout,{responsive:true,displayModeBar:true});const irr=Number.isFinite(data.irr)?data.irr*100:0;Plotly.react('irr-comparison-chart',[{x:['IRR','Required Return'],y:[irr,data.hurdleRate*100],type:'bar',marker:{color:[irr>=data.hurdleRate*100?'#27AE60':'#EB5757','#2F80ED']},hovertemplate:'%{x}<br>%{y:.2f}%<extra></extra>'}],baseLayout('IRR vs. Required Return','Metric','Percent',{ticksuffix:'%'}),{responsive:true,displayModeBar:true});const labels=['Initial',...data.cashflows.map((_,i)=>`Year ${i+1}`)];const vals=[data.initial,...data.cashflows];Plotly.react('irr-cashflow-chart',[{x:labels,y:vals,type:'bar',marker:{color:vals.map(v=>v<0?'#EB5757':'#27AE60')},hovertemplate:'%{x}<br>Cash flow %{y:$,.2f}<extra></extra>'}],baseLayout('Project Cash Flows','Period','Cash Flow',{tickprefix:'$'}),{responsive:true,displayModeBar:true});}catch(e){console.warn('Plotly upgrade failed; SVG charts remain visible.',e);}}
+function renderIRRStudio(){try{const data=getIRRInputs();const irr=calcIRR(data.initial,data.cashflows);data.irr=irr;const npv=npvAtRate(data.initial,data.cashflows,data.hurdleRate);const accept=Number.isFinite(irr)&&irr>data.hurdleRate;const nonNormal=hasNonNormalCashflows(data);const set=(id,val)=>{const el=document.querySelector(id);if(el)el.textContent=val;};set('#irr-result',Number.isFinite(irr)?(irr*100).toFixed(2)+'%':'No IRR');set('#irr-hurdle-result',(data.hurdleRate*100).toFixed(2)+'%');set('#irr-spread',Number.isFinite(irr)?((irr-data.hurdleRate)*100).toFixed(2)+' pts':'N/A');set('#irr-npv-at-hurdle',compactMoney(npv));const badge=document.querySelector('#irr-recommendation-badge');if(badge){badge.textContent=accept?'Accept':'Review';badge.style.background=accept?'#E9F8EF':'#FFF6DB';badge.style.color=accept?'#176B3A':'#7A5A00';}const warning=document.querySelector('#irr-warning');if(warning){warning.innerHTML=nonNormal?'<strong>Analyst warning:</strong> This cash-flow pattern has more than one sign change. IRR may be misleading or multiple IRRs may exist. Use NPV as the primary decision rule.':'<strong>Cash-flow pattern:</strong> This appears to be a conventional investment pattern. IRR is easier to interpret, but NPV remains the primary value-creation rule.';}const interp=document.querySelector('#irr-interpretation');if(interp){interp.innerHTML=Number.isFinite(irr)?`The project IRR is <strong>${(irr*100).toFixed(2)}%</strong>. The required return is <strong>${(data.hurdleRate*100).toFixed(2)}%</strong>. At the required return, the project NPV is <strong>${fullMoney(npv)}</strong>.`:`The model did not find a reliable IRR for this cash-flow pattern. Review the timing and signs of the cash flows, and rely on NPV for the decision.`;}renderSvgCharts(data);upgradeToPlotly(data);if(typeof AFL!=='undefined')AFL.write({module1:Math.max(AFL.read().module1,68),currentSection:'irr'});}catch(e){console.error('IRR Studio error:',e);}}
+function wireIRRStudio(){document.querySelectorAll('[data-irr-input]').forEach(i=>{i.addEventListener('input',renderIRRStudio);i.addEventListener('change',renderIRRStudio);});const reset=document.querySelector('#reset-irr');if(reset)reset.addEventListener('click',()=>{document.querySelector('#irr-initial').value=10000;document.querySelector('#irr-hurdle').value=9;document.querySelector('#irr-cf-1').value=3000;document.querySelector('#irr-cf-2').value=4000;document.querySelector('#irr-cf-3').value=5000;document.querySelector('#irr-cf-4').value=2500;document.querySelector('#irr-cf-5').value=1500;renderIRRStudio();});setTimeout(renderIRRStudio,150);}document.addEventListener('DOMContentLoaded',wireIRRStudio);window.addEventListener('load',renderIRRStudio);
