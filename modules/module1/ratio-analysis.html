@@ -1,4 +1,29 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ratio Analysis | Module 1</title><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ratio Analysis Studio | Module 1</title>
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/navigation.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    .ratio-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.92rem;}
+    .ratio-table th,.ratio-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right;}
+    .ratio-table th:first-child,.ratio-table td:first-child{text-align:left;font-weight:800;color:var(--primary);}
+    .ratio-table th{font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:#667085;}
+    .score-chip{display:inline-block;padding:5px 9px;border-radius:999px;font-weight:900;font-size:.74rem;}
+    .score-strong{background:#E9F8EF;color:#176B3A;}
+    .score-watch{background:#FFF6DB;color:#7A5A00;}
+    .score-risk{background:#FDECEC;color:#9B1C1C;}
+    .ratio-category{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054;}
+    .mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;}
+    @media(max-width:1100px){.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media(max-width:760px){.mini-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
 <nav class="navbar">
   <div class="container nav-inner">
     <a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
@@ -11,4 +36,235 @@
     </ul>
     <div class="nav-meta">Module 1 of 8</div>
   </div>
-</nav><main class="container page-header"><span class="kicker">Module 1</span><h1 class="page-title">Ratio Analysis</h1><p class="lead">Financial Modeling Foundations: a professional workflow for turning financial information into decisions.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link " href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link active" href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside><article class="card content-panel"><h2>Financial diagnostics</h2><p>Ratios transform raw accounts into liquidity, profitability, efficiency, and leverage signals.</p></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script>markPageVisited('ratio-analysis');</script></body></html>
+</nav>
+
+<main class="container page-header">
+  <span class="kicker">Module 1 Studio</span>
+  <h1 class="page-title">Ratio Analysis Studio</h1>
+  <p class="lead">Transform financial statements into diagnostics. Use profitability, liquidity, leverage, and efficiency ratios to evaluate financial health.</p>
+</main>
+
+<section class="section">
+  <div class="container sidebar-layout">
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Module Navigation</h3>
+        <a class="side-link" href="overview.html" onclick="markPageVisited('overview')">Overview</a>
+        <a class="side-link" href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a>
+        <a class="side-link" href="pv.html" onclick="markPageVisited('pv')">Present Value</a>
+        <a class="side-link" href="fv.html" onclick="markPageVisited('fv')">Future Value</a>
+        <a class="side-link" href="npv.html" onclick="markPageVisited('npv')">NPV</a>
+        <a class="side-link" href="irr.html" onclick="markPageVisited('irr')">IRR</a>
+        <a class="side-link" href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a>
+        <a class="side-link active" href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a>
+        <a class="side-link" href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a>
+        <a class="side-link" href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a>
+        <a class="side-link" href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a>
+      </div>
+    </aside>
+
+    <article class="content-panel">
+      <div class="grid grid-2">
+        <section class="card">
+          <span class="kicker">Company Selector</span>
+          <h2>Choose a ratio case</h2>
+          <p class="lead">These simplified teaching datasets match the Financial Statement Explorer and are intended for classroom interface testing.</p>
+          <label>Company
+            <select id="company-select">
+              <option value="msft">Microsoft</option>
+              <option value="nvda">NVIDIA</option>
+              <option value="de">Deere</option>
+              <option value="cost">Costco</option>
+              <option value="v">Visa</option>
+            </select>
+          </label>
+          <div class="ratio-category"><strong>Analyst mindset:</strong> A ratio is not a conclusion. It is a signal that should be interpreted in context with the business model, industry, and trend.</div>
+        </section>
+
+        <section class="card">
+          <span class="kicker">Financial Health Snapshot</span>
+          <h2 id="company-name">Microsoft</h2>
+          <p id="health-interpretation" class="lead">The ratio interpretation will update after selection.</p>
+          <div class="mini-grid">
+            <div class="metric"><b id="score-profitability">0</b><span>Profitability</span></div>
+            <div class="metric"><b id="score-liquidity">0</b><span>Liquidity</span></div>
+            <div class="metric"><b id="score-leverage">0</b><span>Leverage</span></div>
+            <div class="metric"><b id="score-efficiency">0</b><span>Efficiency</span></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Visualization</span>
+        <h2>Ratio dashboard</h2>
+        <div id="ratio-radar-chart" style="width:100%;min-height:470px;"></div>
+      </section>
+
+      <div class="grid grid-2" style="margin-top:22px;">
+        <section class="card">
+          <span class="kicker">Trend Analysis</span>
+          <h2>Profitability trends</h2>
+          <div id="profitability-chart" style="width:100%;min-height:400px;"></div>
+        </section>
+        <section class="card">
+          <span class="kicker">DuPont Preview</span>
+          <h2>Return on equity decomposition</h2>
+          <div id="dupont-chart" style="width:100%;min-height:400px;"></div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Ratio Table</span>
+        <h2>Latest-year diagnostic signals</h2>
+        <div id="ratio-table-wrap"></div>
+      </section>
+
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Analyst Prompt</span>
+        <h2>Turn ratios into judgment</h2>
+        <p class="lead">Identify the strongest signal, the weakest signal, and one question the ratio dashboard cannot answer by itself.</p>
+        <textarea placeholder="Example: Profitability is strong, but leverage and liquidity require context. I would compare these ratios to industry peers before making a recommendation."></textarea>
+      </section>
+
+      <div class="grid grid-2" style="margin-top:22px;">
+        <a class="btn btn-light" href="financial-statements.html">← Previous: Financial Statements</a>
+        <a class="btn btn-primary" href="enterprise-value.html">Next: Enterprise Value →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/navigation.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script>
+(function(){
+  const DATA = {
+    msft:{name:'Microsoft',years:[2021,2022,2023,2024],income:{revenue:[168088,198270,211915,245122],operatingIncome:[69916,83383,88523,109433],netIncome:[61271,72738,72361,88136]},balance:{assets:[333779,364840,411976,512163],liabilities:[191791,198298,205753,243686],equity:[141988,166542,206223,268477],cash:[130334,104749,111256,75531],debt:[67775,61270,59965,67127],currentAssets:[184406,169684,184257,159734],currentLiabilities:[88657,95082,104149,125286]},cashflow:{ocf:[76740,89035,87582,118548]}},
+    nvda:{name:'NVIDIA',years:[2021,2022,2023,2024],income:{revenue:[16675,26914,26974,60922],operatingIncome:[4532,10041,4224,32972],netIncome:[4332,9752,4368,29760]},balance:{assets:[28791,44187,41182,65728],liabilities:[11898,17575,19081,22750],equity:[16893,26612,22101,42978],cash:[11561,21208,13296,25984],debt:[5964,10946,10953,9709],currentAssets:[16055,28829,23073,44345],currentLiabilities:[3925,4335,6563,10631]},cashflow:{ocf:[5822,9108,5641,28090]}},
+    de:{name:'Deere',years:[2021,2022,2023,2024],income:{revenue:[44024,52577,61251,51000],operatingIncome:[7600,10166,13788,10200],netIncome:[5963,7131,10166,7750]},balance:{assets:[84114,90311,104771,107500],liabilities:[66493,70255,81849,82500],equity:[17621,20056,22922,25000],cash:[8683,7055,7256,7200],debt:[43500,48000,57500,59000],currentAssets:[43800,46300,53200,54600],currentLiabilities:[28200,30100,34800,36000]},cashflow:{ocf:[7416,5407,11232,9400]}},
+    cost:{name:'Costco',years:[2021,2022,2023,2024],income:{revenue:[195929,226954,242290,254453],operatingIncome:[8700,9167,8695,9450],netIncome:[5007,5844,6292,7050]},balance:{assets:[59268,64000,68670,73500],liabilities:[40255,42100,45000,47400],equity:[19013,21900,23670,26100],cash:[12413,11850,13200,14500],debt:[8900,6500,6600,6500],currentAssets:[33000,35200,38000,40000],currentLiabilities:[29900,31500,33700,35000]},cashflow:{ocf:[8958,7392,11068,11600]}},
+    v:{name:'Visa',years:[2021,2022,2023,2024],income:{revenue:[24105,29310,32653,35800],operatingIncome:[15804,19382,21971,24300],netIncome:[12311,14957,17273,19000]},balance:{assets:[82367,85501,90499,96000],liabilities:[45307,47400,50100,52000],equity:[37060,38101,40399,44000],cash:[16863,20040,20200,21500],debt:[20700,20600,20500,20800],currentAssets:[20500,24200,25000,27000],currentLiabilities:[16800,18000,19000,20000]},cashflow:{ocf:[15000,18000,20200,22100]}}
+  };
+  const fmtPct=v=>(Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:1,maximumFractionDigits:1});
+  const fmtNum=v=>(Number(v)||0).toFixed(2)+'x';
+  function getCompany(){return DATA[document.querySelector('#company-select').value] || DATA.msft;}
+  function avg(arr){return arr.reduce((a,b)=>a+b,0)/arr.length;}
+  function ratios(c){
+    const years=c.years;
+    const out=years.map((y,i)=>{
+      const prevAssets=i>0?c.balance.assets[i-1]:c.balance.assets[i];
+      const prevEquity=i>0?c.balance.equity[i-1]:c.balance.equity[i];
+      const avgAssets=(prevAssets+c.balance.assets[i])/2;
+      const avgEquity=(prevEquity+c.balance.equity[i])/2;
+      return {
+        year:y,
+        netMargin:c.income.netIncome[i]/c.income.revenue[i],
+        operatingMargin:c.income.operatingIncome[i]/c.income.revenue[i],
+        roa:c.income.netIncome[i]/avgAssets,
+        roe:c.income.netIncome[i]/avgEquity,
+        currentRatio:c.balance.currentAssets[i]/c.balance.currentLiabilities[i],
+        cashRatio:c.balance.cash[i]/c.balance.currentLiabilities[i],
+        debtAssets:c.balance.debt[i]/c.balance.assets[i],
+        debtEquity:c.balance.debt[i]/c.balance.equity[i],
+        assetTurnover:c.income.revenue[i]/avgAssets,
+        ocfToNetIncome:c.cashflow.ocf[i]/c.income.netIncome[i],
+        equityMultiplier:avgAssets/avgEquity
+      };
+    });
+    return out;
+  }
+  function scoreLatest(r){
+    const p=Math.min(100,Math.max(0,(r.netMargin/0.30)*40+(r.roe/0.45)*40+(r.operatingMargin/0.40)*20));
+    const l=Math.min(100,Math.max(0,(r.currentRatio/2.0)*55+(r.cashRatio/1.0)*45));
+    const lev=Math.min(100,Math.max(0,100-(r.debtAssets/0.55)*55-(r.debtEquity/2.0)*45));
+    const e=Math.min(100,Math.max(0,(r.assetTurnover/1.2)*50+(Math.min(r.ocfToNetIncome,2)/1.5)*50));
+    return {profitability:p,liquidity:l,leverage:lev,efficiency:e};
+  }
+  function chip(score){
+    if(score>=70)return '<span class="score-chip score-strong">Strong</span>';
+    if(score>=40)return '<span class="score-chip score-watch">Watch</span>';
+    return '<span class="score-chip score-risk">Risk</span>';
+  }
+  function layout(title,xTitle,yTitle){return{title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:60,r:24,b:58,l:78},xaxis:{title:xTitle,gridcolor:'#E5E7EB'},yaxis:{title:yTitle,gridcolor:'#E5E7EB'},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},legend:{orientation:'h',y:-0.2}};}
+  function renderCharts(c,rs,scores){
+    const latest=rs[rs.length-1];
+    Plotly.react('ratio-radar-chart',[{
+      type:'scatterpolar',
+      r:[scores.profitability,scores.liquidity,scores.leverage,scores.efficiency,scores.profitability],
+      theta:['Profitability','Liquidity','Leverage','Efficiency','Profitability'],
+      fill:'toself',
+      name:'Financial Health Score',
+      line:{color:'#2F80ED',width:4},
+      hovertemplate:'%{theta}<br>Score %{r:.0f}/100<extra></extra>'
+    }],{
+      title:{text:'Financial Health Radar',font:{size:18,color:'#0B3558'}},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      polar:{radialaxis:{visible:true,range:[0,100],gridcolor:'#E5E7EB'},angularaxis:{gridcolor:'#E5E7EB'}},
+      font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},
+      margin:{t:70,r:40,b:40,l:40}
+    },{responsive:true,displayModeBar:true});
+    Plotly.react('profitability-chart',[
+      {x:c.years,y:rs.map(r=>r.netMargin),type:'scatter',mode:'lines+markers',name:'Net Margin',line:{width:4,color:'#27AE60'},hovertemplate:'%{x}<br>Net Margin %{y:.1%}<extra></extra>'},
+      {x:c.years,y:rs.map(r=>r.operatingMargin),type:'scatter',mode:'lines+markers',name:'Operating Margin',line:{width:4,color:'#2F80ED'},hovertemplate:'%{x}<br>Operating Margin %{y:.1%}<extra></extra>'},
+      {x:c.years,y:rs.map(r=>r.roe),type:'scatter',mode:'lines+markers',name:'ROE',line:{width:4,color:'#0B3558'},hovertemplate:'%{x}<br>ROE %{y:.1%}<extra></extra>'}
+    ],layout('Profitability Trend','Fiscal Year','Percent'),{responsive:true,displayModeBar:true});
+    Plotly.react('dupont-chart',[{
+      x:['Net Margin','Asset Turnover','Equity Multiplier','ROE'],
+      y:[latest.netMargin,latest.assetTurnover,latest.equityMultiplier,latest.roe],
+      type:'bar',
+      marker:{color:['#27AE60','#2F80ED','#F2C94C','#0B3558']},
+      hovertemplate:'%{x}<br>%{y:.2f}<extra></extra>'
+    }],layout('Latest-Year DuPont Components','Component','Value'),{responsive:true,displayModeBar:true});
+  }
+  function renderScores(scores){
+    document.querySelector('#score-profitability').textContent=Math.round(scores.profitability);
+    document.querySelector('#score-liquidity').textContent=Math.round(scores.liquidity);
+    document.querySelector('#score-leverage').textContent=Math.round(scores.leverage);
+    document.querySelector('#score-efficiency').textContent=Math.round(scores.efficiency);
+  }
+  function renderTable(rs,scores){
+    const r=rs[rs.length-1];
+    const rows=[
+      ['Net Margin',fmtPct(r.netMargin),'Profitability',scores.profitability],
+      ['Operating Margin',fmtPct(r.operatingMargin),'Profitability',scores.profitability],
+      ['ROA',fmtPct(r.roa),'Profitability',scores.profitability],
+      ['ROE',fmtPct(r.roe),'Profitability',scores.profitability],
+      ['Current Ratio',fmtNum(r.currentRatio),'Liquidity',scores.liquidity],
+      ['Cash Ratio',fmtNum(r.cashRatio),'Liquidity',scores.liquidity],
+      ['Debt / Assets',fmtPct(r.debtAssets),'Leverage',scores.leverage],
+      ['Debt / Equity',fmtNum(r.debtEquity),'Leverage',scores.leverage],
+      ['Asset Turnover',fmtNum(r.assetTurnover),'Efficiency',scores.efficiency],
+      ['OCF / Net Income',fmtNum(r.ocfToNetIncome),'Efficiency',scores.efficiency]
+    ];
+    const header='<tr><th>Ratio</th><th>Latest Value</th><th>Category</th><th>Signal</th></tr>';
+    const body=rows.map(([name,val,cat,score])=>`<tr><td>${name}</td><td>${val}</td><td>${cat}</td><td>${chip(score)}</td></tr>`).join('');
+    document.querySelector('#ratio-table-wrap').innerHTML=`<table class="ratio-table">${header}${body}</table>`;
+  }
+  function renderInterpretation(c,scores){
+    const strong=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+    const weak=Object.entries(scores).sort((a,b)=>a[1]-b[1])[0];
+    const label=s=>s.charAt(0).toUpperCase()+s.slice(1);
+    document.querySelector('#company-name').textContent=c.name;
+    document.querySelector('#health-interpretation').innerHTML=`The strongest dashboard signal is <strong>${label(strong[0])}</strong> with a score of <strong>${Math.round(strong[1])}/100</strong>. The weakest signal is <strong>${label(weak[0])}</strong> with a score of <strong>${Math.round(weak[1])}/100</strong>. Use this as a starting point, not a final recommendation.`;
+  }
+  function render(){
+    const c=getCompany();
+    const rs=ratios(c);
+    const scores=scoreLatest(rs[rs.length-1]);
+    renderScores(scores);
+    renderInterpretation(c,scores);
+    renderCharts(c,rs,scores);
+    renderTable(rs,scores);
+    if(typeof AFL!=='undefined') AFL.write({module1:Math.max(AFL.read().module1,86),currentSection:'ratio-analysis'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelector('#company-select').addEventListener('change',render);
+    render();
+    if(typeof markPageVisited==='function') markPageVisited('ratio-analysis');
+  });
+  window.addEventListener('resize',function(){if(window.Plotly){['ratio-radar-chart','profitability-chart','dupont-chart'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);});}});
+})();
+</script>
+</body>
+</html>
