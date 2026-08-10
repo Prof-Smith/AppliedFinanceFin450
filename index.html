@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applied Finance Decision Lab</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/navigation.css" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
+    <button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button>
+    <ul class="nav-links">
+      <li><a class="active" href="index.html">Home</a></li>
+      <li><a href="pages/modules.html">Modules</a></li>
+      <li><a href="portfolio/index.html">Portfolio</a></li>
+      <li><a href="resources/index.html">Resources</a></li>
+    </ul>
+    <div class="nav-meta">Module 1 of 8</div>
+  </div>
+</nav>
+<header class="hero">
+  <div class="container hero-inner">
+    <span class="pill">FIN 450 Learning Platform</span>
+    <h1>Think Like an Analyst.<br/>Decide Like an Investor.</h1>
+    <h2>Financial modeling, decision quality, and professional communication in one applied lab.</h2>
+    <p>Finance is not only the study of money. Finance is the disciplined practice of turning uncertain future cash flows into better decisions today.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="modules/module1/index.html" onclick="markModule1Started()">Start Module 1</a>
+      <a class="btn btn-light" href="pages/modules.html">View All Modules</a>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><b>8</b><span>Course Modules</span></div>
+      <div class="stat"><b>1</b><span>Analyst Portfolio</span></div>
+      <div class="stat"><b>10</b><span>Module 1 Sections</span></div>
+      <div class="stat"><b>0</b><span data-artifacts>Artifacts Completed</span></div>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="section">
+    <div class="container dashboard-feature">
+      <div class="card">
+        <span class="kicker">Progress Dashboard</span>
+        <h2>Build a repeatable analyst workflow.</h2>
+        <p class="lead">Each module moves students from concepts to models to recommendations. The shell below is ready for the calculators and dashboards in Sprint 2.</p>
+        <div class="progress-item"><div class="progress-row"><span>Module 1</span><span>Started</span></div><div class="progress-bar"><div class="progress-fill" data-module-progress="1" style="width:10%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 2</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 3</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 4</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 5</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 6</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 7</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div><div class="progress-item"><div class="progress-row"><span>Module 8</span><span>Locked</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div></div>
+      </div>
+      <div class="card challenge-card">
+        <span class="kicker">Featured Challenge</span>
+        <h2>Microsoft Investment Review</h2>
+        <p>Act as a first-year analyst at Adaptive Capital Partners. Your task is to organize financial evidence, identify key risks, and prepare a defensible recommendation.</p>
+        <a class="btn btn-dark" href="modules/module1/challenge.html">Launch Challenge</a>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid grid-3">
+      <div class="card"><h3>Learning Studio</h3><p>Structured pages for time value of money, NPV, IRR, financial statements, ratios, and enterprise value.</p></div>
+      <div class="card"><h3>Analyst Workspace</h3><p>A home for assumptions, notes, reflection prompts, and portfolio artifacts as the course develops.</p></div>
+      <div class="card"><h3>Professional Deliverables</h3><p>Each module will ultimately produce a model, dashboard, memo, and decision record.</p></div>
+    </div>
+  </section>
+</main>
+<footer class="footer"><div class="container">Applied Finance Decision Lab. Sprint 1 UI shell.</div></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/progress.js"></script>
+</body>
+</html>
