@@ -1,4 +1,15 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Net Present Value | Module 1</title><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NPV Studio | Module 1</title>
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/navigation.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+</head>
+<body>
+
 <nav class="navbar">
   <div class="container nav-inner">
     <a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
@@ -11,4 +22,91 @@
     </ul>
     <div class="nav-meta">Module 1 of 8</div>
   </div>
-</nav><main class="container page-header"><span class="kicker">Module 1</span><h1 class="page-title">Net Present Value</h1><p class="lead">Financial Modeling Foundations: a professional workflow for turning financial information into decisions.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link active" href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link " href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside><article class="card content-panel"><h2>Decision rule</h2><p>NPV estimates the value created by an investment after accounting for the initial investment and required return.</p></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script>markPageVisited('npv');</script></body></html>
+</nav>
+
+<main class="container page-header">
+  <span class="kicker">Module 1 Studio</span>
+  <h1 class="page-title">Net Present Value Studio</h1>
+  <p class="lead">Move from calculation to decision. NPV estimates whether a project creates value after discounting expected future cash flows.</p>
+</main>
+<section class="section">
+  <div class="container sidebar-layout">
+    <aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link active" href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link " href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside>
+    <article class="content-panel">
+      <div class="grid grid-2">
+        <section class="card">
+          <span class="kicker">Interactive Inputs</span>
+          <h2>Build the project case</h2>
+          <p class="lead">Enter the initial investment, discount rate, and expected annual cash flows.</p>
+          <div class="form-row">
+            <label>Initial Investment
+              <input data-npv-input id="npv-initial" type="number" value="10000" step="500" />
+            </label>
+            <label>Discount Rate (%)
+              <input data-npv-input id="npv-rate" type="number" value="9" step="0.25" />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Year 1 Cash Flow <input data-npv-input id="npv-cf-1" type="number" value="3000" step="250" /></label>
+            <label>Year 2 Cash Flow <input data-npv-input id="npv-cf-2" type="number" value="4000" step="250" /></label>
+          </div>
+          <div class="form-row">
+            <label>Year 3 Cash Flow <input data-npv-input id="npv-cf-3" type="number" value="5000" step="250" /></label>
+            <label>Year 4 Cash Flow <input data-npv-input id="npv-cf-4" type="number" value="2500" step="250" /></label>
+          </div>
+          <label>Year 5 Cash Flow <input data-npv-input id="npv-cf-5" type="number" value="1500" step="250" /></label>
+          <br><br>
+          <button class="btn btn-light" id="reset-npv" type="button">Reset Example</button>
+        </section>
+        <section class="card">
+          <span class="kicker">Decision Insight</span>
+          <h2>What the model says <span id="npv-recommendation-badge" class="badge active" style="margin-left:8px;">Accept</span></h2>
+          <p id="npv-interpretation" class="lead">Adjust inputs to generate an NPV recommendation.</p>
+          <div class="grid grid-2">
+            <div class="metric"><b id="npv-result">$0</b><span>Net Present Value</span></div>
+            <div class="metric"><b id="npv-profitability-index">0.00x</b><span>Profitability Index</span></div>
+            <div class="metric"><b id="npv-payback">0 yrs</b><span>Simple Payback</span></div>
+            <div class="metric"><b id="npv-wealth-created">$0</b><span>Wealth Created</span></div>
+          </div>
+        </section>
+      </div>
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Visualization</span>
+        <h2>Project cash flow profile</h2>
+        <div id="npv-cashflow-chart" class="plotly-chart"></div>
+      </section>
+      <div class="grid grid-2" style="margin-top:22px;">
+        <section class="card">
+          <span class="kicker">NPV Profile</span>
+          <h2>Discount rate vs. NPV</h2>
+          <div id="npv-profile-chart" class="plotly-chart"></div>
+        </section>
+        <section class="card">
+          <span class="kicker">Sensitivity</span>
+          <h2>Base-rate stress test</h2>
+          <div id="npv-sensitivity-chart" class="plotly-chart"></div>
+        </section>
+      </div>
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Analyst Prompt</span>
+        <h2>Turn the model into a recommendation</h2>
+        <p class="lead">Write a brief decision note: What assumption matters most? What would cause the recommendation to reverse?</p>
+        <textarea placeholder="Example: The recommendation depends most heavily on Year 3 cash flow and the discount rate. If the discount rate rises or expected cash flows fall, the project could become unattractive."></textarea>
+      </section>
+      <div class="grid grid-2" style="margin-top:22px;">
+        <a class="btn btn-light" href="fv.html">← Previous: Future Value</a>
+        <a class="btn btn-primary" href="irr.html">Next: IRR →</a>
+      </div>
+    </article>
+  </div>
+</section>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/navigation.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script src="../../assets/js/finance-core.js"></script>
+<script src="../../assets/js/plotly-safe-loader.js"></script>
+<script src="../../assets/js/charts-finance.js"></script>
+<script src="../../assets/js/npv-engine.js"></script>
+<script>if (typeof markPageVisited === 'function') markPageVisited('npv');</script>
+</body>
+</html>
