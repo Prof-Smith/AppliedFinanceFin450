@@ -1,6 +1,6 @@
 /* Applied Finance Lab navigation repair.
    - Module 1: keeps DCF Valuation visible only inside Module 1.
-   - Module 2: activates WACC Build Studio link after Sprint 3C. */
+   - Module 2: activates WACC Build and Operating FCF after Sprint 3D. */
 (function(){
   function norm(s){return (s||'').replace(/\s+/g,' ').trim().toLowerCase();}
   function dcfLink(active){
@@ -40,14 +40,20 @@
   }
   function patchModule2Sidebar(){
     if(!location.pathname.includes('/module2/')) return;
-    const isWaccBuild=location.pathname.includes('wacc-build.html');
+    const page=location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
-      if(norm(a.textContent)==='wacc build studio'){
+      const label=norm(a.textContent);
+      if(label==='wacc build studio'){
         a.href='wacc-build.html';
         a.classList.remove('muted');
-        if(isWaccBuild) a.classList.add('active');
       }
-      if(isWaccBuild && norm(a.textContent)!=='wacc build studio') a.classList.remove('active');
+      if(label==='operating fcf studio'){
+        a.href='operating-fcf.html';
+        a.classList.remove('muted');
+      }
+      if(page==='wacc-build.html' && label==='wacc build studio') a.classList.add('active');
+      if(page==='operating-fcf.html' && label==='operating fcf studio') a.classList.add('active');
+      if((page==='wacc-build.html' || page==='operating-fcf.html') && label!=='wacc build studio' && label!=='operating fcf studio') a.classList.remove('active');
     });
   }
   function patchModule2Buttons(){
@@ -62,6 +68,14 @@
       if(page==='wacc-build.html' && text.includes('previous')){
         a.href='cost-capital.html';
         a.textContent='← Previous: Cost of Debt & Equity';
+      }
+      if(page==='wacc-build.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){
+        a.href='operating-fcf.html';
+        a.textContent='Next: Operating FCF Studio →';
+      }
+      if(page==='operating-fcf.html' && text.includes('previous')){
+        a.href='wacc-build.html';
+        a.textContent='← Previous: WACC Build Studio';
       }
     });
   }

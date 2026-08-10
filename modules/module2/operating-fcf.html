@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operating FCF Studio | Module 2</title>
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/navigation.css">
+<link rel="stylesheet" href="../../assets/css/dashboard.css">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+.muted{opacity:.55}.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.metric b{font-size:clamp(1.22rem,2.15vw,1.76rem);white-space:nowrap}.plotly-chart{width:100%;min-height:420px}.note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054}.formula-box{background:#0B3558;color:white;border-radius:16px;padding:18px;margin-top:14px;font-weight:800;line-height:1.65}.mini-table{width:100%;border-collapse:collapse;margin-top:12px}.mini-table th,.mini-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right}.mini-table th:first-child,.mini-table td:first-child{text-align:left}.mini-table th{font-size:.76rem;text-transform:uppercase;color:#667085}.warning{border-left-color:#F2C94C;background:#FFF8E1}.switch-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.small-label{font-size:.82rem;color:#667085;line-height:1.25}@media(max-width:900px){.studio-grid,.metric-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 2 of 8</div></div></nav>
+<main class="container page-header"><span class="kicker">Module 2 Studio</span><h1 class="page-title">Operating Free Cash Flow Studio</h1><p class="lead">Convert reported cash flow information into operating free cash flow for enterprise DCF valuation.</p></main>
+<section class="section"><div class="container sidebar-layout">
+<aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="wacc-overview.html">WACC & Capital Structure</a><a class="side-link" href="cost-capital.html">Cost of Debt & Equity</a><a class="side-link" href="wacc-build.html">WACC Build Studio</a><a class="side-link active" href="operating-fcf.html">Operating FCF Studio</a><a class="side-link muted" href="#">Pro Forma Builder</a><a class="side-link muted" href="#">Mid-Year DCF</a><a class="side-link muted" href="#">Sensitivity & ROIC</a><a class="side-link muted" href="#">Case Challenge</a></div></aside>
+<article class="content-panel">
+<div class="studio-grid">
+<section class="card"><span class="kicker">Inputs</span><h2>Normalize free cash flow</h2><p class="lead">Start with cash flow from operations, remove financing effects, and subtract operating investment.</p><div class="form-row"><label>Revenue ($M)<input id="revenue" type="number" value="51000" step="500" data-fcf></label><label>Cash Flow from Operations ($M)<input id="cfo" type="number" value="9400" step="100" data-fcf></label></div><div class="form-row"><label>Interest Expense ($M)<input id="interest" type="number" value="3068" step="50" data-fcf></label><label>Marginal Tax Rate (%)<input id="tax" type="number" value="22" step=".5" data-fcf></label></div><div class="form-row"><label>Operating Capex ($M)<input id="capex" type="number" value="2300" step="100" data-fcf></label><label>Non-Operating Investing Adjustment ($M)<input id="nonop" type="number" value="0" step="100" data-fcf></label></div><div class="form-row"><label>Reported Financing Cash Flow ($M)<input id="financing" type="number" value="-4200" step="100" data-fcf></label><label>Shares Outstanding (M)<input id="shares" type="number" value="285" step="5" data-fcf></label></div><div class="formula-box">Operating FCF = CFO + After-Tax Interest − Operating Capex ± Non-Operating Adjustments</div><div class="note-box warning"><strong>Analyst mindset:</strong> Financing cash flow is shown for context, but it is excluded from operating FCF because enterprise value is based on operating cash flows before financing choices.</div></section>
+<section class="card"><span class="kicker">Outputs</span><h2>Operating FCF result</h2><p id="interpretation" class="lead">Outputs update as assumptions change.</p><div class="metric-grid"><div class="metric"><b id="fcf-result">$0</b><span>Operating Free Cash Flow</span></div><div class="metric"><b id="fcf-margin">0.00%</b><span>Operating FCF Margin</span></div><div class="metric"><b id="after-tax-interest">$0</b><span>After-Tax Interest Addback</span></div><div class="metric"><b id="fcf-share">$0</b><span>Operating FCF / Share</span></div><div class="metric"><b id="cfo-margin">0.00%</b><span>CFO Margin</span></div><div class="metric"><b id="capex-ratio">0.00%</b><span>Capex / Revenue</span></div></div></section>
+</div>
+<section class="card" style="margin-top:22px"><span class="kicker">Visualization</span><h2>Operating FCF bridge</h2><div id="fcf-bridge" class="plotly-chart"></div></section>
+<div class="grid grid-2" style="margin-top:22px"><section class="card"><span class="kicker">Sensitivity</span><h2>FCF sensitivity to capex and tax rate</h2><div id="fcf-heatmap" class="plotly-chart"></div></section><section class="card"><span class="kicker">Margins</span><h2>CFO margin vs operating FCF margin</h2><div id="margin-chart" class="plotly-chart"></div></section></div>
+<section class="card" style="margin-top:22px"><span class="kicker">Calculation Table</span><h2>Operating FCF component table</h2><div id="table-wrap"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Professional Interpretation</span><h2>Why this calculation matters</h2><p class="lead">Operating FCF is the cash flow that will be forecast in the pro forma DCF model. Students should explain how reported cash flow becomes operating cash flow available to all capital providers.</p><textarea placeholder="Example: I started with CFO, added back after-tax interest to remove financing effects, and subtracted operating capex. The resulting operating FCF is the base cash flow that can be forecast and discounted at WACC."></textarea></section>
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="wacc-build.html">← Previous: WACC Build Studio</a><a class="btn btn-primary" href="#">Next Build: Pro Forma Builder →</a></div>
+</article></div></section>
+<script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script>
+<script>
+(function(){
+  function n(id){return Number(document.getElementById(id).value)||0;}
+  function money(v){return '$'+Math.round(Number(v)||0).toLocaleString('en-US')+'M';}
+  function moneyShare(v){return '$'+(Number(v)||0).toFixed(2);}
+  function pct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2});}
+  function setText(id,text){const el=document.getElementById(id); if(el) el.textContent=text;}
+  function calcWith(revenue,cfo,interest,tax,capex,nonop,financing,shares){
+    const afterTaxInterest=interest*(1-tax);
+    const fcf=cfo+afterTaxInterest-capex+nonop;
+    const cfoMargin=revenue?cfo/revenue:0;
+    const fcfMargin=revenue?fcf/revenue:0;
+    const capexRatio=revenue?capex/revenue:0;
+    const fcfPerShare=shares?fcf/shares:0;
+    return {revenue,cfo,interest,tax,afterTaxInterest,capex,nonop,financing,shares,fcf,cfoMargin,fcfMargin,capexRatio,fcfPerShare};
+  }
+  function inputs(){return {revenue:n('revenue'),cfo:n('cfo'),interest:n('interest'),tax:n('tax')/100,capex:n('capex'),nonop:n('nonop'),financing:n('financing'),shares:n('shares')};}
+  function layout(title,x,y){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:x,gridcolor:'#E5E7EB',automargin:true},yaxis:{title:y,gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI,Arial',color:'#17212B'},showlegend:false};}
+  function renderCharts(r){
+    if(!window.Plotly) return;
+    Plotly.react('fcf-bridge',[{type:'waterfall',orientation:'v',x:['CFO','Add After-Tax Interest','Subtract Capex','Non-Operating Adj.','Operating FCF'],y:[r.cfo,r.afterTaxInterest,-r.capex,r.nonop,r.fcf],measure:['relative','relative','relative','relative','total'],increasing:{marker:{color:'#27AE60'}},decreasing:{marker:{color:'#EB5757'}},totals:{marker:{color:'#0B3558'}},connector:{line:{color:'#CBD5E1'}},hovertemplate:'%{x}<br>%{y:$,.0f}M<extra></extra>'}],layout('Operating Free Cash Flow Bridge','Component','USD Millions'),{responsive:true,displayModeBar:false});
+    let x=[], y=[], z=[];
+    const capexBase=r.capexRatio;
+    const taxBase=r.tax;
+    for(let taxPct=Math.max(0,(taxBase*100)-8); taxPct<=taxBase*100+8.001; taxPct+=2){
+      let row=[];
+      y.push(taxPct.toFixed(0)+'%');
+      for(let capPct=Math.max(0,(capexBase*100)-4); capPct<=capexBase*100+4.001; capPct+=1){
+        if(y.length===1) x.push(capPct.toFixed(1)+'%');
+        const capex=r.revenue*(capPct/100);
+        row.push(calcWith(r.revenue,r.cfo,r.interest,taxPct/100,capex,r.nonop,r.financing,r.shares).fcfMargin);
+      }
+      z.push(row);
+    }
+    Plotly.react('fcf-heatmap',[{x:x,y:y,z:z,type:'heatmap',colorscale:'Blues',hovertemplate:'Capex/Revenue %{x}<br>Tax rate %{y}<br>FCF Margin %{z:.2%}<extra></extra>'}],{title:{text:'Operating FCF Margin Sensitivity',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:82},xaxis:{title:'Capex / Revenue'},yaxis:{title:'Tax Rate'},font:{family:'Segoe UI,Arial',color:'#17212B'}},{responsive:true,displayModeBar:false});
+    Plotly.react('margin-chart',[{x:['CFO Margin','Operating FCF Margin','Capex / Revenue'],y:[r.cfoMargin,r.fcfMargin,r.capexRatio],type:'bar',marker:{color:['#2F80ED','#0B3558','#EB5757']},hovertemplate:'%{x}<br>%{y:.2%}<extra></extra>'}],layout('Cash Flow Margins','Metric','Percent'),{responsive:true,displayModeBar:false});
+  }
+  function renderTable(r){
+    const rows=[['Revenue',money(r.revenue)],['Cash flow from operations',money(r.cfo)],['Interest expense',money(r.interest)],['Tax rate',pct(r.tax)],['After-tax interest addback',money(r.afterTaxInterest)],['Operating capex',money(r.capex)],['Non-operating investing adjustment',money(r.nonop)],['Reported financing cash flow excluded',money(r.financing)],['Operating free cash flow',money(r.fcf)],['Operating FCF margin',pct(r.fcfMargin)],['Operating FCF per share',moneyShare(r.fcfPerShare)]];
+    document.getElementById('table-wrap').innerHTML='<table class="mini-table"><tr><th>Component</th><th>Value</th></tr>'+rows.map(row=>'<tr><td>'+row[0]+'</td><td>'+row[1]+'</td></tr>').join('')+'</table>';
+  }
+  function render(){
+    const raw=inputs();
+    const r=calcWith(raw.revenue,raw.cfo,raw.interest,raw.tax,raw.capex,raw.nonop,raw.financing,raw.shares);
+    setText('fcf-result',money(r.fcf));
+    setText('fcf-margin',pct(r.fcfMargin));
+    setText('after-tax-interest',money(r.afterTaxInterest));
+    setText('fcf-share',moneyShare(r.fcfPerShare));
+    setText('cfo-margin',pct(r.cfoMargin));
+    setText('capex-ratio',pct(r.capexRatio));
+    document.getElementById('interpretation').innerHTML='Operating FCF is <strong>'+money(r.fcf)+'</strong>, equal to an operating FCF margin of <strong>'+pct(r.fcfMargin)+'</strong>. The after-tax interest addback removes financing effects before discounting operating cash flows at WACC.';
+    renderCharts(r);
+    renderTable(r);
+    if(typeof AFL !== 'undefined') AFL.write({module2:Math.max(AFL.read().module2||0,48),currentSection:'operating-fcf'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('[data-fcf]').forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});
+    render();
+  });
+  window.addEventListener('resize',function(){ if(window.Plotly) ['fcf-bridge','fcf-heatmap','margin-chart'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);}); });
+})();
+</script>
+</body>
+</html>
