@@ -1,1 +1,0 @@
-function pv(){res.innerHTML=(fv.value/Math.pow(1+rate.value/100,yrs.value)).toFixed(2)}; if(window.Plotly){Plotly.newPlot("chart",[{x:[1,2,3,4],y:[100,90,80,70]}])}
