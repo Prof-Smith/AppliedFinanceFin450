@@ -1,7 +1,16 @@
-/* Applied Finance Lab navigation repair. Scoped to Module 1 only for DCF injection. */
+/* Applied Finance Lab navigation repair.
+   - Module 1: keeps DCF Valuation visible only inside Module 1.
+   - Module 2: activates WACC Build Studio link after Sprint 3C. */
 (function(){
   function norm(s){return (s||'').replace(/\s+/g,' ').trim().toLowerCase();}
-  function dcfLink(active){const a=document.createElement('a');a.className='side-link'+(active?' active':'');a.href='dcf-valuation.html';a.textContent='DCF Valuation';a.setAttribute('onclick',"markPageVisited('dcf-valuation')");return a;}
+  function dcfLink(active){
+    const a=document.createElement('a');
+    a.className='side-link'+(active?' active':'');
+    a.href='dcf-valuation.html';
+    a.textContent='DCF Valuation';
+    a.setAttribute('onclick',"markPageVisited('dcf-valuation')");
+    return a;
+  }
   function patchModule1Sidebar(){
     if(!location.pathname.includes('/module1/')) return;
     const isDcf=location.pathname.includes('dcf-valuation.html');
@@ -18,7 +27,7 @@
       else card.appendChild(link);
     });
   }
-  function patchButtons(){
+  function patchModule1Buttons(){
     if(!location.pathname.includes('/module1/')) return;
     const page=location.pathname.split('/').pop();
     document.querySelectorAll('a.btn').forEach(a=>{
@@ -29,7 +38,34 @@
       if(page==='dcf-valuation.html'&&text.includes('next')){a.href='enterprise-value.html';a.textContent='Next: Enterprise Value →';}
     });
   }
+  function patchModule2Sidebar(){
+    if(!location.pathname.includes('/module2/')) return;
+    const isWaccBuild=location.pathname.includes('wacc-build.html');
+    document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
+      if(norm(a.textContent)==='wacc build studio'){
+        a.href='wacc-build.html';
+        a.classList.remove('muted');
+        if(isWaccBuild) a.classList.add('active');
+      }
+      if(isWaccBuild && norm(a.textContent)!=='wacc build studio') a.classList.remove('active');
+    });
+  }
+  function patchModule2Buttons(){
+    if(!location.pathname.includes('/module2/')) return;
+    const page=location.pathname.split('/').pop();
+    document.querySelectorAll('a.btn').forEach(a=>{
+      const text=norm(a.textContent);
+      if(page==='cost-capital.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){
+        a.href='wacc-build.html';
+        a.textContent='Next: WACC Build Studio →';
+      }
+      if(page==='wacc-build.html' && text.includes('previous')){
+        a.href='cost-capital.html';
+        a.textContent='← Previous: Cost of Debt & Equity';
+      }
+    });
+  }
   function mobile(){const t=document.querySelector('[data-mobile-toggle]'),l=document.querySelector('.nav-links');if(t&&l&&!t.dataset.bound){t.dataset.bound='true';t.addEventListener('click',()=>l.classList.toggle('open'));}}
-  function run(){patchModule1Sidebar();patchButtons();mobile();}
+  function run(){patchModule1Sidebar();patchModule1Buttons();patchModule2Sidebar();patchModule2Buttons();mobile();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
 })();

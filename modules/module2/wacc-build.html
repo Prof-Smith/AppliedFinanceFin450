@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WACC Build Studio | Module 2</title>
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/navigation.css">
+<link rel="stylesheet" href="../../assets/css/dashboard.css">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+.muted{opacity:.55}.studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.metric b{font-size:clamp(1.25rem,2.2vw,1.8rem);white-space:nowrap}.plotly-chart{width:100%;min-height:420px}.note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054}.formula-box{background:#0B3558;color:white;border-radius:16px;padding:18px;margin-top:14px;font-weight:800;line-height:1.65}.mini-table{width:100%;border-collapse:collapse;margin-top:12px}.mini-table th,.mini-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right}.mini-table th:first-child,.mini-table td:first-child{text-align:left}.mini-table th{font-size:.76rem;text-transform:uppercase;color:#667085}.warning{border-left-color:#F2C94C;background:#FFF8E1}@media(max-width:900px){.studio-grid,.metric-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 2 of 8</div></div></nav>
+<main class="container page-header"><span class="kicker">Module 2 Studio</span><h1 class="page-title">WACC Build and Sensitivity Studio</h1><p class="lead">Combine capital structure, cost of debt, cost of equity, and taxes into a defensible WACC estimate, then test how sensitive the result is to assumptions.</p></main>
+<section class="section"><div class="container sidebar-layout">
+<aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="wacc-overview.html">WACC & Capital Structure</a><a class="side-link" href="cost-capital.html">Cost of Debt & Equity</a><a class="side-link active" href="wacc-build.html">WACC Build Studio</a><a class="side-link muted" href="#">Operating FCF Studio</a><a class="side-link muted" href="#">Pro Forma Builder</a><a class="side-link muted" href="#">Mid-Year DCF</a><a class="side-link muted" href="#">Sensitivity & ROIC</a><a class="side-link muted" href="#">Case Challenge</a></div></aside>
+<article class="content-panel">
+<div class="studio-grid">
+<section class="card"><span class="kicker">Inputs</span><h2>Build the WACC</h2><p class="lead">Use market-value weights and after-tax debt cost. If net debt is negative, debt weight is set to zero.</p><div class="form-row"><label>Market Value of Equity ($M)<input id="equity" type="number" value="111150" step="500" data-wacc></label><label>Net Debt / (Net Cash) ($M)<input id="net-debt" type="number" value="51800" step="500" data-wacc></label></div><div class="form-row"><label>Cost of Equity rE (%)<input id="re" type="number" value="10.5" step=".25" data-wacc></label><label>Pre-Tax Cost of Debt rD (%)<input id="rd" type="number" value="5.2" step=".25" data-wacc></label></div><label>Marginal Tax Rate TC (%)<input id="tax" type="number" value="22" step=".5" data-wacc></label><div class="formula-box">WACC = E/(E + D) × rE + D/(E + D) × rD × (1 − TC)</div><div id="debt-warning" class="note-box warning"><strong>Capital structure note:</strong> Net debt treatment will update as assumptions change.</div></section>
+<section class="card"><span class="kicker">Outputs</span><h2>WACC estimate</h2><p id="interpretation" class="lead">Outputs update as assumptions change.</p><div class="metric-grid"><div class="metric"><b id="wacc-result">0.00%</b><span>WACC</span></div><div class="metric"><b id="enterprise-capital">$0</b><span>E + D Used in WACC</span></div><div class="metric"><b id="equity-weight">0.00%</b><span>Equity Weight</span></div><div class="metric"><b id="debt-weight">0.00%</b><span>Debt Weight</span></div><div class="metric"><b id="equity-contribution">0.00%</b><span>Equity Contribution</span></div><div class="metric"><b id="debt-contribution">0.00%</b><span>Debt Contribution</span></div></div></section>
+</div>
+<section class="card" style="margin-top:22px"><span class="kicker">Visualization</span><h2>WACC contribution bridge</h2><div id="wacc-bridge" class="plotly-chart"></div></section>
+<div class="grid grid-2" style="margin-top:22px"><section class="card"><span class="kicker">Sensitivity</span><h2>Cost of equity vs cost of debt</h2><div id="sensitivity-heatmap" class="plotly-chart"></div></section><section class="card"><span class="kicker">Leverage</span><h2>WACC across debt weights</h2><div id="leverage-line" class="plotly-chart"></div></section></div>
+<section class="card" style="margin-top:22px"><span class="kicker">Calculation Table</span><h2>WACC component table</h2><div id="table-wrap"></div></section>
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>Defend the WACC assumption</h2><p class="lead">Students should carry forward the final WACC estimate, the equity and debt weights, and the assumption most likely to change the valuation.</p><textarea placeholder="Example: The estimated WACC is driven more by the cost of equity than the cost of debt because equity carries the larger weight in the capital structure. A higher beta or market risk premium would increase WACC and reduce DCF value."></textarea></section>
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="cost-capital.html">← Previous: Cost of Debt & Equity</a><a class="btn btn-primary" href="#">Next Build: Operating FCF Studio →</a></div>
+</article></div></section>
+<script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script>
+<script>
+(function(){
+  function n(id){return Number(document.getElementById(id).value)||0;}
+  function pct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2});}
+  function moneyB(v){return '$'+((Number(v)||0)/1000).toLocaleString('en-US',{maximumFractionDigits:1})+'B';}
+  function setText(id,text){const el=document.getElementById(id); if(el) el.textContent=text;}
+  function calcWith(E,netDebt,re,rd,tax){
+    const D=Math.max(netDebt,0);
+    const V=E+D;
+    const ew=V?E/V:0;
+    const dw=V?D/V:0;
+    const afterRd=rd*(1-tax);
+    const eqContrib=ew*re;
+    const debtContrib=dw*afterRd;
+    const wacc=eqContrib+debtContrib;
+    return {E,netDebt,D,V,ew,dw,afterRd,eqContrib,debtContrib,wacc};
+  }
+  function getInputs(){return {E:n('equity'),netDebt:n('net-debt'),re:n('re')/100,rd:n('rd')/100,tax:n('tax')/100};}
+  function layout(title,x,y){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:80},xaxis:{title:x,gridcolor:'#E5E7EB',automargin:true},yaxis:{title:y,gridcolor:'#E5E7EB',tickformat:'.1%',automargin:true},font:{family:'Segoe UI,Arial',color:'#17212B'},showlegend:false};}
+  function renderCharts(r,raw){
+    if(!window.Plotly) return;
+    Plotly.react('wacc-bridge',[{x:['Equity contribution','Debt contribution','WACC'],y:[r.eqContrib,r.debtContrib,r.wacc],type:'bar',marker:{color:['#2F80ED','#27AE60','#0B3558']},hovertemplate:'%{x}<br>%{y:.2%}<extra></extra>'}],layout('Weighted Contribution to WACC','Component','Contribution'),{responsive:true,displayModeBar:false});
+    let x=[], y=[], z=[];
+    for(let rdPct=Math.max(0,(raw.rd*100)-2); rdPct<=raw.rd*100+2.001; rdPct+=0.5){
+      let row=[];
+      y.push(rdPct.toFixed(1)+'%');
+      for(let rePct=Math.max(0,(raw.re*100)-3); rePct<=raw.re*100+3.001; rePct+=0.75){
+        if(y.length===1) x.push(rePct.toFixed(2)+'%');
+        row.push(calcWith(raw.E,raw.netDebt,rePct/100,rdPct/100,raw.tax).wacc);
+      }
+      z.push(row);
+    }
+    Plotly.react('sensitivity-heatmap',[{x:x,y:y,z:z,type:'heatmap',colorscale:'Blues',hovertemplate:'rE %{x}<br>rD %{y}<br>WACC %{z:.2%}<extra></extra>'}],{title:{text:'WACC Sensitivity: rE vs rD',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:32,b:70,l:80},xaxis:{title:'Cost of Equity'},yaxis:{title:'Pre-Tax Cost of Debt'},font:{family:'Segoe UI,Arial',color:'#17212B'}},{responsive:true,displayModeBar:false});
+    let lx=[],ly=[];
+    for(let dw=0;dw<=0.75;dw+=0.05){
+      lx.push(dw*100);
+      ly.push((1-dw)*raw.re+dw*raw.rd*(1-raw.tax));
+    }
+    Plotly.react('leverage-line',[{x:lx,y:ly,type:'scatter',mode:'lines+markers',line:{width:4,color:'#0B3558'},hovertemplate:'Debt weight %{x:.0f}%<br>WACC %{y:.2%}<extra></extra>'}],layout('WACC Across Debt Weights','Debt Weight (%)','WACC'),{responsive:true,displayModeBar:false});
+  }
+  function renderTable(r,raw){
+    const rows=[['Market value of equity',moneyB(r.E)],['Net debt / (net cash)',moneyB(r.netDebt)],['Debt used in WACC',moneyB(r.D)],['Enterprise capital used in WACC',moneyB(r.V)],['Equity weight',pct(r.ew)],['Debt weight',pct(r.dw)],['Cost of equity',pct(raw.re)],['Pre-tax cost of debt',pct(raw.rd)],['Tax rate',pct(raw.tax)],['After-tax cost of debt',pct(r.afterRd)],['Equity contribution',pct(r.eqContrib)],['Debt contribution',pct(r.debtContrib)],['WACC',pct(r.wacc)]];
+    document.getElementById('table-wrap').innerHTML='<table class="mini-table"><tr><th>Component</th><th>Value</th></tr>'+rows.map(row=>'<tr><td>'+row[0]+'</td><td>'+row[1]+'</td></tr>').join('')+'</table>';
+  }
+  function render(){
+    const raw=getInputs();
+    const r=calcWith(raw.E,raw.netDebt,raw.re,raw.rd,raw.tax);
+    setText('wacc-result',pct(r.wacc));
+    setText('enterprise-capital',moneyB(r.V));
+    setText('equity-weight',pct(r.ew));
+    setText('debt-weight',pct(r.dw));
+    setText('equity-contribution',pct(r.eqContrib));
+    setText('debt-contribution',pct(r.debtContrib));
+    const debtNote=document.getElementById('debt-warning');
+    if(raw.netDebt<0){debtNote.innerHTML='<strong>Capital structure note:</strong> Net debt is negative. Debt weight is set to zero for WACC, and excess cash is treated as a financial asset outside operating capital.';}
+    else{debtNote.innerHTML='<strong>Capital structure note:</strong> Net debt is positive, so debt receives weight in the WACC calculation and the tax shield reduces the after-tax cost of debt.';}
+    document.getElementById('interpretation').innerHTML='Estimated WACC is <strong>'+pct(r.wacc)+'</strong>. Equity contributes <strong>'+pct(r.eqContrib)+'</strong> and debt contributes <strong>'+pct(r.debtContrib)+'</strong> to the total discount rate.';
+    renderCharts(r,raw);
+    renderTable(r,raw);
+    if(typeof AFL !== 'undefined') AFL.write({module2:Math.max(AFL.read().module2||0,36),currentSection:'wacc-build'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('[data-wacc]').forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});
+    render();
+  });
+  window.addEventListener('resize',function(){ if(window.Plotly) ['wacc-bridge','sensitivity-heatmap','leverage-line'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);}); });
+})();
+</script>
+</body>
+</html>
