@@ -11,10 +11,7 @@
       if(!links.length) return;
       let dcf=links.find(a=>norm(a.textContent)==='dcf valuation'||a.getAttribute('href')==='dcf-valuation.html');
       if(!dcf){
-        dcf=document.createElement('a');
-        dcf.className='side-link';
-        dcf.href='dcf-valuation.html';
-        dcf.textContent='DCF Valuation';
+        dcf=document.createElement('a'); dcf.className='side-link'; dcf.href='dcf-valuation.html'; dcf.textContent='DCF Valuation';
         dcf.setAttribute('onclick',"markPageVisited('dcf-valuation')");
         const ratio=links.find(a=>norm(a.textContent)==='ratio analysis');
         const enterprise=links.find(a=>norm(a.textContent)==='enterprise value');
@@ -28,30 +25,12 @@
   function patchModule2(){
     if(!location.pathname.includes('/module2/')) return;
     const page=location.pathname.split('/').pop();
-    const map={
-      'wacc build studio':'wacc-build.html',
-      'operating fcf studio':'operating-fcf.html',
-      'pro forma builder':'pro-forma-builder.html',
-      'mid-year dcf':'mid-year-dcf.html',
-      'sensitivity & roic':'sensitivity-roic.html',
-      'case challenge':'challenge.html'
-    };
+    const map={'wacc build studio':'wacc-build.html','operating fcf studio':'operating-fcf.html','pro forma builder':'pro-forma-builder.html','mid-year dcf':'mid-year-dcf.html','sensitivity & roic':'sensitivity-roic.html','case challenge':'challenge.html'};
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
       const label=norm(a.textContent);
       if(map[label]){ a.href=map[label]; a.classList.remove('muted'); }
-      if(page==='overview.html' && label==='overview') a.classList.add('active');
-      if(page==='wacc-build.html' && label==='wacc build studio') a.classList.add('active');
-      if(page==='operating-fcf.html' && label==='operating fcf studio') a.classList.add('active');
-      if(page==='pro-forma-builder.html' && label==='pro forma builder') a.classList.add('active');
-      if(page==='mid-year-dcf.html' && label==='mid-year dcf') a.classList.add('active');
-      if(page==='sensitivity-roic.html' && label==='sensitivity & roic') a.classList.add('active');
-      if(page==='challenge.html' && label==='case challenge') a.classList.add('active');
-      if(page==='challenge.html' && label!=='case challenge') a.classList.remove('active');
-      if(page==='sensitivity-roic.html' && label!=='sensitivity & roic') a.classList.remove('active');
-      if(page==='mid-year-dcf.html' && label!=='mid-year dcf') a.classList.remove('active');
-      if(page==='pro-forma-builder.html' && label!=='pro forma builder') a.classList.remove('active');
-      if(page==='operating-fcf.html' && label!=='operating fcf studio') a.classList.remove('active');
-      if(page==='wacc-build.html' && label!=='wacc build studio') a.classList.remove('active');
+      const activeMap={'overview.html':'overview','wacc-build.html':'wacc build studio','operating-fcf.html':'operating fcf studio','pro-forma-builder.html':'pro forma builder','mid-year-dcf.html':'mid-year dcf','sensitivity-roic.html':'sensitivity & roic','challenge.html':'case challenge'};
+      if(activeMap[page]){ if(label===activeMap[page]) a.classList.add('active'); else a.classList.remove('active'); }
     });
     document.querySelectorAll('a.btn').forEach(a=>{
       const text=norm(a.textContent);
@@ -64,10 +43,7 @@
       if(page==='challenge.html' && text.includes('previous')){ a.href='sensitivity-roic.html'; a.textContent='← Previous: Sensitivity & ROIC'; }
     });
   }
-  function mobile(){
-    const t=document.querySelector('[data-mobile-toggle]'), l=document.querySelector('.nav-links');
-    if(t&&l&&!t.dataset.bound){ t.dataset.bound='true'; t.addEventListener('click',()=>l.classList.toggle('open')); }
-  }
+  function mobile(){const t=document.querySelector('[data-mobile-toggle]'),l=document.querySelector('.nav-links'); if(t&&l&&!t.dataset.bound){t.dataset.bound='true';t.addEventListener('click',()=>l.classList.toggle('open'));}}
   function run(){patchModule1();patchModule2();mobile();}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
 })();
