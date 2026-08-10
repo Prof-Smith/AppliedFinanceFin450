@@ -1,4 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Future Value | Module 1</title><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Future Value Studio | Module 1</title>
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/navigation.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
 <nav class="navbar">
   <div class="container nav-inner">
     <a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
@@ -11,4 +23,93 @@
     </ul>
     <div class="nav-meta">Module 1 of 8</div>
   </div>
-</nav><main class="container page-header"><span class="kicker">Module 1</span><h1 class="page-title">Future Value</h1><p class="lead">Financial Modeling Foundations: a professional workflow for turning financial information into decisions.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link active" href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link " href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside><article class="card content-panel"><h2>Compounding forward</h2><p>Future value shows how a current amount grows when invested over time.</p></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script>markPageVisited('fv');</script></body></html>
+</nav>
+
+<main class="container page-header">
+  <span class="kicker">Module 1 Studio</span>
+  <h1 class="page-title">Future Value Studio</h1>
+  <p class="lead">Project how today’s capital grows over time through compounding and optional periodic contributions.</p>
+</main>
+<section class="section">
+  <div class="container sidebar-layout">
+    <aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link active" href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link " href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside>
+    <article class="content-panel">
+<div class="grid grid-2">
+  <section class="card">
+    <span class="kicker">Interactive Inputs</span>
+    <h2>Compound today into tomorrow</h2>
+    <p class="lead">Future value shows how capital grows when invested over time.</p>
+    <div class="form-row">
+      <label>Present Value Today
+        <input data-fv-input id="fv-present-value" type="number" value="10000" step="500" />
+      </label>
+      <label>Growth Rate (%)
+        <input data-fv-input id="fv-rate" type="number" value="8" step="0.25" />
+      </label>
+    </div>
+    <div class="form-row">
+      <label>Years Invested
+        <input data-fv-input id="fv-years" type="number" value="5" min="1" max="50" />
+      </label>
+      <label>Compounding Per Year
+        <select data-fv-input id="fv-compounds">
+<option value="1" selected>Annual</option>
+<option value="2">Semiannual</option>
+<option value="4">Quarterly</option>
+<option value="12">Monthly</option>
+<option value="365">Daily</option>
+</select>
+      </label>
+    </div>
+    <label>Periodic Contribution
+      <input data-fv-input id="fv-contribution" type="number" value="0" step="100" />
+    </label>
+    <br><br>
+    <button class="btn btn-light" id="reset-fv" type="button">Reset Example</button>
+  </section>
+  <section class="card">
+    <span class="kicker">Decision Insight</span>
+    <h2>What the model says</h2>
+    <p id="fv-interpretation" class="lead">Adjust inputs to generate an interpretation.</p>
+    <div class="grid grid-2">
+      <div class="metric"><b id="fv-result">$0</b><span>Total Future Value</span></div>
+      <div class="metric"><b id="fv-interest-earned">$0</b><span>Interest Earned</span></div>
+      <div class="metric"><b id="fv-growth-multiple">0.00x</b><span>Growth Multiple</span></div>
+      <div class="metric"><b id="fv-lump-result">$0</b><span>Lump Sum FV</span></div>
+    </div>
+  </section>
+</div>
+<section class="card" style="margin-top:22px;">
+  <span class="kicker">Visualization</span>
+  <h2>Compounding curve</h2>
+  <div id="fv-growth-chart" style="min-height:420px;"></div>
+</section>
+<div class="grid grid-2" style="margin-top:22px;">
+  <section class="card">
+    <span class="kicker">Contributions</span>
+    <h2>Contribution effect</h2>
+    <p class="lead">Periodic contributions preview the repeated cash-flow logic used in valuation and portfolio planning.</p>
+    <div class="metric"><b id="fv-contribution-result">$0</b><span>Future Value of Contributions</span></div>
+  </section>
+  <section class="card">
+    <span class="kicker">Sensitivity</span>
+    <h2>Growth rate sensitivity</h2>
+    <div id="fv-rate-chart" style="min-height:340px;"></div>
+  </section>
+</div>
+<div class="grid grid-2" style="margin-top:22px;">
+  <a class="btn btn-light" href="pv.html">← Previous: Present Value</a>
+  <a class="btn btn-primary" href="npv.html">Next: NPV →</a>
+</div>
+</article>
+  </div>
+</section>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/navigation.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script src="../../assets/js/finance-core.js"></script>
+<script src="../../assets/js/charts-finance.js"></script>
+<script src="../../assets/js/fv-engine.js"></script>
+<script>if (typeof markPageVisited === 'function') markPageVisited('fv');</script>
+</body>
+</html>
