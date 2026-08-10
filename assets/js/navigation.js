@@ -30,20 +30,26 @@
     const page=location.pathname.split('/').pop();
     const map={
       'wacc build studio':'wacc-build.html',
-      'operating fcf studio':'operating-fcf.html'
+      'operating fcf studio':'operating-fcf.html',
+      'pro forma builder':'pro-forma-builder.html'
     };
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
       const label=norm(a.textContent);
       if(map[label]){ a.href=map[label]; a.classList.remove('muted'); }
+      if(page==='overview.html' && label==='overview') a.classList.add('active');
       if(page==='wacc-build.html' && label==='wacc build studio') a.classList.add('active');
       if(page==='operating-fcf.html' && label==='operating fcf studio') a.classList.add('active');
-      if(page==='overview.html' && label==='overview') a.classList.add('active');
+      if(page==='pro-forma-builder.html' && label==='pro forma builder') a.classList.add('active');
+      if(page==='pro-forma-builder.html' && label!=='pro forma builder') a.classList.remove('active');
+      if(page==='operating-fcf.html' && label!=='operating fcf studio') a.classList.remove('active');
+      if(page==='wacc-build.html' && label!=='wacc build studio') a.classList.remove('active');
     });
     document.querySelectorAll('a.btn').forEach(a=>{
       const text=norm(a.textContent);
       if(page==='cost-capital.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='wacc-build.html'; a.textContent='Next: WACC Build Studio →'; }
       if(page==='wacc-build.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='operating-fcf.html'; a.textContent='Next: Operating FCF Studio →'; }
-      if(page==='operating-fcf.html' && text.includes('previous')){ a.href='wacc-build.html'; a.textContent='← Previous: WACC Build Studio'; }
+      if(page==='operating-fcf.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='pro-forma-builder.html'; a.textContent='Next: Pro Forma Builder →'; }
+      if(page==='pro-forma-builder.html' && text.includes('previous')){ a.href='operating-fcf.html'; a.textContent='← Previous: Operating FCF Studio'; }
     });
   }
   function mobile(){
