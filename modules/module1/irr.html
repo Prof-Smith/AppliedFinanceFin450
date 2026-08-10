@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="../../assets/css/dashboard.css" />
 </head>
 <body>
-
 <nav class="navbar">
   <div class="container nav-inner">
     <a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
@@ -23,7 +22,6 @@
     <div class="nav-meta">Module 1 of 8</div>
   </div>
 </nav>
-
 <main class="container page-header">
   <span class="kicker">Module 1 Studio</span>
   <h1 class="page-title">Internal Rate of Return Studio</h1>
@@ -31,7 +29,19 @@
 </main>
 <section class="section">
   <div class="container sidebar-layout">
-    <aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link active" href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link " href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside>
+    <aside class="sidebar"><div class="card"><h3>Module Navigation</h3>
+      <a class="side-link" href="overview.html" onclick="markPageVisited('overview')">Overview</a>
+      <a class="side-link" href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a>
+      <a class="side-link" href="pv.html" onclick="markPageVisited('pv')">Present Value</a>
+      <a class="side-link" href="fv.html" onclick="markPageVisited('fv')">Future Value</a>
+      <a class="side-link" href="npv.html" onclick="markPageVisited('npv')">NPV</a>
+      <a class="side-link active" href="irr.html" onclick="markPageVisited('irr')">IRR</a>
+      <a class="side-link" href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a>
+      <a class="side-link" href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a>
+      <a class="side-link" href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a>
+      <a class="side-link" href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a>
+      <a class="side-link" href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a>
+    </div></aside>
     <article class="content-panel">
       <div class="grid grid-2">
         <section class="card">
@@ -68,18 +78,18 @@
       <section class="card" style="margin-top:22px;">
         <span class="kicker">Visualization</span>
         <h2>IRR profile</h2>
-        <div id="irr-profile-chart" class="plotly-chart"></div>
+        <div id="irr-profile-chart" class="plotly-chart" style="min-height:430px;"></div>
       </section>
       <div class="grid grid-2" style="margin-top:22px;">
         <section class="card">
           <span class="kicker">Comparison</span>
           <h2>IRR vs. required return</h2>
-          <div id="irr-comparison-chart" class="plotly-chart"></div>
+          <div id="irr-comparison-chart" class="plotly-chart" style="min-height:360px;"></div>
         </section>
         <section class="card">
           <span class="kicker">Cash-flow Pattern</span>
           <h2>Project cash flows</h2>
-          <div id="irr-cashflow-chart" class="plotly-chart"></div>
+          <div id="irr-cashflow-chart" class="plotly-chart" style="min-height:360px;"></div>
         </section>
       </div>
       <section class="card" style="margin-top:22px;">
@@ -105,7 +115,6 @@
 <script src="../../assets/js/progress.js"></script>
 <script src="../../assets/js/finance-core.js"></script>
 <script src="../../assets/js/plotly-safe-loader.js"></script>
-<script src="../../assets/js/charts-finance.js"></script>
 <script src="../../assets/js/irr-engine.js"></script>
 <script>if (typeof markPageVisited === 'function') markPageVisited('irr');</script>
 </body>
