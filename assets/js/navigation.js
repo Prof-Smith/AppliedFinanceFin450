@@ -33,7 +33,8 @@
       'operating fcf studio':'operating-fcf.html',
       'pro forma builder':'pro-forma-builder.html',
       'mid-year dcf':'mid-year-dcf.html',
-      'sensitivity & roic':'sensitivity-roic.html'
+      'sensitivity & roic':'sensitivity-roic.html',
+      'case challenge':'challenge.html'
     };
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
       const label=norm(a.textContent);
@@ -44,6 +45,8 @@
       if(page==='pro-forma-builder.html' && label==='pro forma builder') a.classList.add('active');
       if(page==='mid-year-dcf.html' && label==='mid-year dcf') a.classList.add('active');
       if(page==='sensitivity-roic.html' && label==='sensitivity & roic') a.classList.add('active');
+      if(page==='challenge.html' && label==='case challenge') a.classList.add('active');
+      if(page==='challenge.html' && label!=='case challenge') a.classList.remove('active');
       if(page==='sensitivity-roic.html' && label!=='sensitivity & roic') a.classList.remove('active');
       if(page==='mid-year-dcf.html' && label!=='mid-year dcf') a.classList.remove('active');
       if(page==='pro-forma-builder.html' && label!=='pro forma builder') a.classList.remove('active');
@@ -57,7 +60,8 @@
       if(page==='operating-fcf.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='pro-forma-builder.html'; a.textContent='Next: Pro Forma Builder →'; }
       if(page==='pro-forma-builder.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='mid-year-dcf.html'; a.textContent='Next: Mid-Year DCF →'; }
       if(page==='mid-year-dcf.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='sensitivity-roic.html'; a.textContent='Next: Sensitivity & ROIC →'; }
-      if(page==='sensitivity-roic.html' && text.includes('previous')){ a.href='mid-year-dcf.html'; a.textContent='← Previous: Mid-Year DCF'; }
+      if(page==='sensitivity-roic.html' && (a.getAttribute('href')==='#' || text.includes('next build'))){ a.href='challenge.html'; a.textContent='Next: Case Challenge →'; }
+      if(page==='challenge.html' && text.includes('previous')){ a.href='sensitivity-roic.html'; a.textContent='← Previous: Sensitivity & ROIC'; }
     });
   }
   function mobile(){
