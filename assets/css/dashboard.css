@@ -1,18 +1,137 @@
-
+/* Applied Finance Lab dashboard and metric card styles. Metric card hotfix included. */
 .dashboard-feature {
   display:grid;
   grid-template-columns:1.25fr .75fr;
   gap:22px;
   align-items:stretch;
 }
-.challenge-card { background:linear-gradient(135deg, #FFFFFF 0%, #F3F8FF 100%); }
-.metric-row { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:18px; }
-.metric { border:1px solid var(--line); border-radius:14px; padding:16px; background:white; }
-.metric b { display:block; font-size:2rem; color:var(--primary); line-height:1; }
-.metric span { color:var(--muted); font-weight:800; font-size:.86rem; }
-.module-table { width:100%; border-collapse:collapse; overflow:hidden; }
-.module-table th, .module-table td { padding:14px; text-align:left; border-bottom:1px solid var(--line); }
-.module-table th { color:var(--primary); font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; }
-.resource-list { display:grid; gap:12px; }
-.resource-item { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:14px; border:1px solid var(--line); border-radius:14px; background:white; }
-@media (max-width: 860px) { .dashboard-feature, .metric-row { grid-template-columns:1fr; } }
+.challenge-card {
+  background:linear-gradient(135deg, #FFFFFF 0%, #F3F8FF 100%);
+}
+.metric-row {
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+.metric {
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  background:white;
+  min-width:0;
+  overflow:hidden;
+}
+.metric b {
+  display:block;
+  color:var(--primary);
+  line-height:1.08;
+  font-weight:950;
+  letter-spacing:-0.035em;
+  font-size:clamp(1.45rem, 2.45vw, 2.05rem);
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+.metric span {
+  display:block;
+  color:var(--muted);
+  font-weight:800;
+  font-size:.78rem;
+  line-height:1.35;
+  margin-top:4px;
+  max-width:100%;
+  overflow-wrap:break-word;
+}
+.grid .metric b,
+.metric-row .metric b {
+  font-size:clamp(1.35rem, 2.2vw, 1.95rem);
+}
+.grid-2 > .metric,
+.metric-row > .metric {
+  min-width:0;
+}
+.module-table {
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+}
+.module-table th,
+.module-table td {
+  padding:14px;
+  text-align:left;
+  border-bottom:1px solid var(--line);
+}
+.module-table th {
+  color:var(--primary);
+  font-size:.82rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.resource-list {
+  display:grid;
+  gap:12px;
+}
+.resource-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:white;
+}
+
+/* Decision insight panels often contain four metrics in two columns. This keeps large dollar values contained. */
+.content-panel .card .grid.grid-2:has(.metric) {
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+}
+
+/* Input cards: prevent controls from forcing width expansion. */
+.form-row,
+.grid,
+.card,
+.content-panel {
+  min-width:0;
+}
+input,
+select,
+textarea {
+  min-width:0;
+  max-width:100%;
+}
+
+/* Medium screens: keep metric cards readable without overflow. */
+@media (max-width: 1100px) {
+  .metric b {
+    font-size:clamp(1.25rem, 2vw, 1.7rem);
+  }
+  .metric {
+    padding:14px;
+  }
+}
+
+/* Narrow screens: stack risk areas and metric grids. */
+@media (max-width: 860px) {
+  .dashboard-feature,
+  .metric-row {
+    grid-template-columns:1fr;
+  }
+  .content-panel .card .grid.grid-2:has(.metric) {
+    grid-template-columns:1fr;
+  }
+  .metric b {
+    font-size:clamp(1.5rem, 8vw, 2.1rem);
+  }
+}
+
+/* Small cards in two-column decision panels need extra protection. */
+@media (min-width: 861px) and (max-width: 1250px) {
+  .content-panel .grid-2 .metric b {
+    font-size:clamp(1.25rem, 1.9vw, 1.7rem);
+  }
+  .content-panel .grid-2 .metric {
+    padding:14px 12px;
+  }
+}
