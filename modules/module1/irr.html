@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/css/main.css" />
   <link rel="stylesheet" href="../../assets/css/navigation.css" />
   <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -22,26 +23,32 @@
     <div class="nav-meta">Module 1 of 8</div>
   </div>
 </nav>
+
 <main class="container page-header">
   <span class="kicker">Module 1 Studio</span>
   <h1 class="page-title">Internal Rate of Return Studio</h1>
   <p class="lead">Use IRR to locate the discount rate where NPV equals zero, then compare the result to the required return and the NPV rule.</p>
 </main>
+
 <section class="section">
   <div class="container sidebar-layout">
-    <aside class="sidebar"><div class="card"><h3>Module Navigation</h3>
-      <a class="side-link" href="overview.html" onclick="markPageVisited('overview')">Overview</a>
-      <a class="side-link" href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a>
-      <a class="side-link" href="pv.html" onclick="markPageVisited('pv')">Present Value</a>
-      <a class="side-link" href="fv.html" onclick="markPageVisited('fv')">Future Value</a>
-      <a class="side-link" href="npv.html" onclick="markPageVisited('npv')">NPV</a>
-      <a class="side-link active" href="irr.html" onclick="markPageVisited('irr')">IRR</a>
-      <a class="side-link" href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a>
-      <a class="side-link" href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a>
-      <a class="side-link" href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a>
-      <a class="side-link" href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a>
-      <a class="side-link" href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a>
-    </div></aside>
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Module Navigation</h3>
+        <a class="side-link" href="overview.html" onclick="markPageVisited('overview')">Overview</a>
+        <a class="side-link" href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a>
+        <a class="side-link" href="pv.html" onclick="markPageVisited('pv')">Present Value</a>
+        <a class="side-link" href="fv.html" onclick="markPageVisited('fv')">Future Value</a>
+        <a class="side-link" href="npv.html" onclick="markPageVisited('npv')">NPV</a>
+        <a class="side-link active" href="irr.html" onclick="markPageVisited('irr')">IRR</a>
+        <a class="side-link" href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a>
+        <a class="side-link" href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a>
+        <a class="side-link" href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a>
+        <a class="side-link" href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a>
+        <a class="side-link" href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a>
+      </div>
+    </aside>
+
     <article class="content-panel">
       <div class="grid grid-2">
         <section class="card">
@@ -61,8 +68,10 @@
             <label>Year 4 Cash Flow <input data-irr-input id="irr-cf-4" type="number" value="2500" step="250" /></label>
           </div>
           <label>Year 5 Cash Flow <input data-irr-input id="irr-cf-5" type="number" value="1500" step="250" /></label>
-          <br><br><button class="btn btn-light" id="reset-irr" type="button">Reset Example</button>
+          <br><br>
+          <button class="btn btn-light" id="reset-irr" type="button">Reset Example</button>
         </section>
+
         <section class="card">
           <span class="kicker">Decision Insight</span>
           <h2>What the model says <span id="irr-recommendation-badge" class="badge active" style="margin-left:8px;">Accept</span></h2>
@@ -75,34 +84,39 @@
           </div>
         </section>
       </div>
+
       <section class="card" style="margin-top:22px;">
         <span class="kicker">Visualization</span>
         <h2>IRR profile</h2>
-        <div id="irr-profile-chart" class="plotly-chart" style="min-height:430px;"></div>
+        <div id="irr-profile-chart" style="width:100%;min-height:460px;"></div>
       </section>
+
       <div class="grid grid-2" style="margin-top:22px;">
         <section class="card">
           <span class="kicker">Comparison</span>
           <h2>IRR vs. required return</h2>
-          <div id="irr-comparison-chart" class="plotly-chart" style="min-height:360px;"></div>
+          <div id="irr-comparison-chart" style="width:100%;min-height:380px;"></div>
         </section>
         <section class="card">
           <span class="kicker">Cash-flow Pattern</span>
           <h2>Project cash flows</h2>
-          <div id="irr-cashflow-chart" class="plotly-chart" style="min-height:360px;"></div>
+          <div id="irr-cashflow-chart" style="width:100%;min-height:380px;"></div>
         </section>
       </div>
+
       <section class="card" style="margin-top:22px;">
         <span class="kicker">Analyst Warning</span>
         <h2>When IRR can mislead</h2>
         <p id="irr-warning" class="lead">The warning will update after the model runs.</p>
         <p>IRR is useful because it converts a cash-flow stream into a percentage return. However, NPV is still the primary value-creation rule because it measures expected wealth created in dollars.</p>
       </section>
+
       <section class="card" style="margin-top:22px;">
         <span class="kicker">Analyst Prompt</span>
         <h2>Translate return into judgment</h2>
         <textarea placeholder="Example: The IRR exceeds the required return, but the NPV profile shows the recommendation is sensitive to the discount rate. I would accept only if the cash-flow assumptions are credible."></textarea>
       </section>
+
       <div class="grid grid-2" style="margin-top:22px;">
         <a class="btn btn-light" href="npv.html">← Previous: NPV</a>
         <a class="btn btn-primary" href="financial-statements.html">Next: Financial Statements →</a>
@@ -110,12 +124,157 @@
     </article>
   </div>
 </section>
+
 <script src="../../assets/js/app.js"></script>
 <script src="../../assets/js/navigation.js"></script>
 <script src="../../assets/js/progress.js"></script>
 <script src="../../assets/js/finance-core.js"></script>
-<script src="../../assets/js/plotly-safe-loader.js?v=2d-failsafe"></script>
-<script src="../../assets/js/irr-engine.js?v=2d-failsafe"></script>
-<script>if (typeof markPageVisited === 'function') markPageVisited('irr');</script>
+<script>
+(function(){
+  function compactMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(v)||0);}
+  function fullMoney(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0);}
+  function n(v,f=0){return Number.isFinite(Number(v))?Number(v):f;}
+  function getInputs(){
+    const initial = -Math.abs(n(document.querySelector('#irr-initial').value,10000));
+    const hurdleRate = n(document.querySelector('#irr-hurdle').value,9) / 100;
+    const cashflows = [];
+    for(let i=1;i<=5;i++){ cashflows.push(n(document.querySelector(`#irr-cf-${i}`).value,0)); }
+    return {initial,hurdleRate,cashflows};
+  }
+  function npvAtRate(initial,cashflows,rate){return initial+cashflows.reduce((sum,cf,i)=>sum+cf/Math.pow(1+rate,i+1),0);}
+  function calcIRR(initial,cashflows){
+    let low=-0.9999, high=10;
+    let fLow=npvAtRate(initial,cashflows,low), fHigh=npvAtRate(initial,cashflows,high);
+    let attempts=0;
+    while(fLow*fHigh>0 && attempts<12){ high*=2; fHigh=npvAtRate(initial,cashflows,high); attempts++; }
+    if(fLow*fHigh>0){ return NaN; }
+    for(let i=0;i<160;i++){
+      const mid=(low+high)/2;
+      const fMid=npvAtRate(initial,cashflows,mid);
+      if(Math.abs(fMid)<1e-8){ return mid; }
+      if(fLow*fMid<0){ high=mid; fHigh=fMid; } else { low=mid; fLow=fMid; }
+    }
+    return (low+high)/2;
+  }
+  function nonNormal(data){
+    const signs=[data.initial,...data.cashflows].filter(v=>v!==0).map(v=>v>0?1:-1);
+    let changes=0;
+    for(let i=1;i<signs.length;i++){ if(signs[i]!==signs[i-1]) changes++; }
+    return changes>1;
+  }
+  function layout(title,xTitle,yTitle,yExtras={}){
+    return {
+      title:{text:title,font:{size:18,color:'#0B3558'}},
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(0,0,0,0)',
+      margin:{t:60,r:24,b:58,l:78},
+      xaxis:{title:xTitle,gridcolor:'#E5E7EB',zerolinecolor:'#CBD5E1'},
+      yaxis:{title:yTitle,gridcolor:'#E5E7EB',zerolinecolor:'#CBD5E1',...yExtras},
+      font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},
+      showlegend:false
+    };
+  }
+  function plotOnly(data){
+    if(!window.Plotly){
+      ['irr-profile-chart','irr-comparison-chart','irr-cashflow-chart'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el){el.innerHTML='<div class="chart-fallback"><strong>Plotly did not load.</strong><br>This page is now Plotly-only. Check the CDN script or browser console.</div>';}
+      });
+      return;
+    }
+
+    const irr = data.irr;
+    const profileX=[], profileY=[];
+    const maxRate = Math.max(50, Math.ceil((Number.isFinite(irr) ? irr : 0.20) * 100 + 25));
+    for(let r=0;r<=maxRate;r++){
+      profileX.push(r);
+      profileY.push(npvAtRate(data.initial,data.cashflows,r/100));
+    }
+    const profileLayout = layout('IRR: Where NPV Crosses Zero','Discount Rate (%)','NPV',{tickprefix:'$'});
+    profileLayout.shapes = [{type:'line',x0:0,x1:maxRate,y0:0,y1:0,line:{color:'#EB5757',width:2,dash:'dash'}}];
+    if(Number.isFinite(irr)){
+      profileLayout.shapes.push({type:'line',x0:irr*100,x1:irr*100,y0:Math.min(...profileY),y1:Math.max(...profileY),line:{color:'#27AE60',width:2,dash:'dot'}});
+      profileLayout.annotations = [{x:irr*100,y:0,text:`IRR ${(irr*100).toFixed(2)}%`,showarrow:true,arrowhead:2,ax:50,ay:-40,bgcolor:'#E9F8EF',bordercolor:'#27AE60'}];
+    }
+    Plotly.react('irr-profile-chart',[{
+      x:profileX,
+      y:profileY,
+      type:'scatter',
+      mode:'lines',
+      name:'NPV Profile',
+      line:{width:4,color:'#0B3558'},
+      hovertemplate:'Discount rate %{x}%<br>NPV %{y:$,.2f}<extra></extra>'
+    }],profileLayout,{responsive:true,displayModeBar:true});
+
+    const irrPct = Number.isFinite(irr) ? irr*100 : 0;
+    const hurdlePct = data.hurdleRate*100;
+    Plotly.react('irr-comparison-chart',[{
+      x:['IRR','Required Return'],
+      y:[irrPct,hurdlePct],
+      type:'bar',
+      marker:{color:[irrPct>=hurdlePct?'#27AE60':'#EB5757','#2F80ED']},
+      hovertemplate:'%{x}<br>%{y:.2f}%<extra></extra>'
+    }],layout('IRR vs. Required Return','Metric','Percent',{ticksuffix:'%'}),{responsive:true,displayModeBar:true});
+
+    const labels=['Initial',...data.cashflows.map((_,i)=>`Year ${i+1}`)];
+    const values=[data.initial,...data.cashflows];
+    Plotly.react('irr-cashflow-chart',[{
+      x:labels,
+      y:values,
+      type:'bar',
+      marker:{color:values.map(v=>v<0?'#EB5757':'#27AE60')},
+      hovertemplate:'%{x}<br>Cash flow %{y:$,.2f}<extra></extra>'
+    }],layout('Project Cash Flows','Period','Cash Flow',{tickprefix:'$'}),{responsive:true,displayModeBar:true});
+  }
+  function render(){
+    const data=getInputs();
+    const irr=calcIRR(data.initial,data.cashflows);
+    data.irr=irr;
+    const npv=npvAtRate(data.initial,data.cashflows,data.hurdleRate);
+    const accept=Number.isFinite(irr) && irr>data.hurdleRate;
+    const set=(id,val)=>{const el=document.querySelector(id); if(el) el.textContent=val;};
+    set('#irr-result',Number.isFinite(irr)?(irr*100).toFixed(2)+'%':'No IRR');
+    set('#irr-hurdle-result',(data.hurdleRate*100).toFixed(2)+'%');
+    set('#irr-spread',Number.isFinite(irr)?((irr-data.hurdleRate)*100).toFixed(2)+' pts':'N/A');
+    set('#irr-npv-at-hurdle',compactMoney(npv));
+    const badge=document.querySelector('#irr-recommendation-badge');
+    if(badge){badge.textContent=accept?'Accept':'Review';badge.style.background=accept?'#E9F8EF':'#FFF6DB';badge.style.color=accept?'#176B3A':'#7A5A00';}
+    const warning=document.querySelector('#irr-warning');
+    if(warning){warning.innerHTML=nonNormal(data)?'<strong>Analyst warning:</strong> This cash-flow pattern has more than one sign change. IRR may be misleading or multiple IRRs may exist. Use NPV as the primary decision rule.':'<strong>Cash-flow pattern:</strong> This appears to be a conventional investment pattern. IRR is easier to interpret, but NPV remains the primary value-creation rule.';}
+    const interp=document.querySelector('#irr-interpretation');
+    if(interp){interp.innerHTML=Number.isFinite(irr)?`The project IRR is <strong>${(irr*100).toFixed(2)}%</strong>. The required return is <strong>${(data.hurdleRate*100).toFixed(2)}%</strong>. At the required return, the project NPV is <strong>${fullMoney(npv)}</strong>.`:`The model did not find a reliable IRR for this cash-flow pattern. Review the timing and signs of the cash flows, and rely on NPV for the decision.`;}
+    plotOnly(data);
+    if(typeof AFL!=='undefined') AFL.write({module1:Math.max(AFL.read().module1,68),currentSection:'irr'});
+  }
+  function reset(){
+    document.querySelector('#irr-initial').value=10000;
+    document.querySelector('#irr-hurdle').value=9;
+    document.querySelector('#irr-cf-1').value=3000;
+    document.querySelector('#irr-cf-2').value=4000;
+    document.querySelector('#irr-cf-3').value=5000;
+    document.querySelector('#irr-cf-4').value=2500;
+    document.querySelector('#irr-cf-5').value=1500;
+    render();
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('[data-irr-input]').forEach(el=>{
+      el.addEventListener('input',render);
+      el.addEventListener('change',render);
+    });
+    const resetButton=document.querySelector('#reset-irr');
+    if(resetButton) resetButton.addEventListener('click',reset);
+    render();
+    if(typeof markPageVisited==='function') markPageVisited('irr');
+  });
+  window.addEventListener('resize',function(){
+    if(window.Plotly){
+      ['irr-profile-chart','irr-comparison-chart','irr-cashflow-chart'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) Plotly.Plots.resize(el);
+      });
+    }
+  });
+})();
+</script>
 </body>
 </html>
