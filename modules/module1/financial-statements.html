@@ -1,4 +1,25 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Financial Statements | Module 1</title><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Statement Explorer | Module 1</title>
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/navigation.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    .statement-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.92rem;}
+    .statement-table th,.statement-table td{border-bottom:1px solid var(--line);padding:10px;text-align:right;}
+    .statement-table th:first-child,.statement-table td:first-child{text-align:left;font-weight:800;color:var(--primary);}
+    .statement-table th{font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:#667085;}
+    .statement-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px;}
+    .tab-btn{border:1px solid var(--line);background:#fff;color:var(--primary);border-radius:12px;padding:10px 14px;font-weight:900;cursor:pointer;}
+    .tab-btn.active{background:#EAF3FF;border-color:#BBD7FF;color:#155CA8;}
+    .note-box{border-left:5px solid var(--accent);background:#F7FBFF;padding:14px 16px;border-radius:12px;margin-top:14px;color:#344054;}
+  </style>
+</head>
+<body>
 <nav class="navbar">
   <div class="container nav-inner">
     <a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a>
@@ -11,4 +32,190 @@
     </ul>
     <div class="nav-meta">Module 1 of 8</div>
   </div>
-</nav><main class="container page-header"><span class="kicker">Module 1</span><h1 class="page-title">Financial Statements</h1><p class="lead">Financial Modeling Foundations: a professional workflow for turning financial information into decisions.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link " href="overview.html" onclick="markPageVisited('overview')">Overview</a><a class="side-link " href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a><a class="side-link " href="pv.html" onclick="markPageVisited('pv')">Present Value</a><a class="side-link " href="fv.html" onclick="markPageVisited('fv')">Future Value</a><a class="side-link " href="npv.html" onclick="markPageVisited('npv')">NPV</a><a class="side-link " href="irr.html" onclick="markPageVisited('irr')">IRR</a><a class="side-link active" href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a><a class="side-link " href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a><a class="side-link " href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a><a class="side-link " href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a><a class="side-link " href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a></div></aside><article class="card content-panel"><h2>Accounting statements as decision inputs</h2><p>The income statement, balance sheet, and cash flow statement become evidence in an investment recommendation.</p></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script>markPageVisited('financial-statements');</script></body></html>
+</nav>
+
+<main class="container page-header">
+  <span class="kicker">Module 1 Studio</span>
+  <h1 class="page-title">Financial Statement Explorer</h1>
+  <p class="lead">Move from project cash flows to company analysis. Explore how the income statement, balance sheet, and cash flow statement become evidence for an analyst recommendation.</p>
+</main>
+
+<section class="section">
+  <div class="container sidebar-layout">
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Module Navigation</h3>
+        <a class="side-link" href="overview.html" onclick="markPageVisited('overview')">Overview</a>
+        <a class="side-link" href="tvm.html" onclick="markPageVisited('tvm')">Time Value of Money</a>
+        <a class="side-link" href="pv.html" onclick="markPageVisited('pv')">Present Value</a>
+        <a class="side-link" href="fv.html" onclick="markPageVisited('fv')">Future Value</a>
+        <a class="side-link" href="npv.html" onclick="markPageVisited('npv')">NPV</a>
+        <a class="side-link" href="irr.html" onclick="markPageVisited('irr')">IRR</a>
+        <a class="side-link active" href="financial-statements.html" onclick="markPageVisited('financial-statements')">Financial Statements</a>
+        <a class="side-link" href="ratio-analysis.html" onclick="markPageVisited('ratio-analysis')">Ratio Analysis</a>
+        <a class="side-link" href="enterprise-value.html" onclick="markPageVisited('enterprise-value')">Enterprise Value</a>
+        <a class="side-link" href="challenge.html" onclick="markPageVisited('challenge')">Case Challenge</a>
+        <a class="side-link" href="ai-reflection.html" onclick="markPageVisited('ai-reflection')">AI Reflection</a>
+      </div>
+    </aside>
+
+    <article class="content-panel">
+      <div class="grid grid-2">
+        <section class="card">
+          <span class="kicker">Company Selector</span>
+          <h2>Choose a teaching case</h2>
+          <p class="lead">These are simplified teaching datasets designed for classroom analysis and interface testing. Replace with current audited data before using for investment conclusions.</p>
+          <label>Company
+            <select id="company-select">
+              <option value="msft">Microsoft</option>
+              <option value="nvda">NVIDIA</option>
+              <option value="de">Deere</option>
+              <option value="cost">Costco</option>
+              <option value="v">Visa</option>
+            </select>
+          </label>
+          <div class="note-box"><strong>Analyst mindset:</strong> Financial statements are not just accounting documents. They are structured evidence about growth, profitability, capital intensity, liquidity, and cash generation.</div>
+        </section>
+
+        <section class="card">
+          <span class="kicker">Snapshot</span>
+          <h2 id="company-name">Microsoft</h2>
+          <p id="company-description" class="lead">Overview will update after selection.</p>
+          <div class="grid grid-2">
+            <div class="metric"><b id="snapshot-revenue">$0</b><span>Latest Revenue</span></div>
+            <div class="metric"><b id="snapshot-net-income">$0</b><span>Latest Net Income</span></div>
+            <div class="metric"><b id="snapshot-ocf">$0</b><span>Operating Cash Flow</span></div>
+            <div class="metric"><b id="snapshot-assets">$0</b><span>Total Assets</span></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Visualization</span>
+        <h2>Revenue, net income, and operating cash flow</h2>
+        <div id="statement-trend-chart" style="width:100%;min-height:450px;"></div>
+      </section>
+
+      <div class="grid grid-2" style="margin-top:22px;">
+        <section class="card">
+          <span class="kicker">Common-size View</span>
+          <h2>Margins and cash conversion</h2>
+          <div id="margin-chart" style="width:100%;min-height:390px;"></div>
+        </section>
+        <section class="card">
+          <span class="kicker">Capital Structure Preview</span>
+          <h2>Assets, liabilities, and equity</h2>
+          <div id="balance-chart" style="width:100%;min-height:390px;"></div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Statement Table</span>
+        <h2>Explore line items</h2>
+        <div class="statement-tabs">
+          <button class="tab-btn active" data-statement="income">Income Statement</button>
+          <button class="tab-btn" data-statement="balance">Balance Sheet</button>
+          <button class="tab-btn" data-statement="cashflow">Cash Flow Statement</button>
+        </div>
+        <div id="statement-table-wrap"></div>
+      </section>
+
+      <section class="card" style="margin-top:22px;">
+        <span class="kicker">Analyst Prompt</span>
+        <h2>Turn statements into evidence</h2>
+        <p class="lead">Use the statement evidence to identify one strength, one concern, and one question you would investigate before making a recommendation.</p>
+        <textarea placeholder="Example: The company shows strong revenue growth and cash generation, but I would investigate whether margins are sustainable and whether asset growth is efficient."></textarea>
+      </section>
+
+      <div class="grid grid-2" style="margin-top:22px;">
+        <a class="btn btn-light" href="irr.html">← Previous: IRR</a>
+        <a class="btn btn-primary" href="ratio-analysis.html">Next: Ratio Analysis →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/navigation.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script>
+(function(){
+  const DATA = {
+    msft:{name:'Microsoft',description:'Large software and cloud platform company used here as a teaching case.',years:[2021,2022,2023,2024],income:{revenue:[168088,198270,211915,245122],grossProfit:[115856,135620,146052,171008],operatingIncome:[69916,83383,88523,109433],netIncome:[61271,72738,72361,88136]},balance:{assets:[333779,364840,411976,512163],liabilities:[191791,198298,205753,243686],equity:[141988,166542,206223,268477],cash:[130334,104749,111256,75531],debt:[67775,61270,59965,67127]},cashflow:{ocf:[76740,89035,87582,118548],capex:[20622,23886,28107,44477],fcf:[56118,65149,59475,74071]}},
+    nvda:{name:'NVIDIA',description:'Semiconductor and accelerated computing company used here as a teaching case.',years:[2021,2022,2023,2024],income:{revenue:[16675,26914,26974,60922],grossProfit:[10396,17475,15356,44301],operatingIncome:[4532,10041,4224,32972],netIncome:[4332,9752,4368,29760]},balance:{assets:[28791,44187,41182,65728],liabilities:[11898,17575,19081,22750],equity:[16893,26612,22101,42978],cash:[11561,21208,13296,25984],debt:[5964,10946,10953,9709]},cashflow:{ocf:[5822,9108,5641,28090],capex:[1128,976,1833,1069],fcf:[4694,8132,3808,27021]}},
+    de:{name:'Deere',description:'Industrial equipment manufacturer used here as a teaching case.',years:[2021,2022,2023,2024],income:{revenue:[44024,52577,61251,51000],grossProfit:[14312,17240,21410,17400],operatingIncome:[7600,10166,13788,10200],netIncome:[5963,7131,10166,7750]},balance:{assets:[84114,90311,104771,107500],liabilities:[66493,70255,81849,82500],equity:[17621,20056,22922,25000],cash:[8683,7055,7256,7200],debt:[43500,48000,57500,59000]},cashflow:{ocf:[7416,5407,11232,9400],capex:[1278,1513,1991,2300],fcf:[6138,3894,9241,7100]}},
+    cost:{name:'Costco',description:'Membership warehouse retailer used here as a teaching case.',years:[2021,2022,2023,2024],income:{revenue:[195929,226954,242290,254453],grossProfit:[24645,28130,30679,32400],operatingIncome:[8700,9167,8695,9450],netIncome:[5007,5844,6292,7050]},balance:{assets:[59268,64000,68670,73500],liabilities:[40255,42100,45000,47400],equity:[19013,21900,23670,26100],cash:[12413,11850,13200,14500],debt:[8900,6500,6600,6500]},cashflow:{ocf:[8958,7392,11068,11600],capex:[2810,3890,4100,4500],fcf:[6148,3502,6968,7100]}},
+    v:{name:'Visa',description:'Global payments network used here as a teaching case.',years:[2021,2022,2023,2024],income:{revenue:[24105,29310,32653,35800],grossProfit:[19600,23900,27000,29800],operatingIncome:[15804,19382,21971,24300],netIncome:[12311,14957,17273,19000]},balance:{assets:[82367,85501,90499,96000],liabilities:[45307,47400,50100,52000],equity:[37060,38101,40399,44000],cash:[16863,20040,20200,21500],debt:[20700,20600,20500,20800]},cashflow:{ocf:[15000,18000,20200,22100],capex:[700,900,1050,1200],fcf:[14300,17100,19150,20900]}}
+  };
+  let currentStatement='income';
+  const money = v => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format((Number(v)||0)*1000000);
+  const shortMoney = v => '$' + (Number(v)||0).toLocaleString('en-US') + 'M';
+  const pct = v => ((Number(v)||0)*100).toFixed(1)+'%';
+  function getCompany(){return DATA[document.querySelector('#company-select').value] || DATA.msft;}
+  function lineLayout(title,xTitle,yTitle){return{title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:60,r:24,b:58,l:78},xaxis:{title:xTitle,gridcolor:'#E5E7EB'},yaxis:{title:yTitle,gridcolor:'#E5E7EB'},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},legend:{orientation:'h',y:-0.2}};}
+  function barLayout(title,xTitle,yTitle){return{title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:60,r:24,b:58,l:78},xaxis:{title:xTitle,gridcolor:'#E5E7EB'},yaxis:{title:yTitle,gridcolor:'#E5E7EB'},font:{family:'Segoe UI, Arial, sans-serif',color:'#17212B'},showlegend:false};}
+  function renderSnapshot(c){
+    const last=c.years.length-1;
+    document.querySelector('#company-name').textContent=c.name;
+    document.querySelector('#company-description').textContent=c.description;
+    document.querySelector('#snapshot-revenue').textContent=shortMoney(c.income.revenue[last]);
+    document.querySelector('#snapshot-net-income').textContent=shortMoney(c.income.netIncome[last]);
+    document.querySelector('#snapshot-ocf').textContent=shortMoney(c.cashflow.ocf[last]);
+    document.querySelector('#snapshot-assets').textContent=shortMoney(c.balance.assets[last]);
+  }
+  function renderCharts(c){
+    const years=c.years;
+    Plotly.react('statement-trend-chart',[
+      {x:years,y:c.income.revenue,type:'scatter',mode:'lines+markers',name:'Revenue',line:{width:4,color:'#2F80ED'},hovertemplate:'%{x}<br>Revenue $%{y:,.0f}M<extra></extra>'},
+      {x:years,y:c.income.netIncome,type:'scatter',mode:'lines+markers',name:'Net Income',line:{width:4,color:'#27AE60'},hovertemplate:'%{x}<br>Net Income $%{y:,.0f}M<extra></extra>'},
+      {x:years,y:c.cashflow.ocf,type:'scatter',mode:'lines+markers',name:'Operating Cash Flow',line:{width:4,color:'#0B3558'},hovertemplate:'%{x}<br>OCF $%{y:,.0f}M<extra></extra>'}
+    ],lineLayout('Statement Trend Analysis','Fiscal Year','USD Millions'),{responsive:true,displayModeBar:true});
+    const margin=c.income.netIncome.map((v,i)=>v/c.income.revenue[i]);
+    const operatingMargin=c.income.operatingIncome.map((v,i)=>v/c.income.revenue[i]);
+    const cashConversion=c.cashflow.ocf.map((v,i)=>v/c.income.netIncome[i]);
+    Plotly.react('margin-chart',[
+      {x:years,y:margin,type:'scatter',mode:'lines+markers',name:'Net Margin',line:{width:4,color:'#27AE60'},hovertemplate:'%{x}<br>Net Margin %{y:.1%}<extra></extra>'},
+      {x:years,y:operatingMargin,type:'scatter',mode:'lines+markers',name:'Operating Margin',line:{width:4,color:'#2F80ED'},hovertemplate:'%{x}<br>Operating Margin %{y:.1%}<extra></extra>'},
+      {x:years,y:cashConversion,type:'scatter',mode:'lines+markers',name:'OCF / Net Income',line:{width:4,color:'#0B3558'},hovertemplate:'%{x}<br>OCF / NI %{y:.1%}<extra></extra>'}
+    ],lineLayout('Margins and Cash Conversion','Fiscal Year','Percent / Ratio'),{responsive:true,displayModeBar:true});
+    const last=years.length-1;
+    Plotly.react('balance-chart',[{x:['Assets','Liabilities','Equity','Cash','Debt'],y:[c.balance.assets[last],c.balance.liabilities[last],c.balance.equity[last],c.balance.cash[last],c.balance.debt[last]],type:'bar',marker:{color:['#2F80ED','#EB5757','#27AE60','#0B3558','#F2C94C']},hovertemplate:'%{x}<br>$%{y:,.0f}M<extra></extra>'}],barLayout('Latest Balance Sheet Snapshot','Category','USD Millions'),{responsive:true,displayModeBar:true});
+  }
+  function statementRows(c){
+    if(currentStatement==='income') return [['Revenue',c.income.revenue],['Gross Profit',c.income.grossProfit],['Operating Income',c.income.operatingIncome],['Net Income',c.income.netIncome]];
+    if(currentStatement==='balance') return [['Total Assets',c.balance.assets],['Total Liabilities',c.balance.liabilities],['Shareholders Equity',c.balance.equity],['Cash',c.balance.cash],['Debt',c.balance.debt]];
+    return [['Operating Cash Flow',c.cashflow.ocf],['Capital Expenditures',c.cashflow.capex],['Free Cash Flow',c.cashflow.fcf]];
+  }
+  function renderTable(c){
+    const rows=statementRows(c);
+    const header='<tr><th>Line Item</th>'+c.years.map(y=>`<th>${y}</th>`).join('')+'</tr>';
+    const body=rows.map(([label,vals])=>'<tr><td>'+label+'</td>'+vals.map(v=>`<td>${shortMoney(v)}</td>`).join('')+'</tr>').join('');
+    document.querySelector('#statement-table-wrap').innerHTML=`<table class="statement-table">${header}${body}</table>`;
+  }
+  function render(){
+    const c=getCompany();
+    renderSnapshot(c);
+    renderCharts(c);
+    renderTable(c);
+    if(typeof AFL!=='undefined') AFL.write({module1:Math.max(AFL.read().module1,78),currentSection:'financial-statements'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelector('#company-select').addEventListener('change',render);
+    document.querySelectorAll('[data-statement]').forEach(btn=>{
+      btn.addEventListener('click',function(){
+        currentStatement=btn.dataset.statement;
+        document.querySelectorAll('[data-statement]').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTable(getCompany());
+      });
+    });
+    render();
+    if(typeof markPageVisited==='function') markPageVisited('financial-statements');
+  });
+  window.addEventListener('resize',function(){
+    if(window.Plotly){['statement-trend-chart','margin-chart','balance-chart'].forEach(id=>{const el=document.getElementById(id); if(el) Plotly.Plots.resize(el);});}
+  });
+})();
+</script>
+</body>
+</html>
