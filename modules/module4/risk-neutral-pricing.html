@@ -1,1 +1,91 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><link rel="stylesheet" href="../../assets/css/module4-integrated.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><title>State Prices & Risk-Neutral Probability</title></head><body><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 4 of 8</div></div></nav><main class="container page-header"><span class="kicker">Sprint 5C</span><h1 class="page-title">State Prices & Risk-Neutral Probability</h1><p class="lead">Translate state prices into risk-neutral probabilities and explain why actual probabilities are not required for arbitrage-free pricing.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="options-foundations.html">Options Foundations</a><a class="side-link" href="binomial-pricing.html">Binomial Pricing</a><a class="side-link" href="risk-neutral-pricing.html">State Prices & Risk-Neutral Probability</a><a class="side-link" href="multi-period-trees.html">Multi-Period Trees</a><a class="side-link" href="american-options.html">American Options</a><a class="side-link" href="black-scholes.html">Black-Scholes/Merton</a><a class="side-link" href="volatility-lab.html">Volatility Lab</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside><article class="content-panel"><section class="card"><span class="version-tag">Sprint 5C Scaffold</span><span class="kicker" style="display:block;margin-top:18px">Construction placeholder</span><h2>State Prices & Risk-Neutral Probability</h2><p>Translate state prices into risk-neutral probabilities and explain why actual probabilities are not required for arbitrage-free pricing.</p><div class="note-box"><strong>Production status:</strong> This page is intentionally scaffolded so Module 4 navigation is complete from the start. The next build will replace this scaffold with the interactive lab.</div></section><section class="card" style="margin-top:22px"><span class="kicker">Planned lab elements</span><h2>What this page will include</h2><ul><li>Concept explanation</li><li>Editable inputs</li><li>Visual model output</li><li>Analyst interpretation prompt</li><li>Saved evidence for the final option pricing memo</li></ul></section><div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="overview.html">← Module 4 Overview</a><a class="btn btn-primary" href="multi-period-trees.html">Next: Multi-Period Trees →</a></div></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script src="../../assets/js/module4-lab.js"></script><script>document.addEventListener('DOMContentLoaded',function(){M4.save('risk_neutral_pricing',{status:'scaffold',title:'State Prices & Risk-Neutral Probability'});});</script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><link rel="stylesheet" href="../../assets/css/module4-integrated.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><title>State Prices & Risk-Neutral Probability | Module 4</title></head><body class="rn-page"><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 4 of 8</div></div></nav><main class="container page-header"><span class="kicker">Sprint 5C</span><h1 class="page-title">State Prices & Risk-Neutral Probability</h1><p class="lead">Connect binomial replication to state prices and risk-neutral valuation.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="options-foundations.html">Options Foundations</a><a class="side-link" href="binomial-pricing.html">Binomial Pricing</a><a class="side-link" href="risk-neutral-pricing.html">State Prices & Risk-Neutral Probability</a><a class="side-link" href="multi-period-trees.html">Multi-Period Trees</a><a class="side-link" href="american-options.html">American Options</a><a class="side-link" href="black-scholes.html">Black-Scholes/Merton</a><a class="side-link" href="volatility-lab.html">Volatility Lab</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside><article class="content-panel"><style>
+.rn-page .sidebar .side-link{line-height:1.25;padding:10px 12px;}
+.rn-page .studio-grid{grid-template-columns:minmax(320px,.95fr) minmax(360px,1.05fr);align-items:start;}
+.rn-page .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.rn-page .metric{padding:14px 13px;}
+.rn-page .metric b{font-size:clamp(1.05rem,1.55vw,1.42rem);letter-spacing:-.02em;}
+.rn-page .metric span{font-size:.72rem;line-height:1.2;}
+.rn-page .plotly-chart{min-height:420px;}
+.rn-page #state-price-chart{min-height:430px;}
+.rn-page #rn-prob-chart,.rn-page #value-comparison-chart{min-height:390px;}
+.rn-page .equation-box{font-family:Consolas,monospace;background:#F7FBFF;border:1px solid #DDEAF7;border-radius:14px;padding:14px;overflow:auto;font-size:.95rem;line-height:1.6;}
+@media(max-width:1050px){.rn-page .studio-grid{grid-template-columns:1fr}.rn-page .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:650px){.rn-page .metric-grid{grid-template-columns:1fr}.rn-page .plotly-chart{min-height:380px}}
+</style>
+
+<section class="card"><span class="version-tag">Sprint 5C</span><span class="kicker" style="display:block;margin-top:18px">Chapter 17 bridge</span><h2>State prices and risk-neutral probability</h2><p>The one-period binomial model can be priced three equivalent ways: replication, state prices, and risk-neutral valuation. This page shows how state prices convert future state payoffs into current value and how multiplying state prices by the gross risk-free rate produces risk-neutral probabilities.</p><div class="note-box"><strong>Analyst purpose:</strong> Students should understand that the actual probability of the up state is not needed for arbitrage-free option pricing. Price comes from replication and discounting under risk-neutral probabilities.</div></section>
+
+<div class="studio-grid" style="margin-top:22px">
+  <section class="card"><span class="kicker">Inputs</span><h2>Build the pricing states</h2><div class="form-row"><label>Current stock price S0<input id="s0" type="number" value="50" step="1" data-rn></label><label>Strike price X<input id="x" type="number" value="50" step="1" data-rn></label></div><div class="form-row"><label>Up factor u<input id="u" type="number" value="1.25" step="0.01" data-rn></label><label>Down factor d<input id="d" type="number" value="0.80" step="0.01" data-rn></label></div><div class="form-row"><label>Risk-free rate per period (%)<input id="r" type="number" value="5" step="0.25" data-rn></label><label>Option type<select id="otype" data-rn><option>Call</option><option>Put</option></select></label></div><div class="form-row"><label>Actual probability of up state (%)<input id="actual-p" type="number" value="60" step="1" data-rn></label><label>Real-world expected return reference<select id="show-real" data-rn><option>Compare real-world expectation</option><option>Hide real-world expectation</option></select></label></div><div class="note-box warning" id="arb-warning">No-arbitrage check will appear here.</div></section>
+  <section class="card"><span class="kicker">Pricing Output</span><h2>State price valuation</h2><p id="rn-note" class="lead"></p><div class="metric-grid"><div class="metric"><b id="phi-u">0.0000</b><span>Up State Price φu</span></div><div class="metric"><b id="phi-d">0.0000</b><span>Down State Price φd</span></div><div class="metric"><b id="q-out">0.00%</b><span>Risk-Neutral q</span></div><div class="metric"><b id="option-price">$0.00</b><span>Option Value</span></div><div class="metric"><b id="real-world-value">$0.00</b><span>Discounted Real-World Expected Payoff</span></div><div class="metric"><b id="replication-check">$0.00</b><span>Replication Check</span></div></div></section>
+</div>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Pricing Formulas</span><h2>From state prices to risk-neutral probability</h2><div class="equation-box" id="equations"></div></section>
+
+<div class="grid grid-2" style="margin-top:22px">
+  <section class="card"><span class="kicker">State Prices</span><h2>Present price of one dollar in each state</h2><div id="state-price-chart" class="plotly-chart"></div></section>
+  <section class="card"><span class="kicker">Risk-Neutral Probabilities</span><h2>Pricing probabilities</h2><div id="rn-prob-chart" class="plotly-chart"></div></section>
+</div>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Valuation Comparison</span><h2>Risk-neutral price versus real-world expected payoff</h2><div id="value-comparison-chart" class="plotly-chart"></div></section>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Calculation Table</span><h2>State price and risk-neutral valuation calculations</h2><div class="table-scroll"><table class="mini-table"><thead><tr><th>Item</th><th>Formula / interpretation</th><th>Value</th></tr></thead><tbody id="calc-table"></tbody></table></div></section>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">Explain why risk-neutral probability is a pricing device, not a forecast of the actual probability of an up move.</p><textarea placeholder="Example: The option value is priced using risk-neutral probabilities because those probabilities are implied by no-arbitrage state prices. The actual probability may describe beliefs about outcomes, but it is not needed to price the option when replication is possible."></textarea></section>
+
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="binomial-pricing.html">← Previous: Binomial Pricing</a><a class="btn btn-primary" href="multi-period-trees.html">Next: Multi-Period Trees →</a></div></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script src="../../assets/js/module4-lab.js"></script><script>
+document.addEventListener('DOMContentLoaded',function(){
+  function fmtMoney(v){return '$'+(Number(v)||0).toFixed(2)}
+  function fmtNum(v){return (Number(v)||0).toFixed(4)}
+  function fmtPct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2})}
+  function set(id,val){const el=document.getElementById(id); if(el) el.textContent=val;}
+  function calc(){
+    const S0=M4.n('s0'), X=M4.n('x'), u=M4.n('u'), d=M4.n('d'), r=M4.n('r')/100, actualP=M4.n('actual-p')/100, type=document.getElementById('otype').value;
+    const R=1+r, Su=S0*u, Sd=S0*d;
+    const Cu=type==='Call'?Math.max(Su-X,0):Math.max(X-Su,0);
+    const Cd=type==='Call'?Math.max(Sd-X,0):Math.max(X-Sd,0);
+    const valid=(u>d && d<R && R<u);
+    const phiU=(S0-(Sd/R))/Math.max(0.000001,(Su-Sd));
+    const phiD=(1/R)-phiU;
+    const q=R*phiU;
+    const optionValue=phiU*Cu+phiD*Cd;
+    const rnValue=(q*Cu+(1-q)*Cd)/R;
+    const realWorldValue=(actualP*Cu+(1-actualP)*Cd)/R;
+    const delta=(Cu-Cd)/Math.max(0.000001,(Su-Sd));
+    const bond=(Cu-delta*Su)/R;
+    const replication=delta*S0+bond;
+    return {S0,X,u,d,r,R,actualP,type,Su,Sd,Cu,Cd,valid,phiU,phiD,q,optionValue,rnValue,realWorldValue,delta,bond,replication};
+  }
+  function renderEquations(c){document.getElementById('equations').innerHTML='Stock equation: S0 = φu × Su + φd × Sd<br>Bond equation: 1 / (1 + r) = φu + φd<br>Risk-neutral probability: q = (1 + r) × φu<br>Option value: C or P = φu × payoff up + φd × payoff down';}
+  function renderTable(c){
+    const rows=[
+      ['Up-state stock price','S0 × u',fmtMoney(c.Su)],
+      ['Down-state stock price','S0 × d',fmtMoney(c.Sd)],
+      ['Up-state option payoff','Call: Max(Su - X, 0); Put: Max(X - Su, 0)',fmtMoney(c.Cu)],
+      ['Down-state option payoff','Call: Max(Sd - X, 0); Put: Max(X - Sd, 0)',fmtMoney(c.Cd)],
+      ['Up state price φu','Current price of $1 paid only in the up state',fmtNum(c.phiU)],
+      ['Down state price φd','Current price of $1 paid only in the down state',fmtNum(c.phiD)],
+      ['Risk-neutral q','(1 + r) × φu',fmtPct(c.q)],
+      ['Option value from state prices','φu × payoff up + φd × payoff down',fmtMoney(c.optionValue)],
+      ['Discounted risk-neutral payoff','[q × payoff up + (1 - q) × payoff down] / (1 + r)',fmtMoney(c.rnValue)],
+      ['Discounted real-world expected payoff','Uses entered actual up probability, shown for contrast',fmtMoney(c.realWorldValue)]
+    ];
+    document.getElementById('calc-table').innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>').join('');
+  }
+  function layout(title,xTitle,yTitle){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:38,b:78,l:76},xaxis:{title:{text:xTitle,font:{size:13}},tickfont:{size:11},gridcolor:'#E5E7EB',automargin:true},yaxis:{title:{text:yTitle,font:{size:13}},tickfont:{size:11},gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI, Arial, sans-serif',size:12,color:'#17212B'}}}
+  function renderCharts(c){if(!window.Plotly)return;
+    Plotly.react('state-price-chart',[{x:['φu','φd','φu + φd'],y:[c.phiU,c.phiD,c.phiU+c.phiD],type:'bar',marker:{color:['#27AE60','#EB5757','#0B3558']},text:[fmtNum(c.phiU),fmtNum(c.phiD),fmtNum(c.phiU+c.phiD)],textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>%{y:.4f}<extra></extra>'}],layout('State Prices','State Price','Present Value'),{responsive:true,displayModeBar:false});
+    const qLayout=layout('Risk-Neutral Probability Versus Actual Probability','Probability Type','Probability');qLayout.yaxis.tickformat='.0%';qLayout.yaxis.range=[0,1];
+    Plotly.react('rn-prob-chart',[{x:['Risk-neutral q','Actual up probability'],y:[c.q,c.actualP],type:'bar',marker:{color:['#2F80ED','#F2C94C']},text:[fmtPct(c.q),fmtPct(c.actualP)],textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>%{y:.2%}<extra></extra>'}],qLayout,{responsive:true,displayModeBar:false});
+    Plotly.react('value-comparison-chart',[{x:['State price value','Risk-neutral value','Replication value','Real-world expected payoff'],y:[c.optionValue,c.rnValue,c.replication,c.realWorldValue],type:'bar',marker:{color:['#0B3558','#2F80ED','#27AE60','#F2C94C']},text:[fmtMoney(c.optionValue),fmtMoney(c.rnValue),fmtMoney(c.replication),fmtMoney(c.realWorldValue)],textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>%{y:$,.2f}<extra></extra>'}],layout('Valuation Method Comparison','Method','Value'),{responsive:true,displayModeBar:false});
+  }
+  function render(){const c=calc();
+    set('phi-u',fmtNum(c.phiU)); set('phi-d',fmtNum(c.phiD)); set('q-out',fmtPct(c.q)); set('option-price',fmtMoney(c.optionValue)); set('real-world-value',fmtMoney(c.realWorldValue)); set('replication-check',fmtMoney(c.replication));
+    document.getElementById('arb-warning').innerHTML=c.valid?'<strong>No-arbitrage condition holds:</strong> d &lt; 1 + r &lt; u. State prices are economically meaningful and q lies between 0 and 1.':'<strong>Warning:</strong> The no-arbitrage condition d &lt; 1 + r &lt; u does not hold. State prices or risk-neutral probabilities may not be economically meaningful.';
+    document.getElementById('rn-note').innerHTML='The state prices are <strong>φu = '+fmtNum(c.phiU)+'</strong> and <strong>φd = '+fmtNum(c.phiD)+'</strong>. The risk-neutral up probability is <strong>'+fmtPct(c.q)+'</strong>, producing an option value of <strong>'+fmtMoney(c.optionValue)+'</strong>.';
+    renderEquations(c); renderTable(c); renderCharts(c); M4.save('riskNeutralPricing',{type:c.type,S0:c.S0,X:c.X,u:c.u,d:c.d,r:c.r,phiU:c.phiU,phiD:c.phiD,q:c.q,optionValue:c.optionValue,realWorldValue:c.realWorldValue,valid:c.valid});
+  }
+  M4.wire('[data-rn]',render); render();
+  window.addEventListener('resize',function(){['state-price-chart','rn-prob-chart','value-comparison-chart'].forEach(id=>{const el=document.getElementById(id); if(window.Plotly&&el) Plotly.Plots.resize(el);});});
+});
+</script></body></html>
