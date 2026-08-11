@@ -1,22 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Applied Finance Lab</title>
-<link rel="stylesheet" href="assets/css/main.css">
-<link rel="stylesheet" href="assets/css/navigation.css">
-<link rel="stylesheet" href="assets/css/dashboard.css">
-<style>
-.hero{background:linear-gradient(135deg,#0B3558,#0E5670);color:#fff;padding:56px 0 64px}.hero h1{font-size:clamp(2rem,4vw,3.5rem);max-width:850px;margin:0 0 22px}.hero p{font-size:1.25rem;max-width:760px;line-height:1.55}.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:48px}.stat-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:22px}.stat-card b{display:block;font-size:2rem;margin-bottom:10px}.stat-card span{color:#DDEBFF}.home-grid{display:grid;grid-template-columns:2fr 1.2fr;gap:26px}.progress-row{margin:18px 0}.progress-row-top{display:flex;justify-content:space-between;align-items:center;gap:16px;font-weight:900}.module-title{color:#0B3558;text-decoration:none}.progress-status{font-size:.9rem;color:#0B3558}.progress-track{height:14px;background:#E5E7EB;border-radius:999px;overflow:hidden;margin:9px 0}.progress-fill{height:100%;background:#2F80ED;border-radius:999px;transition:width .25s ease}.complete .progress-fill{background:#27AE60}.coming-soon .progress-status{color:#667085}.coming-soon .progress-fill{background:#CBD5E1}.progress-meta{display:flex;justify-content:space-between;color:#667085;font-size:.86rem}.progress-note{margin-top:18px;padding:14px 16px;border-left:5px solid #2F80ED;background:#F7FBFF;border-radius:12px;color:#344054}.challenge-card{height:max-content}.reset-link{border:none;background:transparent;color:#667085;text-decoration:underline;cursor:pointer;margin-top:12px}.btn-dark{background:#0B3558;color:white}@media(max-width:900px){.stat-grid,.home-grid{grid-template-columns:1fr}.hero{padding:38px 0}.progress-meta{flex-direction:column;gap:4px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applied Finance Lab | FIN 450</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/navigation.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/homepage-dashboard.css">
 </head>
 <body>
-<nav class="navbar"><div class="container nav-inner"><a class="logo" href="index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a class="active" href="index.html">Home</a></li><li><a href="pages/modules.html">Modules</a></li><li><a href="portfolio/index.html">Portfolio</a></li><li><a href="resources/index.html">Resources</a></li></ul><div class="nav-meta">FIN 450</div></div></nav>
-<header class="hero"><div class="container"><h1>Build better financial judgment through applied labs.</h1><p>Finance is not only the study of money. Finance is the disciplined practice of turning uncertain future cash flows into better decisions today.</p><div class="hero-actions"><a class="btn btn-primary" href="modules/module1/overview.html">Start Module 1</a><a class="btn btn-light" href="pages/modules.html">View All Modules</a><a class="btn btn-light" href="modules/module2/overview.html">Open Module 2</a></div><div class="stat-grid" data-afl-stats><div class="stat-card"><b>8</b><span>Course Modules</span></div><div class="stat-card"><b>0</b><span>Artifacts Completed</span></div><div class="stat-card"><b>10</b><span>Module 1 Sections</span></div><div class="stat-card"><b>0%</b><span>Module 2 Progress</span></div></div></div></header>
-<main class="section"><div class="container home-grid"><section class="card"><span class="kicker">Progress Dashboard</span><h2>Build a repeatable analyst workflow.</h2><p class="lead">Each module moves students from concepts to models to recommendations. Available modules remain clickable, while progress is stored locally in this browser.</p><div data-progress-dashboard></div><div class="progress-note" data-progress-note></div><button class="reset-link" type="button" onclick="if(confirm('Reset local progress in this browser?')){AFL.reset();}">Reset local progress</button></section><aside class="card challenge-card"><span class="kicker">Featured Challenge</span><h2>Microsoft Pro Forma DCF Case</h2><p>Use Module 2 to build a defensible Microsoft valuation memo with WACC, operating FCF, pro forma forecasts, terminal value, sensitivity, ROIC, risk, and responsible stewardship.</p><a class="btn btn-dark" href="modules/module2/challenge.html">Launch Challenge</a></aside></div></main>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/navigation.js"></script>
-<script src="assets/js/progress.js"></script>
+  <nav class="navbar"><div class="container nav-inner"><a class="logo" href="index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="pages/modules.html">Modules</a></li><li><a href="portfolio/index.html">Portfolio</a></li><li><a href="resources/index.html">Resources</a></li></ul><div class="nav-meta">FIN 450</div></div></nav>
+
+  <header class="hero-band">
+    <div class="container">
+      <span class="kicker" style="color:#A7D8FF">Applied Finance Lab</span>
+      <h1 class="hero-title">Build judgment through models.</h1>
+      <p class="hero-lead">Move from financial concepts to professional analyst workflows: valuation, company diagnosis, options, portfolios, and event studies.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="pages/modules.html">Open Modules</a><a class="btn btn-light" href="modules/module3/challenge.html">Open AbbVie Case Challenge</a></div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container landing-grid">
+      <section class="card">
+        <span class="kicker">Progress Dashboard</span>
+        <h2>Build a repeatable analyst workflow.</h2>
+        <p class="lead">Available modules remain clickable, while progress is stored locally in this browser. Module 3 is now included in the production dashboard.</p>
+        <table class="dashboard-table" aria-label="Module progress dashboard">
+          <thead><tr><th>Module</th><th>Status</th><th>Build</th><th>Artifact</th></tr></thead>
+          <tbody>
+            <tr><td><a class="module-link" href="modules/module1/overview.html">Module 1</a></td><td data-module-status="1"></td><td data-module-progress="1"></td><td data-module-artifact="1"></td></tr>
+            <tr><td><a class="module-link" href="modules/module2/overview.html">Module 2</a></td><td data-module-status="2"></td><td data-module-progress="2"></td><td data-module-artifact="2"></td></tr>
+            <tr><td><a class="module-link" href="modules/module3/overview.html">Module 3</a></td><td data-module-status="3"></td><td data-module-progress="3"></td><td data-module-artifact="3"></td></tr>
+            <tr><td>Module 4</td><td data-module-status="4"></td><td data-module-progress="4"></td><td data-module-artifact="4"></td></tr>
+            <tr><td>Module 5</td><td data-module-status="5"></td><td data-module-progress="5"></td><td data-module-artifact="5"></td></tr>
+            <tr><td>Module 6</td><td data-module-status="6"></td><td data-module-progress="6"></td><td data-module-artifact="6"></td></tr>
+            <tr><td>Module 7</td><td data-module-status="7"></td><td data-module-progress="7"></td><td data-module-artifact="7"></td></tr>
+            <tr><td>Module 8</td><td data-module-status="8"></td><td data-module-progress="8"></td><td data-module-artifact="8"></td></tr>
+          </tbody>
+        </table>
+        <p class="progress-note">If a browser cached the old dashboard, hard refresh after uploading this patch.</p>
+      </section>
+
+      <aside class="card">
+        <span class="kicker">Current Highlight</span>
+        <h2>Module 3 is complete.</h2>
+        <p>The AbbVie Company Analysis Lab is now treated as a completed production module and the AbbVie memo is included as a highlighted challenge.</p>
+        <a class="btn btn-primary" href="modules/module3/overview.html">Open Module 3</a>
+      </aside>
+    </div>
+
+    <div class="container" style="margin-top:32px">
+      <section class="card">
+        <span class="kicker">Challenge Gallery</span>
+        <h2>All completed challenges are highlighted.</h2>
+        <p class="lead">Rather than featuring only one challenge, the landing page now highlights all available challenge artifacts so students can see the growing portfolio of applied work.</p>
+        <div class="challenge-grid">
+          <article class="challenge-card featured"><span class="challenge-tag">Module 1 Challenge</span><h3>Microsoft Investment Review</h3><p>Use foundational finance tools to build an investment review grounded in time value of money, financial statements, ratios, enterprise value, and memo communication.</p><a class="btn btn-primary" href="modules/module1/challenge.html">Launch Challenge</a></article>
+          <article class="challenge-card featured"><span class="challenge-tag">Module 2 Challenge</span><h3>Microsoft Pro Forma DCF Case</h3><p>Build a defensible valuation memo with WACC, operating FCF, pro forma forecasts, terminal value, sensitivity, ROIC, risk, and responsible stewardship.</p><a class="btn btn-primary" href="modules/module2/challenge.html">Launch Challenge</a></article>
+          <article class="challenge-card featured"><span class="challenge-tag">Module 3 Challenge</span><h3>AbbVie Company Analysis Memo</h3><p>Diagnose the company behind the valuation using financial statements, economic balance sheet classification, product transition, costs, reinvestment, ROIC, and valuation cross-checks.</p><a class="btn btn-primary" href="modules/module3/challenge.html">Launch Challenge</a></article>
+        </div>
+      </section>
+    </div>
+
+    <div class="container" style="margin-top:32px">
+      <section class="card">
+        <span class="kicker">Coming Next</span>
+        <h2>Future challenge pipeline</h2>
+        <div class="next-modules"><div class="mini-module"><b>Module 4</b><br>Black-Scholes Case</div><div class="mini-module"><b>Module 5</b><br>Greeks Risk Note</div><div class="mini-module"><b>Module 6</b><br>Real Options Case</div><div class="mini-module"><b>Module 7</b><br>Portfolio Analysis</div></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/navigation.js"></script>
+  <script src="assets/js/homepage-dashboard.js"></script>
 </body>
 </html>
