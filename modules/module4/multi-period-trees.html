@@ -1,1 +1,101 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><link rel="stylesheet" href="../../assets/css/module4-integrated.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><title>Multi-Period Trees</title></head><body><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 4 of 8</div></div></nav><main class="container page-header"><span class="kicker">Sprint 5D</span><h1 class="page-title">Multi-Period Trees</h1><p class="lead">Use backward induction to price multi-period European calls and puts and observe convergence logic.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="options-foundations.html">Options Foundations</a><a class="side-link" href="binomial-pricing.html">Binomial Pricing</a><a class="side-link" href="risk-neutral-pricing.html">State Prices & Risk-Neutral Probability</a><a class="side-link" href="multi-period-trees.html">Multi-Period Trees</a><a class="side-link" href="american-options.html">American Options</a><a class="side-link" href="black-scholes.html">Black-Scholes/Merton</a><a class="side-link" href="volatility-lab.html">Volatility Lab</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside><article class="content-panel"><section class="card"><span class="version-tag">Sprint 5D Scaffold</span><span class="kicker" style="display:block;margin-top:18px">Construction placeholder</span><h2>Multi-Period Trees</h2><p>Use backward induction to price multi-period European calls and puts and observe convergence logic.</p><div class="note-box"><strong>Production status:</strong> This page is intentionally scaffolded so Module 4 navigation is complete from the start. The next build will replace this scaffold with the interactive lab.</div></section><section class="card" style="margin-top:22px"><span class="kicker">Planned lab elements</span><h2>What this page will include</h2><ul><li>Concept explanation</li><li>Editable inputs</li><li>Visual model output</li><li>Analyst interpretation prompt</li><li>Saved evidence for the final option pricing memo</li></ul></section><div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="overview.html">← Module 4 Overview</a><a class="btn btn-primary" href="american-options.html">Next: American Options →</a></div></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script src="../../assets/js/module4-lab.js"></script><script>document.addEventListener('DOMContentLoaded',function(){M4.save('multi_period_trees',{status:'scaffold',title:'Multi-Period Trees'});});</script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><link rel="stylesheet" href="../../assets/css/module4-integrated.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><title>Multi-Period Trees | Module 4</title></head><body class="tree-page"><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 4 of 8</div></div></nav><main class="container page-header"><span class="kicker">Sprint 5D</span><h1 class="page-title">Multi-Period Trees and Backward Induction</h1><p class="lead">Extend one-period valuation into multi-step option pricing with risk-neutral backward induction.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="options-foundations.html">Options Foundations</a><a class="side-link" href="binomial-pricing.html">Binomial Pricing</a><a class="side-link" href="risk-neutral-pricing.html">State Prices & Risk-Neutral Probability</a><a class="side-link" href="multi-period-trees.html">Multi-Period Trees</a><a class="side-link" href="american-options.html">American Options</a><a class="side-link" href="black-scholes.html">Black-Scholes/Merton</a><a class="side-link" href="volatility-lab.html">Volatility Lab</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside><article class="content-panel"><style>
+.tree-page .sidebar .side-link{line-height:1.25;padding:10px 12px;}
+.tree-page .studio-grid{grid-template-columns:minmax(320px,.92fr) minmax(390px,1.08fr);align-items:start;}
+.tree-page .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.tree-page .metric{padding:14px 13px;}
+.tree-page .metric b{font-size:clamp(1.05rem,1.55vw,1.42rem);letter-spacing:-.02em;}
+.tree-page .metric span{font-size:.72rem;line-height:1.2;}
+.tree-page .plotly-chart{min-height:430px;}
+.tree-page #stock-tree-chart,.tree-page #option-tree-chart{min-height:520px;}
+.tree-page #terminal-payoff-chart,.tree-page #backward-chart{min-height:390px;}
+.tree-page .equation-box{font-family:Consolas,monospace;background:#F7FBFF;border:1px solid #DDEAF7;border-radius:14px;padding:14px;overflow:auto;font-size:.95rem;line-height:1.6;}
+.tree-page .mini-table th,.tree-page .mini-table td{font-size:.87rem;line-height:1.35;}
+@media(max-width:1050px){.tree-page .studio-grid{grid-template-columns:1fr}.tree-page .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:650px){.tree-page .metric-grid{grid-template-columns:1fr}.tree-page .plotly-chart{min-height:390px}.tree-page #stock-tree-chart,.tree-page #option-tree-chart{min-height:450px}}
+</style>
+
+<section class="card"><span class="version-tag">Sprint 5D</span><span class="kicker" style="display:block;margin-top:18px">Chapter 17 expansion</span><h2>Multi-period binomial trees and backward induction</h2><p>The multi-period binomial model extends the one-period logic by building a sequence of possible stock prices and then valuing the option backward from terminal payoffs. At each node, the option value equals the discounted risk-neutral expected value of the two next-period option values.</p><div class="note-box"><strong>Analyst purpose:</strong> Students should see that option pricing is not simply a formula. It is a recursive valuation process: build terminal payoffs, move backward one step at a time, and arrive at today’s option value.</div></section>
+
+<div class="studio-grid" style="margin-top:22px">
+  <section class="card"><span class="kicker">Inputs</span><h2>Build the tree</h2><div class="form-row"><label>Current stock price S0<input id="s0" type="number" value="50" step="1" data-tree></label><label>Strike price X<input id="x" type="number" value="50" step="1" data-tree></label></div><div class="form-row"><label>Up factor u<input id="u" type="number" value="1.15" step="0.01" data-tree></label><label>Down factor d<input id="d" type="number" value="0.90" step="0.01" data-tree></label></div><div class="form-row"><label>Risk-free rate per step (%)<input id="r" type="number" value="2" step="0.25" data-tree></label><label>Number of steps<select id="steps" data-tree><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label></div><div class="form-row"><label>Option type<select id="otype" data-tree><option>Call</option><option>Put</option></select></label><label>Exercise style<select id="exercise" data-tree><option selected>European</option><option>American preview</option></select></label></div><div class="note-box warning" id="arb-warning">No-arbitrage check will appear here.</div></section>
+  <section class="card"><span class="kicker">Backward Induction Output</span><h2>Today’s option value</h2><p id="tree-note" class="lead"></p><div class="metric-grid"><div class="metric"><b id="option-price">$0.00</b><span>Option Value Today</span></div><div class="metric"><b id="q-out">0.00%</b><span>Risk-Neutral q</span></div><div class="metric"><b id="terminal-max">$0.00</b><span>Highest Terminal Payoff</span></div><div class="metric"><b id="terminal-min">$0.00</b><span>Lowest Terminal Payoff</span></div><div class="metric"><b id="node-count">0</b><span>Total Tree Nodes</span></div><div class="metric"><b id="exercise-note">European</b><span>Exercise Treatment</span></div></div></section>
+</div>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Backward Induction Formula</span><h2>Node valuation rule</h2><div class="equation-box">Option value at a node = [q × value at up node + (1 - q) × value at down node] / (1 + r)<br>European option: use this rule at every interior node.<br>American preview: compare continuation value with immediate exercise value at each node.</div></section>
+
+<div class="grid grid-2" style="margin-top:22px">
+  <section class="card"><span class="kicker">Stock Tree</span><h2>Underlying stock price tree</h2><div id="stock-tree-chart" class="plotly-chart"></div></section>
+  <section class="card"><span class="kicker">Option Tree</span><h2>Backward induction option value tree</h2><div id="option-tree-chart" class="plotly-chart"></div></section>
+</div>
+
+<div class="grid grid-2" style="margin-top:22px">
+  <section class="card"><span class="kicker">Terminal Payoffs</span><h2>Expiration payoff by terminal node</h2><div id="terminal-payoff-chart" class="plotly-chart"></div></section>
+  <section class="card"><span class="kicker">Backward Levels</span><h2>Average option value by time step</h2><div id="backward-chart" class="plotly-chart"></div></section>
+</div>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Calculation Table</span><h2>Terminal stock prices and option payoffs</h2><div class="table-scroll"><table class="mini-table"><thead><tr><th>Terminal node</th><th>Up moves</th><th>Stock price</th><th>Option payoff</th></tr></thead><tbody id="terminal-table"></tbody></table></div></section>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">Explain how backward induction uses terminal payoffs and risk-neutral probabilities to price the option today.</p><textarea placeholder="Example: The option price is found by valuing terminal payoffs at expiration and then moving backward through the tree. Each earlier node is the discounted risk-neutral expected value of the two next-period nodes."></textarea></section>
+
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="risk-neutral-pricing.html">← Previous: State Prices & Risk-Neutral Probability</a><a class="btn btn-primary" href="american-options.html">Next: American Options →</a></div></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script src="../../assets/js/module4-lab.js"></script><script>
+document.addEventListener('DOMContentLoaded',function(){
+  function fmtMoney(v){return '$'+(Number(v)||0).toFixed(2)}
+  function fmtPct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2})}
+  function set(id,val){const el=document.getElementById(id); if(el) el.textContent=val;}
+  function intrinsic(type,S,X){return type==='Call'?Math.max(S-X,0):Math.max(X-S,0)}
+  function calc(){
+    const S0=M4.n('s0'), X=M4.n('x'), u=M4.n('u'), d=M4.n('d'), r=M4.n('r')/100, n=parseInt(document.getElementById('steps').value,10), type=document.getElementById('otype').value, exercise=document.getElementById('exercise').value;
+    const R=1+r, q=(R-d)/(u-d), valid=(u>d && d<R && R<u);
+    const stock=[], option=[];
+    for(let t=0;t<=n;t++){
+      stock[t]=[];
+      for(let j=0;j<=t;j++) stock[t][j]=S0*Math.pow(u,j)*Math.pow(d,t-j);
+    }
+    option[n]=stock[n].map(S=>intrinsic(type,S,X));
+    for(let t=n-1;t>=0;t--){
+      option[t]=[];
+      for(let j=0;j<=t;j++){
+        const cont=(q*option[t+1][j+1]+(1-q)*option[t+1][j])/R;
+        const ex=intrinsic(type,stock[t][j],X);
+        option[t][j]=exercise==='American preview'?Math.max(cont,ex):cont;
+      }
+    }
+    const terminal=stock[n].map((S,j)=>({j,S,payoff:intrinsic(type,S,X)}));
+    const totalNodes=(n+1)*(n+2)/2;
+    const avgByStep=option.map(level=>level.reduce((a,b)=>a+b,0)/level.length);
+    return {S0,X,u,d,r,R,n,type,exercise,q,valid,stock,option,terminal,totalNodes,avgByStep};
+  }
+  function chartLayout(title,xTitle,yTitle){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:45,b:78,l:78},xaxis:{title:{text:xTitle,font:{size:13}},tickfont:{size:11},gridcolor:'#E5E7EB',automargin:true},yaxis:{title:{text:yTitle,font:{size:13}},tickfont:{size:11},gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI, Arial, sans-serif',size:12,color:'#17212B'},showlegend:false}}
+  function treeTraces(values, labelPrefix, colors){
+    const traces=[]; const n=values.length-1;
+    for(let t=0;t<n;t++){
+      for(let j=0;j<=t;j++){
+        traces.push({x:[t,t+1],y:[values[t][j],values[t+1][j+1]],mode:'lines',type:'scatter',line:{width:2,color:colors.up},hoverinfo:'skip'});
+        traces.push({x:[t,t+1],y:[values[t][j],values[t+1][j]],mode:'lines',type:'scatter',line:{width:2,color:colors.down},hoverinfo:'skip'});
+      }
+    }
+    for(let t=0;t<=n;t++){
+      traces.push({x:Array.from({length:values[t].length},()=>t),y:values[t],mode:'markers+text',type:'scatter',text:values[t].map(v=>labelPrefix(v)),textposition:'top center',marker:{size:10,color:'#0B3558'},textfont:{size:10,color:'#17212B'},hovertemplate:'Step '+t+'<br>Value %{y:.2f}<extra></extra>'});
+    }
+    return traces;
+  }
+  function renderCharts(c){if(!window.Plotly)return;
+    const stockLayout=chartLayout('Stock Price Tree','Time Step','Stock Price');stockLayout.xaxis.tickmode='linear';stockLayout.xaxis.dtick=1;
+    Plotly.react('stock-tree-chart',treeTraces(c.stock,fmtMoney,{up:'#27AE60',down:'#EB5757'}),stockLayout,{responsive:true,displayModeBar:false});
+    const optLayout=chartLayout('Option Value Tree','Time Step','Option Value');optLayout.xaxis.tickmode='linear';optLayout.xaxis.dtick=1;
+    Plotly.react('option-tree-chart',treeTraces(c.option,fmtMoney,{up:'#2F80ED',down:'#7EA6D9'}),optLayout,{responsive:true,displayModeBar:false});
+    Plotly.react('terminal-payoff-chart',[{x:c.terminal.map(node=>'j='+node.j),y:c.terminal.map(node=>node.payoff),type:'bar',marker:{color:'#2F80ED'},text:c.terminal.map(node=>fmtMoney(node.payoff)),textposition:'outside',cliponaxis:false,hovertemplate:'Terminal node %{x}<br>Payoff %{y:$,.2f}<extra></extra>'}],chartLayout('Terminal Payoffs','Terminal Node','Payoff'),{responsive:true,displayModeBar:false});
+    Plotly.react('backward-chart',[{x:c.avgByStep.map((_,i)=>i),y:c.avgByStep,type:'scatter',mode:'lines+markers',line:{width:4,color:'#0B3558'},marker:{size:8},hovertemplate:'Step %{x}<br>Average option value %{y:$,.2f}<extra></extra>'}],chartLayout('Average Option Value by Step','Time Step','Average Option Value'),{responsive:true,displayModeBar:false});
+  }
+  function renderTable(c){document.getElementById('terminal-table').innerHTML=c.terminal.map(node=>'<tr><td>Node '+node.j+'</td><td>'+node.j+'</td><td>'+fmtMoney(node.S)+'</td><td>'+fmtMoney(node.payoff)+'</td></tr>').join('');}
+  function render(){const c=calc();
+    const payoffs=c.terminal.map(x=>x.payoff);
+    set('option-price',fmtMoney(c.option[0][0])); set('q-out',fmtPct(c.q)); set('terminal-max',fmtMoney(Math.max.apply(null,payoffs))); set('terminal-min',fmtMoney(Math.min.apply(null,payoffs))); set('node-count',String(c.totalNodes)); set('exercise-note',c.exercise);
+    document.getElementById('arb-warning').innerHTML=c.valid?'<strong>No-arbitrage condition holds:</strong> d &lt; 1 + r &lt; u. Backward induction uses a meaningful risk-neutral probability.':'<strong>Warning:</strong> The no-arbitrage condition d &lt; 1 + r &lt; u does not hold. Adjust u, d, or r before interpreting the option value.';
+    document.getElementById('tree-note').innerHTML='With <strong>'+c.n+'</strong> steps, the <strong>'+c.type.toLowerCase()+'</strong> value today is <strong>'+fmtMoney(c.option[0][0])+'</strong>. The risk-neutral up probability per step is <strong>'+fmtPct(c.q)+'</strong>.';
+    renderCharts(c); renderTable(c); M4.save('multiPeriodTrees',{type:c.type,exercise:c.exercise,S0:c.S0,X:c.X,u:c.u,d:c.d,r:c.r,steps:c.n,q:c.q,optionValue:c.option[0][0],valid:c.valid});
+  }
+  M4.wire('[data-tree]',render); render();
+  window.addEventListener('resize',function(){['stock-tree-chart','option-tree-chart','terminal-payoff-chart','backward-chart'].forEach(id=>{const el=document.getElementById(id); if(window.Plotly&&el) Plotly.Plots.resize(el);});});
+});
+</script></body></html>
