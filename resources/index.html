@@ -1,2 +1,55 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Resources | Applied Finance Lab</title><link rel="stylesheet" href="../assets/css/main.css"><link rel="stylesheet" href="../assets/css/navigation.css"><link rel="stylesheet" href="../assets/css/dashboard.css"></head><body>
-<nav class="navbar"><div class="container nav-inner"><a class="logo" href="../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../pages/modules.html">Modules</a></li><li><a class="" href="../portfolio/index.html">Portfolio</a></li><li><a class="active" href="../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 1 of 8</div></div></nav><main class="container page-header"><span class="kicker">Resources</span><h1 class="page-title">Downloads and reference materials</h1><p class="lead">Sprint 1 includes placeholders. Future sprints will add downloadable templates, formula sheets, and modeling standards.</p></main><section class="section"><div class="container card"><div class="resource-list"><div class="resource-item"><strong>Analyst Memo Template</strong><a class="btn btn-light" href="../downloads/analyst-memo-template.md">Open</a></div><div class="resource-item"><strong>Excel Modeling Standards</strong><a class="btn btn-light" href="../downloads/excel-modeling-standards.md">Open</a></div><div class="resource-item"><strong>Finance Formula Sheet</strong><a class="btn btn-light" href="../downloads/formula-sheet.md">Open</a></div><div class="resource-item"><strong>Module 1 Roadmap</strong><a class="btn btn-light" href="../modules/module1/index.html">Open</a></div></div></div></section><script src="../assets/js/app.js"></script><script src="../assets/js/navigation.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources | Applied Finance Lab</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/navigation.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-resources.css">
+</head>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="logo" href="../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../pages/modules.html">Modules</a></li><li><a href="../portfolio/index.html">Portfolio</a></li><li><a href="index.html">Resources</a></li></ul><div class="nav-meta">FIN 450</div></div></nav>
+  <header class="hero-mini"><div class="container"><span class="kicker">Resource Library</span><h1 class="page-title">Formulas, templates, data guidance, and model checks.</h1><p class="lead">Use this section as the reference layer for the Applied Finance Lab. It supports the active modules, the portfolio artifacts, and the memo-writing standard.</p></div></header>
+  <main class="section"><div class="container">
+    <section class="card"><span class="kicker">Current Build</span><h2 data-current-build>Modules loading...</h2><p class="lead">Resources are organized by module and by professional workflow: formulas, data sources, memo templates, and model limitations.</p><div class="resource-tabs"><a href="#module-resources">Module Resources</a><a href="#formula-library">Formula Library</a><a href="#data-guide">Data Source Guide</a><a href="#memo-templates">Memo Templates</a><a href="#limitations">Model Limitations</a></div></section>
+    <section id="module-resources" class="resource-section"><span class="kicker">Module Resource Cards</span><h2>Resources aligned to active modules</h2><div class="lab-grid">
+      <article class="resource-card"><span class="module-tag">Module 1</span><h3>Financial Modeling Foundations</h3><p>TVM, NPV, IRR, financial statements, ratios, DCF, enterprise value, and investment review communication.</p><div class="skill-list"><span class="skill-pill">Ch. 1-2</span><span class="skill-pill">Microsoft memo</span></div><a class="btn btn-primary" href="../modules/module1/overview.html">Open Module 1</a></article>
+      <article class="resource-card"><span class="module-tag">Module 2</span><h3>WACC and Pro Forma DCF</h3><p>WACC, component costs, operating FCF, pro forma statements, mid-year DCF, sensitivity, ROIC, and Microsoft valuation memo.</p><div class="skill-list"><span class="skill-pill">Ch. 3</span><span class="skill-pill">Ch. 4</span></div><a class="btn btn-primary" href="../modules/module2/overview.html">Open Module 2</a></article>
+      <article class="resource-card"><span class="module-tag">Module 3</span><h3>AbbVie Company Analysis</h3><p>Financial statement import, economic balance sheet, product transition, operating drivers, asset intensity, ROIC, and valuation cross-check.</p><div class="skill-list"><span class="skill-pill">Ch. 5</span><span class="skill-pill">Company diagnosis</span></div><a class="btn btn-primary" href="../modules/module3/overview.html">Open Module 3</a></article>
+      <article class="resource-card"><span class="module-tag">Module 4</span><h3>Options, Binomial Pricing, and Black-Scholes</h3><p>Payoff logic, replication, state prices, risk-neutral probabilities, backward induction, American options, Black-Scholes/Merton, volatility, and SPY quote memo.</p><div class="skill-list"><span class="skill-pill">Ch. 16</span><span class="skill-pill">Ch. 17</span><span class="skill-pill">Ch. 18</span></div><a class="btn btn-primary" href="../modules/module4/overview.html">Open Module 4</a></article>
+    </div></section>
+    <section id="formula-library" class="card resource-section"><span class="kicker">Formula Library</span><h2>Core formulas by module</h2><div class="lab-grid"><div><h3>DCF and company analysis</h3><div class="formula-block">WACC = E/(D+E) × Re + D/(D+E) × Rd × (1 - tax rate)
+FCF = NOPAT + D&A - Capex - ΔNWC
+ROIC = NOPAT / Invested Capital
+Terminal Value = FCF_(t+1) / (WACC - g)</div></div><div><h3>Options</h3><div class="formula-block">Call payoff = max(ST - X, 0)
+Put payoff = max(X - ST, 0)
+q = ((1 + r) - d) / (u - d)
+Node value = [q × up + (1 - q) × down] / (1 + r)
+C + X e^(-rT) = P + S e^(-qT)</div></div></div></section>
+    <section id="data-guide" class="card resource-section"><span class="kicker">Data Source Guide</span><h2>What students should verify</h2><div class="lab-grid"><div><h3>Company and valuation cases</h3><ul class="checklist"><li>Annual report or 10-K source.</li><li>Fiscal year and reporting currency.</li><li>Revenue, operating income, CFO, capex, debt, cash, shares.</li><li>Market price date and source.</li><li>Assumptions accepted from instructor versus updated by student.</li></ul></div><div><h3>SPY option quote case</h3><ul class="checklist"><li>Underlying ticker and current price.</li><li>Expiration date, strike, call or put, and exercise style.</li><li>Bid, ask, midpoint, quote date/time, and source.</li><li>Risk-free rate, dividend yield, historical volatility, and implied volatility if available.</li><li>Bid-ask spread and liquidity commentary.</li></ul></div></div></section>
+    <section id="memo-templates" class="resource-section"><span class="kicker">Memo Templates</span><h2>Reusable professional memo structures</h2><div class="lab-grid-3"><article class="template-card"><h3>Valuation Memo</h3><div class="template-box">Recommendation
+Key valuation evidence
+WACC and assumptions
+FCF forecast
+Sensitivity and ROIC
+Risk and reversal condition
+Responsible stewardship</div></article><article class="template-card"><h3>Company Analysis Memo</h3><div class="template-box">Business model
+Statement trends
+Economic balance sheet
+Operating drivers
+ROIC and value creation
+Valuation cross-check
+Risk and stewardship</div></article><article class="template-card"><h3>Option Pricing Memo</h3><div class="template-box">Quote verification
+Payoff and strategy
+Binomial evidence
+Black-Scholes/Merton benchmark
+Historical vs implied volatility
+Liquidity and limitations
+Recommendation</div></article></div></section>
+    <section id="limitations" class="card resource-section"><span class="kicker">Model Limitation Checklists</span><h2>Responsible analyst checks</h2><div class="lab-grid"><div><h3>DCF and company analysis</h3><ul class="checklist"><li>Terminal value dependence.</li><li>WACC and terminal growth sensitivity.</li><li>Source date and stale market data.</li><li>GAAP versus adjusted measures.</li><li>ROIC denominator and invested capital treatment.</li></ul></div><div><h3>Options and volatility</h3><ul class="checklist"><li>American versus European exercise style.</li><li>Dividend assumptions and timing.</li><li>Bid-ask spread and liquidity.</li><li>Historical volatility may not predict realized volatility.</li><li>Implied volatility is market-implied, not guaranteed.</li><li>Transaction costs, taxes, and margin requirements.</li></ul></div></div></section>
+  </div></main>
+  <script src="../assets/js/app.js"></script><script src="../assets/js/navigation.js"></script><script src="../assets/js/portfolio-resources.js"></script>
+</body>
+</html>
