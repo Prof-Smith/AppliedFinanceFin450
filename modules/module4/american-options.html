@@ -1,1 +1,115 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><link rel="stylesheet" href="../../assets/css/module4-integrated.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><title>American Options</title></head><body><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 4 of 8</div></div></nav><main class="container page-header"><span class="kicker">Sprint 5E</span><h1 class="page-title">American Options</h1><p class="lead">Use binomial trees to analyze early exercise, especially for American puts.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="options-foundations.html">Options Foundations</a><a class="side-link" href="binomial-pricing.html">Binomial Pricing</a><a class="side-link" href="risk-neutral-pricing.html">State Prices & Risk-Neutral Probability</a><a class="side-link" href="multi-period-trees.html">Multi-Period Trees</a><a class="side-link" href="american-options.html">American Options</a><a class="side-link" href="black-scholes.html">Black-Scholes/Merton</a><a class="side-link" href="volatility-lab.html">Volatility Lab</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside><article class="content-panel"><section class="card"><span class="version-tag">Sprint 5E Scaffold</span><span class="kicker" style="display:block;margin-top:18px">Construction placeholder</span><h2>American Options</h2><p>Use binomial trees to analyze early exercise, especially for American puts.</p><div class="note-box"><strong>Production status:</strong> This page is intentionally scaffolded so Module 4 navigation is complete from the start. The next build will replace this scaffold with the interactive lab.</div></section><section class="card" style="margin-top:22px"><span class="kicker">Planned lab elements</span><h2>What this page will include</h2><ul><li>Concept explanation</li><li>Editable inputs</li><li>Visual model output</li><li>Analyst interpretation prompt</li><li>Saved evidence for the final option pricing memo</li></ul></section><div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="overview.html">← Module 4 Overview</a><a class="btn btn-primary" href="black-scholes.html">Next: Black-Scholes/Merton →</a></div></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script src="../../assets/js/module4-lab.js"></script><script>document.addEventListener('DOMContentLoaded',function(){M4.save('american_options',{status:'scaffold',title:'American Options'});});</script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../assets/css/main.css"><link rel="stylesheet" href="../../assets/css/navigation.css"><link rel="stylesheet" href="../../assets/css/dashboard.css"><link rel="stylesheet" href="../../assets/css/module4-integrated.css"><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><title>American Options | Module 4</title></head><body class="american-page"><nav class="navbar"><div class="container nav-inner"><a class="logo" href="../../index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="../../index.html">Home</a></li><li><a href="../../pages/modules.html">Modules</a></li><li><a href="../../portfolio/index.html">Portfolio</a></li><li><a href="../../resources/index.html">Resources</a></li></ul><div class="nav-meta">Module 4 of 8</div></div></nav><main class="container page-header"><span class="kicker">Sprint 5E</span><h1 class="page-title">American Options and Early Exercise</h1><p class="lead">Use a binomial tree to compare continuation value with immediate exercise value at every node.</p></main><section class="section"><div class="container sidebar-layout"><aside class="sidebar"><div class="card"><h3>Module Navigation</h3><a class="side-link" href="overview.html">Overview</a><a class="side-link" href="options-foundations.html">Options Foundations</a><a class="side-link" href="binomial-pricing.html">Binomial Pricing</a><a class="side-link" href="risk-neutral-pricing.html">State Prices & Risk-Neutral Probability</a><a class="side-link" href="multi-period-trees.html">Multi-Period Trees</a><a class="side-link" href="american-options.html">American Options</a><a class="side-link" href="black-scholes.html">Black-Scholes/Merton</a><a class="side-link" href="volatility-lab.html">Volatility Lab</a><a class="side-link" href="challenge.html">Case Challenge</a></div></aside><article class="content-panel"><style>
+.american-page .sidebar .side-link{line-height:1.25;padding:10px 12px;}
+.american-page .studio-grid{grid-template-columns:minmax(320px,.92fr) minmax(390px,1.08fr);align-items:start;}
+.american-page .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.american-page .metric{padding:14px 13px;}
+.american-page .metric b{font-size:clamp(1.05rem,1.55vw,1.42rem);letter-spacing:-.02em;}
+.american-page .metric span{font-size:.72rem;line-height:1.2;}
+.american-page .plotly-chart{min-height:430px;}
+.american-page #american-option-tree,#exercise-map-chart{min-height:520px;}
+.american-page #premium-chart,#exercise-summary-chart{min-height:390px;}
+.american-page .equation-box{font-family:Consolas,monospace;background:#F7FBFF;border:1px solid #DDEAF7;border-radius:14px;padding:14px;overflow:auto;font-size:.95rem;line-height:1.6;}
+.american-page .exercise-badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:.76rem;font-weight:900;background:#FFF4E5;color:#9A5200;border:1px solid #FFD699;}
+.american-page .continue-badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:.76rem;font-weight:900;background:#EAF3FF;color:#155CA8;border:1px solid #BBD7FF;}
+@media(max-width:1050px){.american-page .studio-grid{grid-template-columns:1fr}.american-page .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:650px){.american-page .metric-grid{grid-template-columns:1fr}.american-page .plotly-chart{min-height:390px}.american-page #american-option-tree,#exercise-map-chart{min-height:450px}}
+</style>
+
+<section class="card"><span class="version-tag">Sprint 5E</span><span class="kicker" style="display:block;margin-top:18px">Chapter 17 application</span><h2>American options and early exercise</h2><p>American options can be exercised before expiration. The binomial model is especially useful because it can compare continuation value with immediate exercise value at every node. This page shows why an American put may be more valuable than a European put, while early exercise of a non-dividend-paying call is typically not valuable in the standard teaching setup.</p><div class="note-box"><strong>Analyst purpose:</strong> Students should identify where early exercise is optimal, explain the American option premium, and distinguish continuation value from immediate exercise value.</div></section>
+
+<div class="studio-grid" style="margin-top:22px">
+  <section class="card"><span class="kicker">Inputs</span><h2>Build the early exercise tree</h2><div class="form-row"><label>Current stock price S0<input id="s0" type="number" value="50" step="1" data-am></label><label>Strike price X<input id="x" type="number" value="50" step="1" data-am></label></div><div class="form-row"><label>Up factor u<input id="u" type="number" value="1.15" step="0.01" data-am></label><label>Down factor d<input id="d" type="number" value="0.90" step="0.01" data-am></label></div><div class="form-row"><label>Risk-free rate per step (%)<input id="r" type="number" value="2" step="0.25" data-am></label><label>Number of steps<select id="steps" data-am><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label></div><div class="form-row"><label>Option type<select id="otype" data-am><option>Put</option><option>Call</option></select></label><label>Dividend yield preview (%)<input id="divy" type="number" value="0" step="0.25" data-am></label></div><div class="note-box warning" id="arb-warning">No-arbitrage check will appear here.</div></section>
+  <section class="card"><span class="kicker">Early Exercise Output</span><h2>American versus European value</h2><p id="american-note" class="lead"></p><div class="metric-grid"><div class="metric"><b id="american-price">$0.00</b><span>American Option Value</span></div><div class="metric"><b id="european-price">$0.00</b><span>European Option Value</span></div><div class="metric"><b id="american-premium">$0.00</b><span>American Premium</span></div><div class="metric"><b id="q-out">0.00%</b><span>Risk-Neutral q</span></div><div class="metric"><b id="exercise-nodes">0</b><span>Early Exercise Nodes</span></div><div class="metric"><b id="max-early-gain">$0.00</b><span>Max Exercise Advantage</span></div></div></section>
+</div>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Early Exercise Rule</span><h2>Continuation versus immediate exercise</h2><div class="equation-box">Continuation value = [q × value at up node + (1 - q) × value at down node] / (1 + r)<br>Immediate exercise value = intrinsic value at the node<br>American option node value = max(continuation value, immediate exercise value)</div></section>
+
+<div class="grid grid-2" style="margin-top:22px">
+  <section class="card"><span class="kicker">Option Tree</span><h2>American option value tree</h2><div id="american-option-tree" class="plotly-chart"></div></section>
+  <section class="card"><span class="kicker">Exercise Map</span><h2>Where early exercise is optimal</h2><div id="exercise-map-chart" class="plotly-chart"></div></section>
+</div>
+
+<div class="grid grid-2" style="margin-top:22px">
+  <section class="card"><span class="kicker">Value Comparison</span><h2>American premium</h2><div id="premium-chart" class="plotly-chart"></div></section>
+  <section class="card"><span class="kicker">Node Summary</span><h2>Continuation versus exercise advantage</h2><div id="exercise-summary-chart" class="plotly-chart"></div></section>
+</div>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Exercise Decision Table</span><h2>Interior node exercise decisions</h2><div class="table-scroll"><table class="mini-table"><thead><tr><th>Time</th><th>Node</th><th>Stock Price</th><th>Continuation</th><th>Immediate Exercise</th><th>Decision</th></tr></thead><tbody id="decision-table"></tbody></table></div></section>
+
+<section class="card" style="margin-top:22px"><span class="kicker">Memo Transfer</span><h2>What students should carry forward</h2><p class="lead">Explain why the American option value equals or exceeds the European option value and identify where early exercise is optimal in the tree.</p><textarea placeholder="Example: The American put is more valuable because early exercise is optimal at low stock-price nodes. At those nodes, the immediate exercise value exceeds the continuation value, creating an American premium over the European option."></textarea></section>
+
+<div class="grid grid-2" style="margin-top:22px"><a class="btn btn-light" href="multi-period-trees.html">← Previous: Multi-Period Trees</a><a class="btn btn-primary" href="black-scholes.html">Next: Black-Scholes/Merton →</a></div></article></div></section><script src="../../assets/js/app.js"></script><script src="../../assets/js/navigation.js"></script><script src="../../assets/js/progress.js"></script><script src="../../assets/js/module4-lab.js"></script><script>
+document.addEventListener('DOMContentLoaded',function(){
+  function fmtMoney(v){return '$'+(Number(v)||0).toFixed(2)}
+  function fmtPct(v){return (Number(v)||0).toLocaleString('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2})}
+  function set(id,val){const el=document.getElementById(id); if(el) el.textContent=val;}
+  function intrinsic(type,S,X){return type==='Call'?Math.max(S-X,0):Math.max(X-S,0)}
+  function calc(){
+    const S0=M4.n('s0'), X=M4.n('x'), u=M4.n('u'), d=M4.n('d'), r=M4.n('r')/100, divy=M4.n('divy')/100, n=parseInt(document.getElementById('steps').value,10), type=document.getElementById('otype').value;
+    const R=1+r, q=((R*Math.exp(-divy))-d)/(u-d), valid=(u>d && q>=0 && q<=1);
+    const stock=[], euro=[], amer=[], decisions=[];
+    for(let t=0;t<=n;t++){stock[t]=[];for(let j=0;j<=t;j++)stock[t][j]=S0*Math.pow(u,j)*Math.pow(d,t-j);}
+    euro[n]=stock[n].map(S=>intrinsic(type,S,X));
+    amer[n]=stock[n].map(S=>intrinsic(type,S,X));
+    for(let t=n-1;t>=0;t--){
+      euro[t]=[]; amer[t]=[];
+      decisions[t]=[];
+      for(let j=0;j<=t;j++){
+        const eCont=(q*euro[t+1][j+1]+(1-q)*euro[t+1][j])/R;
+        euro[t][j]=eCont;
+        const continuation=(q*amer[t+1][j+1]+(1-q)*amer[t+1][j])/R;
+        const immediate=intrinsic(type,stock[t][j],X);
+        const exercise=immediate>continuation+1e-8;
+        amer[t][j]=Math.max(continuation,immediate);
+        decisions[t][j]={t,j,S:stock[t][j],continuation,immediate,exercise,advantage:immediate-continuation};
+      }
+    }
+    const flat=[];
+    for(let t=0;t<n;t++){for(let j=0;j<=t;j++)flat.push(decisions[t][j]);}
+    const exerciseNodes=flat.filter(x=>x.exercise).length;
+    const maxGain=flat.length?Math.max.apply(null,flat.map(x=>Math.max(0,x.advantage))):0;
+    return {S0,X,u,d,r,divy,R,n,type,q,valid,stock,euro,amer,decisions,flat,exerciseNodes,maxGain};
+  }
+  function chartLayout(title,xTitle,yTitle){return {title:{text:title,font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:45,b:78,l:78},xaxis:{title:{text:xTitle,font:{size:13}},tickfont:{size:11},gridcolor:'#E5E7EB',automargin:true},yaxis:{title:{text:yTitle,font:{size:13}},tickfont:{size:11},gridcolor:'#E5E7EB',automargin:true},font:{family:'Segoe UI, Arial, sans-serif',size:12,color:'#17212B'},showlegend:false}}
+  function treeTraces(values, decisions){
+    const traces=[]; const n=values.length-1;
+    for(let t=0;t<n;t++){
+      for(let j=0;j<=t;j++){
+        traces.push({x:[t,t+1],y:[values[t][j],values[t+1][j+1]],mode:'lines',type:'scatter',line:{width:2,color:'#7EA6D9'},hoverinfo:'skip'});
+        traces.push({x:[t,t+1],y:[values[t][j],values[t+1][j]],mode:'lines',type:'scatter',line:{width:2,color:'#B7CCE8'},hoverinfo:'skip'});
+      }
+    }
+    for(let t=0;t<=n;t++){
+      const colors=[];
+      for(let j=0;j<values[t].length;j++){
+        colors.push(decisions[t]&&decisions[t][j]&&decisions[t][j].exercise?'#F59E0B':'#0B3558');
+      }
+      traces.push({x:Array.from({length:values[t].length},()=>t),y:values[t],mode:'markers+text',type:'scatter',text:values[t].map(v=>fmtMoney(v)),textposition:'top center',marker:{size:11,color:colors},textfont:{size:10,color:'#17212B'},hovertemplate:'Step '+t+'<br>Value %{y:.2f}<extra></extra>'});
+    }
+    return traces;
+  }
+  function renderCharts(c){if(!window.Plotly)return;
+    const optLayout=chartLayout('American Option Value Tree','Time Step','Option Value');optLayout.xaxis.tickmode='linear';optLayout.xaxis.dtick=1;
+    Plotly.react('american-option-tree',treeTraces(c.amer,c.decisions),optLayout,{responsive:true,displayModeBar:false});
+    const x=[],y=[],color=[],text=[];
+    for(let t=0;t<c.n;t++){for(let j=0;j<=t;j++){const d=c.decisions[t][j];x.push(t);y.push(j);color.push(d.exercise?1:0);text.push((d.exercise?'Exercise':'Continue')+'<br>S='+fmtMoney(d.S)+'<br>Immediate='+fmtMoney(d.immediate)+'<br>Continuation='+fmtMoney(d.continuation));}}
+    Plotly.react('exercise-map-chart',[{x,y,mode:'markers',type:'scatter',marker:{size:22,color:color,colorscale:[[0,'#2F80ED'],[1,'#F59E0B']],showscale:false,line:{width:1,color:'#fff'}},text,hovertemplate:'%{text}<extra></extra>'}],{title:{text:'Early Exercise Map',font:{size:18,color:'#0B3558'}},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',margin:{t:70,r:45,b:78,l:78},xaxis:{title:'Time Step',dtick:1,gridcolor:'#E5E7EB'},yaxis:{title:'Node Index',dtick:1,gridcolor:'#E5E7EB'},font:{family:'Segoe UI, Arial',size:12,color:'#17212B'},showlegend:false},{responsive:true,displayModeBar:false});
+    const premium=c.amer[0][0]-c.euro[0][0];
+    Plotly.react('premium-chart',[{x:['European','American','Premium'],y:[c.euro[0][0],c.amer[0][0],premium],type:'bar',marker:{color:['#2F80ED','#0B3558','#F59E0B']},text:[fmtMoney(c.euro[0][0]),fmtMoney(c.amer[0][0]),fmtMoney(premium)],textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>%{y:$,.2f}<extra></extra>'}],chartLayout('American Premium','Value Type','Option Value'),{responsive:true,displayModeBar:false});
+    const nodes=c.flat.map(d=>'t'+d.t+' j'+d.j);
+    Plotly.react('exercise-summary-chart',[{x:nodes,y:c.flat.map(d=>d.advantage),type:'bar',marker:{color:c.flat.map(d=>d.exercise?'#F59E0B':'#2F80ED')},hovertemplate:'%{x}<br>Immediate - continuation %{y:$,.2f}<extra></extra>'}],chartLayout('Immediate Exercise Advantage','Node','Immediate - Continuation'),{responsive:true,displayModeBar:false});
+  }
+  function renderTable(c){
+    if(!c.flat.length){document.getElementById('decision-table').innerHTML='';return;}
+    document.getElementById('decision-table').innerHTML=c.flat.map(d=>'<tr><td>'+d.t+'</td><td>'+d.j+'</td><td>'+fmtMoney(d.S)+'</td><td>'+fmtMoney(d.continuation)+'</td><td>'+fmtMoney(d.immediate)+'</td><td>'+(d.exercise?'<span class="exercise-badge">Exercise</span>':'<span class="continue-badge">Continue</span>')+'</td></tr>').join('');
+  }
+  function render(){const c=calc(); const premium=c.amer[0][0]-c.euro[0][0];
+    set('american-price',fmtMoney(c.amer[0][0])); set('european-price',fmtMoney(c.euro[0][0])); set('american-premium',fmtMoney(premium)); set('q-out',fmtPct(c.q)); set('exercise-nodes',String(c.exerciseNodes)); set('max-early-gain',fmtMoney(c.maxGain));
+    document.getElementById('arb-warning').innerHTML=c.valid?'<strong>No-arbitrage condition holds:</strong> the risk-neutral probability is between 0 and 1.':'<strong>Warning:</strong> the risk-neutral probability is outside the 0 to 1 range. Adjust u, d, r, or dividend yield before interpreting the tree.';
+    document.getElementById('american-note').innerHTML='The <strong>'+c.type.toLowerCase()+'</strong> has an American value of <strong>'+fmtMoney(c.amer[0][0])+'</strong> and a European value of <strong>'+fmtMoney(c.euro[0][0])+'</strong>. The American premium is <strong>'+fmtMoney(premium)+'</strong>.';
+    renderCharts(c); renderTable(c); M4.save('americanOptions',{type:c.type,S0:c.S0,X:c.X,u:c.u,d:c.d,r:c.r,divy:c.divy,steps:c.n,q:c.q,americanValue:c.amer[0][0],europeanValue:c.euro[0][0],premium,exerciseNodes:c.exerciseNodes,valid:c.valid});
+  }
+  M4.wire('[data-am]',render); render();
+  window.addEventListener('resize',function(){['american-option-tree','exercise-map-chart','premium-chart','exercise-summary-chart'].forEach(id=>{const el=document.getElementById(id); if(window.Plotly&&el) Plotly.Plots.resize(el);});});
+});
+</script></body></html>
