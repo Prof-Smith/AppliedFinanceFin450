@@ -1,4 +1,4 @@
-/* Sprint 4G navigation patch. Keeps Module 3 links active through ROIC & Value Creation. */
+/* Sprint 4H navigation patch. Keeps Module 3 links active through Valuation Cross-Check. */
 (function(){
   function norm(s){return (s||'').replace(/\s+/g,' ').trim().toLowerCase();}
   function patchModule3(){
@@ -11,7 +11,8 @@
       'sales & product transition':'sales-product-transition.html',
       'operating cost drivers':'operating-cost-drivers.html',
       'asset intensity & reinvestment':'asset-intensity-reinvestment.html',
-      'roic & value creation':'roic-value-creation.html'
+      'roic & value creation':'roic-value-creation.html',
+      'valuation cross-check':'valuation-cross-check.html'
     };
     const active={
       'overview.html':'overview',
@@ -20,7 +21,8 @@
       'sales-product-transition.html':'sales & product transition',
       'operating-cost-drivers.html':'operating cost drivers',
       'asset-intensity-reinvestment.html':'asset intensity & reinvestment',
-      'roic-value-creation.html':'roic & value creation'
+      'roic-value-creation.html':'roic & value creation',
+      'valuation-cross-check.html':'valuation cross-check'
     };
     document.querySelectorAll('.sidebar .card a.side-link').forEach(a=>{
       const label=norm(a.textContent);
@@ -29,8 +31,8 @@
     });
     document.querySelectorAll('a.btn').forEach(a=>{
       const text=norm(a.textContent), href=a.getAttribute('href');
-      if(page==='asset-intensity-reinvestment.html' && (href==='#'||text.includes('next'))){a.href='roic-value-creation.html';a.textContent='Next: ROIC & Value Creation →';}
-      if(page==='roic-value-creation.html' && text.includes('previous')){a.href='asset-intensity-reinvestment.html';a.textContent='← Previous: Asset Intensity & Reinvestment';}
+      if(page==='roic-value-creation.html' && (href==='#'||text.includes('next'))){a.href='valuation-cross-check.html';a.textContent='Next: Valuation Cross-Check →';}
+      if(page==='valuation-cross-check.html' && text.includes('previous')){a.href='roic-value-creation.html';a.textContent='← Previous: ROIC & Value Creation';}
     });
   }
   function mobile(){const t=document.querySelector('[data-mobile-toggle]'),l=document.querySelector('.nav-links');if(t&&l&&!t.dataset.bound){t.dataset.bound='true';t.addEventListener('click',()=>l.classList.toggle('open'));}}
