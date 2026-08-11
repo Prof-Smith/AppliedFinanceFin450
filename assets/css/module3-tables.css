@@ -1,0 +1,60 @@
+/* Module 3 financial statement table overflow fix */
+.table-scroll,
+.common-size-scroll,
+.input-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+
+.table-scroll table,
+.common-size-scroll table,
+.input-scroll table {
+  min-width: 620px;
+  width: 100%;
+  table-layout: auto;
+}
+
+.card,
+.content-panel,
+.sidebar-layout,
+.studio-grid,
+.grid,
+.grid-2 {
+  min-width: 0;
+}
+
+.studio-grid > *,
+.grid > *,
+.grid-2 > * {
+  min-width: 0;
+}
+
+.mini-table,
+.input-table {
+  max-width: 100%;
+}
+
+.mini-table th,
+.mini-table td,
+.input-table th,
+.input-table td {
+  white-space: nowrap;
+}
+
+.mini-table th:first-child,
+.mini-table td:first-child,
+.input-table th:first-child,
+.input-table td:first-child {
+  white-space: normal;
+  min-width: 120px;
+}
+
+@media (max-width: 1100px) {
+  .studio-grid.table-pair {
+    grid-template-columns: 1fr !important;
+  }
+}
