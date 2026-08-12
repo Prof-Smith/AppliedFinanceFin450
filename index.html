@@ -7,77 +7,31 @@
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/navigation.css">
   <link rel="stylesheet" href="assets/css/dashboard.css">
-  <link rel="stylesheet" href="assets/css/homepage-dashboard.css">
+  <style>
+    .home-hero{padding:48px 0 34px;background:linear-gradient(135deg,#F7FBFF 0%,#EEF4FF 48%,#F8FAFC 100%);border-bottom:1px solid #E5E7EB}
+    .home-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);gap:34px;align-items:start}
+    .home-card{background:#fff;border:1px solid #DDE3EA;border-radius:24px;padding:26px;box-shadow:0 18px 45px rgba(11,53,88,.08)}
+    .module-progress-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}.module-row{display:grid;grid-template-columns:110px 135px 120px minmax(0,1fr);gap:20px;align-items:center;border:1px solid #E5E7EB;border-radius:14px;padding:14px 12px;background:#fff}.module-row.header{border:none;padding:0 10px 4px;background:transparent;font-weight:900;color:#516079;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}.module-name{font-weight:950;color:#003B6D}.hero-kicker{display:inline-block;background:#EAF3FF;color:#155CA8;border:1px solid #BBD7FF;border-radius:999px;padding:7px 12px;font-weight:900;font-size:.82rem}.status-pill{display:inline-block;border-radius:999px;padding:7px 11px;font-weight:900;font-size:.78rem}.status-complete{background:#E8F8EF;color:#0B6B32}.status-started{background:#EAF3FF;color:#155CA8}.status-ready{background:#EAF3FF;color:#155CA8}.status-soon{background:#F2F4F7;color:#667085}.feature-note{background:#F7FBFF;border-left:5px solid #2F80ED;border-radius:14px;padding:16px;margin:20px 0}.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px}.latest-title{font-size:1.15rem;line-height:1.55;color:#17212B}.latest-title strong{color:#0B3558}.home-card p{line-height:1.6}.progress-caption{margin-top:24px;color:#516079}.completion-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}.completion-tile{border:1px solid #E5E7EB;border-radius:18px;background:#fff;padding:16px}.completion-tile b{display:block;color:#0B3558;font-size:1.15rem}.completion-tile span{font-size:.82rem;color:#516079;font-weight:800}@media(max-width:1050px){.home-grid{grid-template-columns:1fr}.module-row{grid-template-columns:1fr 1fr}.module-row.header{display:none}.completion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.module-row{grid-template-columns:1fr}.completion-grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
   <nav class="navbar"><div class="container nav-inner"><a class="logo" href="index.html"><span class="logo-mark">AF</span><span>Applied Finance Lab</span></a><button class="btn btn-light mobile-toggle" data-mobile-toggle>Menu</button><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="pages/modules.html">Modules</a></li><li><a href="portfolio/index.html">Portfolio</a></li><li><a href="resources/index.html">Resources</a></li></ul><div class="nav-meta">FIN 450</div></div></nav>
-
-  <header class="hero-band">
-    <div class="container">
-      <span class="kicker" style="color:#A7D8FF">Applied Finance Lab</span>
-      <h1 class="hero-title">Build judgment through models.</h1>
-      <p class="hero-lead">Move from financial concepts to professional analyst workflows: valuation, company diagnosis, options, portfolios, and event studies.</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="pages/modules.html">Open Modules</a><a class="btn btn-light" href="modules/module4/challenge.html">Open SPY Option Case</a><a class="btn btn-light" href="portfolio/index.html">View Analyst Portfolio</a></div>
-    </div>
-  </header>
-
-  <main class="section">
-    <div class="container landing-grid">
-      <section class="card">
-        <span class="kicker">Progress Dashboard</span>
-        <h2>Build a repeatable analyst workflow.</h2>
-        <p class="lead">Modules 1 through 4 are now active. Progress is stored locally in this browser, while exported artifacts should be submitted through the LMS.</p>
-        <table class="dashboard-table" aria-label="Module progress dashboard">
-          <thead><tr><th>Module</th><th>Status</th><th>Build</th><th>Artifact</th></tr></thead>
-          <tbody>
-            <tr><td><a class="module-link" href="modules/module1/overview.html">Module 1</a></td><td data-module-status="1"></td><td data-module-progress="1"></td><td data-module-artifact="1"></td></tr>
-            <tr><td><a class="module-link" href="modules/module2/overview.html">Module 2</a></td><td data-module-status="2"></td><td data-module-progress="2"></td><td data-module-artifact="2"></td></tr>
-            <tr><td><a class="module-link" href="modules/module3/overview.html">Module 3</a></td><td data-module-status="3"></td><td data-module-progress="3"></td><td data-module-artifact="3"></td></tr>
-            <tr><td><a class="module-link" href="modules/module4/overview.html">Module 4</a></td><td data-module-status="4"></td><td data-module-progress="4"></td><td data-module-artifact="4"></td></tr>
-            <tr><td>Module 5</td><td data-module-status="5"></td><td data-module-progress="5"></td><td data-module-artifact="5"></td></tr>
-            <tr><td>Module 6</td><td data-module-status="6"></td><td data-module-progress="6"></td><td data-module-artifact="6"></td></tr>
-            <tr><td>Module 7</td><td data-module-status="7"></td><td data-module-progress="7"></td><td data-module-artifact="7"></td></tr>
-            <tr><td>Module 8</td><td data-module-status="8"></td><td data-module-progress="8"></td><td data-module-artifact="8"></td></tr>
-          </tbody>
-        </table>
-        <p class="progress-note">Local progress is a student-facing navigation aid. Final grading should rely on exported reports submitted through the LMS.</p>
-      </section>
-
-      <aside class="card">
-        <span class="kicker">Current Build</span>
-        <h2>Module 4 is now active.</h2>
-        <span class="build-pill">Options, Binomial Pricing, and Black-Scholes</span>
-        <p>The newest challenge is the <strong>SPY Option Pricing and Strategy Memo</strong>, which adds quote verification, bid-ask spread diagnostics, implied volatility, model limitations, and responsible recommendation writing.</p>
-        <div class="home-callout"><strong>Infrastructure update:</strong> Portfolio and Resources now support Modules 1 through 4.</div>
-        <div class="hero-actions" style="margin-top:18px"><a class="btn btn-primary" href="modules/module4/overview.html">Open Module 4</a><a class="btn btn-light" href="resources/index.html">Open Resources</a></div>
-      </aside>
-    </div>
-
-    <div class="container" style="margin-top:32px">
-      <section class="card">
-        <span class="kicker">Challenge Gallery</span>
-        <h2>Available challenge artifacts</h2>
-        <p class="lead">The landing page now highlights all active case artifacts so students can see the growing portfolio of applied work.</p>
-        <div class="challenge-grid">
-          <article class="challenge-card featured"><span class="challenge-tag">Module 1 Challenge</span><h3>Microsoft Investment Review</h3><p>Use foundational finance tools to build an investment review grounded in time value of money, financial statements, ratios, enterprise value, and memo communication.</p><a class="btn btn-primary" href="modules/module1/challenge.html">Launch Challenge</a></article>
-          <article class="challenge-card featured"><span class="challenge-tag">Module 2 Challenge</span><h3>Microsoft Pro Forma DCF Case</h3><p>Build a defensible valuation memo with WACC, operating FCF, pro forma forecasts, terminal value, sensitivity, ROIC, risk, and responsible stewardship.</p><a class="btn btn-primary" href="modules/module2/challenge.html">Launch Challenge</a></article>
-          <article class="challenge-card featured"><span class="challenge-tag">Module 3 Challenge</span><h3>AbbVie Company Analysis Memo</h3><p>Diagnose the company behind the valuation using financial statements, economic balance sheet classification, product transition, costs, reinvestment, ROIC, and valuation cross-checks.</p><a class="btn btn-primary" href="modules/module3/challenge.html">Launch Challenge</a></article>
-          <article class="challenge-card featured"><span class="challenge-tag">Module 4 Challenge</span><h3>SPY Option Pricing Memo</h3><p>Verify an SPY option quote, assess bid-ask spread, compare binomial and Black-Scholes/Merton evidence, interpret implied volatility, and defend a responsible recommendation.</p><a class="btn btn-primary" href="modules/module4/challenge.html">Launch Challenge</a></article>
-        </div>
-      </section>
-    </div>
-
-    <div class="container" style="margin-top:32px">
-      <section class="card">
-        <span class="kicker">Coming Next</span>
-        <h2>Future challenge pipeline</h2>
-        <div class="next-modules"><div class="mini-module"><b>Module 5</b><br>Greeks Risk Note</div><div class="mini-module"><b>Module 6</b><br>Real Options Case</div><div class="mini-module"><b>Module 7</b><br>Portfolio Analysis</div><div class="mini-module"><b>Module 8</b><br>Event Study</div></div>
-      </section>
-    </div>
-  </main>
-
-  <script src="assets/js/app.js"></script>
-  <script src="assets/js/navigation.js"></script>
-  <script src="assets/js/homepage-dashboard.js"></script>
+  <header class="home-hero"><div class="container home-grid">
+    <section class="home-card"><span class="hero-kicker">Applied Finance Decision Lab</span><h1 class="page-title">FIN 450 Applied Finance Lab</h1><p class="lead">All eight modules are now active. Progress is stored locally in this browser, while exported artifacts should be submitted through the LMS.</p>
+      <div class="completion-grid"><div class="completion-tile"><b>8</b><span>active modules</span></div><div class="completion-tile"><b>8</b><span>portfolio artifacts</span></div><div class="completion-tile"><b>Full course</b><span>build sequence active</span></div><div class="completion-tile"><b>Local</b><span>student progress tracking</span></div></div>
+      <div class="module-progress-list"><div class="module-row header"><span>Module</span><span>Status</span><span>Build</span><span>Artifact</span></div>
+        <div class="module-row"><span class="module-name">Module 1</span><span data-module-status="1"></span><span data-module-progress="1"></span><span data-module-artifact="1"></span></div>
+        <div class="module-row"><span class="module-name">Module 2</span><span data-module-status="2"></span><span data-module-progress="2"></span><span data-module-artifact="2"></span></div>
+        <div class="module-row"><span class="module-name">Module 3</span><span data-module-status="3"></span><span data-module-progress="3"></span><span data-module-artifact="3"></span></div>
+        <div class="module-row"><span class="module-name">Module 4</span><span data-module-status="4"></span><span data-module-progress="4"></span><span data-module-artifact="4"></span></div>
+        <div class="module-row"><span class="module-name">Module 5</span><span data-module-status="5"></span><span data-module-progress="5"></span><span data-module-artifact="5"></span></div>
+        <div class="module-row"><span class="module-name">Module 6</span><span data-module-status="6"></span><span data-module-progress="6"></span><span data-module-artifact="6"></span></div>
+        <div class="module-row"><span class="module-name">Module 7</span><span data-module-status="7"></span><span data-module-progress="7"></span><span data-module-artifact="7"></span></div>
+        <div class="module-row"><span class="module-name">Module 8</span><span data-module-status="8"></span><span data-module-progress="8"></span><span data-module-artifact="8"></span></div>
+      </div><p class="progress-caption">Local progress is a student-facing navigation aid. Final grading should rely on exported reports submitted through the LMS.</p>
+    </section>
+    <aside class="home-card"><span class="hero-kicker">Event Study, Market Reaction, and Final Analyst Briefing</span><p class="latest-title">The newest challenge is the <strong>Market Reaction and Final Analyst Briefing</strong>, which combines benchmark model choice, abnormal returns, event-window interpretation, market reaction evidence, and a final briefing-ready recommendation.</p><div class="feature-note"><strong>Infrastructure update:</strong> Portfolio and Resources now support Modules 1 through 8, and the course dashboard lists the full build sequence.</div><div class="hero-actions"><a class="btn btn-primary" href="modules/module8/challenge.html">Open Module 8</a><a class="btn btn-light" href="pages/modules.html">View All Modules</a><a class="btn btn-light" href="resources/index.html">Open Resources</a></div></aside>
+  </div></header>
+  <script src="assets/js/app.js"></script><script src="assets/js/navigation.js"></script><script src="assets/js/homepage-dashboard.js"></script>
 </body>
 </html>
